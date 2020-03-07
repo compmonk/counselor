@@ -23,20 +23,39 @@ async function addUser(newUser) {
     if (!newUser.hasOwnProperty("firstName")) {
         errors['firstName'] = "missing property";
         error.http_code = 400
+    }else if (typeof newUser['firstName'] !== "string") {
+        errors['firstName'] = "invalid type of firstName";
+        error.http_code = 400
     }
 
     if (!newUser.hasOwnProperty("lastName")) {
         errors['lastName'] = "missing property";
+        error.http_code = 400
+    }else if (typeof newUser['lastName'] !== "string") {
+        errors['lastName'] = "invalid type of lastName";
         error.http_code = 400
     }
 
     if (!newUser.hasOwnProperty("email")) {
         errors['email'] = "missing property";
         error.http_code = 400
+    }else if (typeof newUser['email'] !== "string") {
+        errors['email'] = "invalid type of email";
+        error.http_code = 400
     }
 
     if (!newUser.hasOwnProperty("password")) {
         errors['password'] = "missing property";
+        error.http_code = 400
+    }else if (typeof newUser['password'] !== "string") {
+        errors['password'] = "invalid type of password";
+        error.http_code = 400
+    }
+    if (!newUser.hasOwnProperty("currency")) {
+        errors['currency'] = "missing property";
+        error.http_code = 400
+    }else if (typeof newUser['currency'] !== "string") {
+        errors['currency'] = "invalid type of currency";
         error.http_code = 400
     }
 
@@ -61,7 +80,7 @@ async function addUser(newUser) {
     const user = await usersCollection.findOne({email: newUser.email});
 
     if (user) {
-        errors['username'] = "username unavailable";
+        errors['email'] = "email unavailable";
         error.http_code = 400;
         error.message = JSON.stringify({'errors': errors});
         throw error
