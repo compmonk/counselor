@@ -31,7 +31,7 @@ router.post("/login", async (request, response) => {
             // response.redirect(`/${request.session.user.username}/`);
             response.send(request.session.user)
         }
-        const user = await users.isAuthenticated(request.body['username'], request.body['password']);
+        const user = await users.isAuthenticated(request.body['email'], request.body['password']);
         if (user) {
             await sessions.addSession(request.sessionID, user._id);
             request.session.user = user;

@@ -357,15 +357,15 @@ async function getSpent(userId) {
     }
 }
 
-async function isAuthenticated(username, password) {
+async function isAuthenticated(email, password) {
     const error = new Error();
     error.http_code = 200;
     const errors = {};
 
-    if (username === undefined || username === null) {
+    if (email === undefined || email === null) {
         errors['username'] = "username not defined";
         error.http_code = 400
-    } else if (typeof username !== "string") {
+    } else if (typeof email !== "string") {
         errors['username'] = "invalid type of username";
         error.http_code = 400
     }
@@ -380,10 +380,10 @@ async function isAuthenticated(username, password) {
 
     const usersCollection = await users();
 
-    const user = await usersCollection.findOne({username: username});
+    const user = await usersCollection.findOne({email: email});
 
     if (user === null) {
-        errors['username'] = `user with username ${username} not found`;
+        errors['username'] = `user with username ${email} not found`;
         error.http_code = 404;
         error.message = JSON.stringify({
             errors: errors
@@ -399,7 +399,7 @@ async function isAuthenticated(username, password) {
         });
         throw error
     }
-
+    user._id = MUUID.from(user._id).toString();
     return user;
 }
 
