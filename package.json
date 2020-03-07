@@ -19,6 +19,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "mongodb": "^3.5.4",
+    "underscore": "^1.9.2",
     "uuid-mongodb": "^2.1.3"
   }
 }
