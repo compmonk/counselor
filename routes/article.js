@@ -32,4 +32,16 @@ router.post("/", async (request, response) => {
         response.status(e.http_code).send(e.message)
     }
 });
+
+router.put("/:id", async (request, response) => {
+    try {
+        const article = await articles.update(request.params.id, request.body, true);
+        response.status(201).json(article);
+    } catch (e) {
+        response.setHeader('content-type', 'application/json');
+        response.status(e.http_code).send(e.message)
+    }
+});
+
+
 module.exports = router

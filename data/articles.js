@@ -73,9 +73,10 @@ async function create(newArticle) {
     }
 
     newArticle._id = MUUID.v4();
-    newArticle.ratings=0;
+    newArticle.ratings=[];
     newArticle.cost=1;
     newArticle.read=0;
+    newArticle.rating=0;
     const articleCollection = await articles();
 
     const insertInfo = await articleCollection.insertOne(newArticle);
@@ -144,7 +145,90 @@ async function get(articleId) {
 
     return article;
 }
+
+async function update(articleId, updatedArticle, partial = false) {
+    const error = new Error();
+    error.http_code = 200;
+    const errors = {};
+
+    if (updatedArticle === undefined || _.isEmpty(updatedArticle)) {
+        errors['article'] = "article object not defined";
+        error.http_code = 400
+    } else if (typeof updatedArticle !== "object") {
+        errors['article'] = "invalid type of article";
+        error.http_code = 400
+    }
+
+    if (!partial && !updatedArticle.hasOwnProperty("title")) {
+        errors['title'] = "missing property";
+        error.http_code = 400
+    } else if (updatedArticle.hasOwnProperty("title") && typeof updatedArticle["title"] !== "string") {
+        errors['title'] = "invalid type";
+        error.http_code = 400
+    }
+
+    if (!partial && !updatedArticle.hasOwnProperty("text")) {
+        errors['text'] = "missing property";
+        error.http_code = 400
+    } else if (updatedArticle.hasOwnProperty("text") && typeof updatedArticle["text"] !== "string") {
+        errors['text'] = "invalid type";
+        error.http_code = 400
+    }
+
+    if (!partial && !updatedArticle.hasOwnProperty("html")) {
+        errors['html'] = "missing property";
+        error.http_code = 400
+    } else if (updatedArticle.hasOwnProperty("html") && typeof updatedArticle["hoursEstimated"] !== "number") {
+        errors['html'] = "invalid type";
+        error.http_code = 400
+    }
+
+    if (!partial && !updatedArticle.hasOwnProperty("completed")) {
+        errors['completed'] = "missing property";
+        error.http_code = 400
+    } else if (updatedArticle.hasOwnProperty("completed") && typeof updatedArticle["completed"] !== "boolean") {
+        errors['completed'] = "invalid type";
+        error.http_code = 400
+    }
+
+    if (!updatedArticle.hasOwnProperty("keywords")) {
+        updatedArticle["keywords"] = []
+    } else if (!Array.isArray(updatedArticle["keywords"])) {
+        errors['keywords'] = "invalid type";
+        error.http_code = 400
+    }
+
+
+    if (error.http_code !== 200) {
+        error.message = JSON.stringify({'errors': errors});
+        throw error
+    }
+
+    try {
+        const oldArticle = await get(articleId);
+
+        const articleCollection = await articles();
+
+        return await articleCollection.updateOne({_id: MUUID.from(articleId)}, {$set: updatedArticle})
+            .then(async function (updateInfo) {
+                if (updateInfo.modifiedCount === 0) {
+                    error.message = JSON.stringify({
+                        'error': "could not update task",
+                        'object': updatedArticle,
+                        'errors': errors
+                    });
+                    error.http_code = 400;
+                    throw error
+                }
+                return await get(articleId);
+            });
+    } catch (e) {
+        throw e
+    }
+}
+
 module.exports = {
     create,
-    get
+    get,
+    update
 };

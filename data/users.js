@@ -103,24 +103,59 @@ async function addUser(newUser) {
     return await getUserById(newId);
 }
 
-async function updateUser(userId, updatedUser, addSource = false) {
+async function updateUser(userId, updatedUser, partial = false) {
     const error = new Error();
     error.http_code = 200;
     const errors = {};
 
-    if (updatedUser === undefined || updatedUser === null) {
-        errors['user'] = "user object not defined";
+    if (updatedUser === undefined || _.isEmpty(updatedUser)) {
+        errors['article'] = "article object not defined";
         error.http_code = 400
-    } else if (addSource) {
-        if (typeof updatedUser === "string") {
-            updatedUser = [updatedUser]
-        } else if (updatedUser.length === 0) {
-            updatedUser = ['bbc-news'];
-        }
     } else if (typeof updatedUser !== "object") {
-        errors['user'] = "invalid type of user";
+        errors['article'] = "invalid type of article";
         error.http_code = 400
     }
+
+    if (!partial && !updatedUser.hasOwnProperty("firstName")) {
+        errors['firstName'] = "missing property";
+        error.http_code = 400
+    } else if (updatedUser.hasOwnProperty("firstName") && typeof updatedUser["firstName"] !== "string") {
+        errors['firstName'] = "invalid type";
+        error.http_code = 400
+    }
+
+    if (!partial && !updatedUser.hasOwnProperty("lastName")) {
+        errors['lastName'] = "missing property";
+        error.http_code = 400
+    } else if (updatedUser.hasOwnProperty("lastName") && typeof updatedUser["lastName"] !== "string") {
+        errors['lastName'] = "invalid type";
+        error.http_code = 400
+    }
+
+    if (!partial && !updatedUser.hasOwnProperty("email")) {
+        errors['email'] = "missing property";
+        error.http_code = 400
+    } else if (updatedUser.hasOwnProperty("email") && typeof updatedUser["email"] !== "string") {
+        errors['email'] = "invalid type";
+        error.http_code = 400
+    }
+
+    if (!partial && !updatedUser.hasOwnProperty("password")) {
+        errors['password'] = "missing property";
+        error.http_code = 400
+    } else if (updatedUser.hasOwnProperty("password") && typeof updatedUser["password"] !== "string") {
+        errors['password'] = "invalid type";
+        error.http_code = 400
+    }
+
+    if (!partial && !updatedUser.hasOwnProperty("currency")) {
+        errors['currency'] = "missing property";
+        error.http_code = 400
+    } else if (updatedUser.hasOwnProperty("currency") && typeof updatedUser["currency"] !== "string") {
+        errors['currency'] = "invalid type";
+        error.http_code = 400
+    }
+
 
     if (error.http_code !== 200) {
         error.message = JSON.stringify({'errors': errors});
@@ -128,26 +163,11 @@ async function updateUser(userId, updatedUser, addSource = false) {
     }
 
     try {
-        const user = await getUserById(userId);
+        const oldUser = await getUserById(userId);
 
         const usersCollection = await users();
 
-        // if (addSource) {
-        //     return await usersCollection.updateOne({_id: user._id}, {$push: {"sources": {$each: updatedUser}}})
-        //         .then(async function (updateInfo) {
-        //             if (updateInfo.modifiedCount === 0) {
-        //                 error.message = JSON.stringify({
-        //                     'error': "could not update user",
-        //                     'object': updatedUser,
-        //                     'errors': errors
-        //                 });
-        //                 error.http_code = 400;
-        //                 throw error
-        //             }
-        //             return await getUserById(userId);
-        //         });
-        // } else {
-        return await usersCollection.updateOne({_id: user._id}, {$set: updatedUser})
+        return await usersCollection.updateOne({_id: MUUID.from(userId)}, {$set: updatedUser})
             .then(async function (updateInfo) {
                 if (updateInfo.modifiedCount === 0) {
                     error.message = JSON.stringify({
@@ -160,7 +180,6 @@ async function updateUser(userId, updatedUser, addSource = false) {
                 }
                 return await getUserById(userId);
             });
-        // }
     } catch (e) {
         throw e
     }
