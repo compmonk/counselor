@@ -1,6 +1,5 @@
 const MongoClient = require("mongodb").MongoClient;
-const settings = require("../settings");
-const mongoConfig = settings.mongoConfig;
+const mongoConfig = require("../settings").mongoConfig;
 
 let _connection = undefined;
 let _db = undefined;
@@ -28,5 +27,6 @@ const getCollection = collection => {
 
 module.exports = {
     users: getCollection("users"),
-    articles: getCollection("articles")
+    articles: getCollection("articles"),
+    sessions: getCollection("sessions")
 };
