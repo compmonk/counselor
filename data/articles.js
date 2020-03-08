@@ -2,6 +2,8 @@ const MUUID = require('uuid-mongodb');
 const collections = require("./index");
 const _ = require('underscore');
 const articles = collections.articles;
+const users = collections.users;
+
 async function create(newArticle) {
     const error = new Error();
     error.http_code = 200;
@@ -38,32 +40,6 @@ async function create(newArticle) {
         error.http_code = 400
     }
 
-    if (!newArticle.hasOwnProperty("author")) {
-        errors['author'] = "missing property";
-        error.http_code = 400
-    } else if (typeof newArticle["author"] === "string") {
-        try {
-            newArticle["author"] = MUUID.from(newArticle["author"]);
-        } catch (e) {
-            errors['author'] = e.message;
-            error.http_code = 400;
-            error.message = JSON.stringify({
-                errors: errors
-            });
-            throw error
-        }
-    } else {
-        try {
-            newArticle["author"] = MUUID.from(newArticle["author"]);
-        } catch (e) {
-            errors['author'] = "id is not defined";
-            error.http_code = 400;
-            error.message = JSON.stringify({
-                errors: errors
-            });
-            throw error
-        }
-    }
 
     if (!newArticle.hasOwnProperty("keywords")) {
         newArticle["keywords"] = []
@@ -73,10 +49,54 @@ async function create(newArticle) {
     }
 
     newArticle._id = MUUID.v4();
-    newArticle.ratings=[];
-    newArticle.cost=1;
-    newArticle.read=0;
-    newArticle.rating=0;
+    try {
+        newArticle["author"] = MUUID.from(newArticle["author"]);
+
+        const usersCollection = await users();
+        await usersCollection.updateOne({_id: newArticle["author"]},
+            {
+                $push: {
+                    "published": {
+                        "articleId": newArticle._id,
+                        "reward": 1
+                    }
+                }
+            }).then(async function (updateInfo) {
+            if (updateInfo.modifiedCount === 0) {
+                error.message = JSON.stringify({
+                    'error': "could not update published article",
+                    'errors': errors
+                });
+                error.http_code = 400;
+                throw error
+            }
+        });
+        await usersCollection.updateOne({_id: newArticle["author"]},
+            {
+                $push: {
+                    "rewards": {
+                        "articleId": newArticle._id,
+                        "reward": 1
+                    }
+                }
+            }).then(async function (updateInfo) {
+            if (updateInfo.modifiedCount === 0) {
+                error.message = JSON.stringify({
+                    'error': "could not update published article",
+                    'errors': errors
+                });
+                error.http_code = 400;
+                throw error
+            }
+        });
+        await usersCollection.updateOne({_id: newArticle["author"]}, {$set: { "balance" : 1}})
+    } catch (e) {
+        throw e;
+    }
+    newArticle.ratings = [];
+    newArticle.cost = 1;//TODO change the reward in reward array
+    newArticle.read = 0;
+    newArticle.rating = 0;
     const articleCollection = await articles();
 
     const insertInfo = await articleCollection.insertOne(newArticle);
@@ -95,6 +115,7 @@ async function create(newArticle) {
 
     return await get(newId);
 }
+
 async function get(articleId) {
     const error = new Error();
     error.http_code = 200;
