@@ -1,42 +1,65 @@
 const StellarSdk = require('stellar-sdk');
 const axios = require('axios');
-const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
+const stellarConfig = require("../settings").stellarConfig;
+const server = new StellarSdk.Server(stellarConfig.testNetUrl);
+
+const master = StellarSdk.Keypair.fromSecret(stellarConfig.masterPrivateKey);
+
+// console.log(master)
 
 async function createAccount() {
-    const keyPair = StellarSdk.Keypair.random();
-
-    // console.log(
-    //     keyPair.publicKey()
-    // );
-
-    const response = await axios.get(`https://friendbot.stellar.org/?addr=${keyPair.publicKey()}`);
-    // console.log(response);
-
-    return keyPair.secret()
-
-    // const kp = StellarSdk.Keypair.fromSecret(keypair.secret());
-    // kp.publicKey();
-    // const transaction = StellarSdk.TransactionBuilder()
-    // transaction.sign(keypair)
+    const userKeyPair = StellarSdk.Keypair.random();
+    return await server.loadAccount(master.publicKey())
+        .then((account) => {
+            // console.log(user.publicKey());
+            const transaction = new StellarSdk.TransactionBuilder(account, {
+                fee: StellarSdk.BASE_FEE,
+                networkPassphrase: StellarSdk.Networks.TESTNET,
+            }).addOperation(
+                // This operation sends the destination account XLM
+                StellarSdk.Operation.createAccount({
+                    destination: userKeyPair.publicKey(),
+                    startingBalance: stellarConfig.startingBalance
+                }),
+            ).setTimeout(0)
+                .build();
+            transaction.sign(master);
+            return server.submitTransaction(transaction)
+        })
+        .then((res) => {
+            console.log(res);
+            return userKeyPair.secret();
+        })
+        .catch((err) => console.error(err));
 }
 
-async function transfer(sourceKeyPair, receiverKeyPair, amount) {
-    const sourcePublicKey = sourceKeyPair.publicKey();
-    const receiverPublicKey = receiverKeyPair.publicKey();
-    const account = await server.loadAccount(sourcePublicKey);
+async function transfer(sourcePrivateKeyPair, receiverPrivateKeyPair, amount) {
+    const sourceKeyPair = StellarSdk.Keypair.fromSecret(sourcePrivateKeyPair);
+    const receiverKeyPair = StellarSdk.Keypair.fromSecret(receiverPrivateKeyPair);
+    const account = await server.loadAccount(sourceKeyPair.publicKey());
     const fee = await server.fetchBaseFee();
     const transaction = new StellarSdk.TransactionBuilder(account, {
         fee,
         networkPassphrase: StellarSdk.Networks.TESTNET
     }).addOperation(StellarSdk.Operation.payment({
-        destination: receiverPublicKey,
+        destination: receiverKeyPair.publicKey(),
         asset: StellarSdk.Asset.native(),
         amount: amount,
     }))
         .setTimeout(30)
         .build();
     transaction.sign(sourceKeyPair);
+}
+
+async function getBalance(userPrivateKey) {
+    return await server
+        .loadAccount(StellarSdk.Keypair.fromSecret(userPrivateKey).publicKey())
+        .then((account) => {
+            // console.log(account.balances);
+            return account.balances
+        })
+        .catch((err) => console.error(err))
 }
 
 async function getTransactions(userPublicKeyPair) {
@@ -60,5 +83,6 @@ async function getTransactions(userPublicKeyPair) {
 module.exports = {
     createAccount,
     transfer,
-    getTransactions
+    getTransactions,
+    getBalance
 };

@@ -32,11 +32,22 @@ router.put("/:id", async (request, response) => {
     }
 });
 
-router.get("/:id/transactions", async (request, response) => {
+// router.get("/:id/transactions", async (request, response) => {
+//     try {
+//         const user = await users.getUserById(request.params.id);
+//         const transactions = await stellarService.getTransactions(user.publicKey);
+//         response.send(transactions)
+//     } catch (e) {
+//         response.setHeader('content-type', 'application/json');
+//         response.status(e.http_code).send(e.message)
+//     }
+// });
+
+router.get("/:id/balance", async (request, response) => {
     try {
         const user = await users.getUserById(request.params.id);
-        const transactions = await stellarService.getTransactions(user.publicKey);
-        response.send(transactions)
+        const balance = await stellarService.getBalance(user.privateKey);
+        response.send(balance)
     } catch (e) {
         response.setHeader('content-type', 'application/json');
         response.status(e.http_code).send(e.message)

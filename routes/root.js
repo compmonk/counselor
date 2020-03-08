@@ -8,7 +8,7 @@ const sessions = require("../data/sessions");
 
 const router = express.Router();
 router.use(bodyParser.json());
-router.use(bodyParser.urlencoded());
+// router.use(bodyParser.urlencoded());
 
 
 router.post("/signup", async (request, response) => {
@@ -40,7 +40,8 @@ router.post("/login", async (request, response) => {
             response.send(request.session.user)
         }
     } catch (e) {
-        response.status(e.http_code).render("home", Object.assign({layout: "home"}, JSON.parse(e.message)))
+        response.setHeader('content-type', 'application/json');
+        response.status(e.http_code).send(e.message)
     }
 });
 

@@ -5,7 +5,7 @@ const salt = bcrypt.genSaltSync(8);
 
 const collections = require("./index");
 const stellarService = require("../services/stellarService");
-
+const stellarConfig = require("../settings").stellarConfig;
 const users = collections.users;
 
 async function addUser(newUser) {
@@ -73,7 +73,7 @@ async function addUser(newUser) {
     newUser.rewards = [];
     newUser.spent = [];
     newUser.courses = [];
-    newUser.balance = 0;
+    newUser.balance = stellarConfig.startingBalance;
 
 
     const usersCollection = await users();
