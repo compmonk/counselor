@@ -18,7 +18,8 @@ const vendorJsFiles = [
     "./node_modules/popper.js/dist/umd/popper.min.js",
     "./node_modules/bootstrap/dist/js/bootstrap.min.js",
     "./node_modules/angular/angular.js",
-    "./node_modules/angular-route/angular-route.js"
+    "./node_modules/angular-route/angular-route.js",
+    "./node_modules/angular-cookies/angular-cookies.js"
 ];
 
 const customJsFiles = [

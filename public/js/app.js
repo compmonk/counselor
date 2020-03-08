@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    const counselor = angular.module('counselor', ['ngRoute']);
+    const counselor = angular.module('counselor', ['ngRoute', 'ngCookies']);
 
     counselor.controller('counselorController', ['$scope', '$http', counselorController]);
 
@@ -9,12 +9,20 @@
 
     counselor.config(function ($routeProvider, $locationProvider) {
         $routeProvider
+            .when('/signin', {
+                templateUrl: '/public/html/signin.html',
+                controller: 'userController'
+            })
+            .when('/signup', {
+                templateUrl: '/public/html/signup.html',
+                controller: 'userController'
+            })
             .when('/home', {
                 templateUrl: '/public/html/home.html'
             })
             .when('/article', {
                 templateUrl: '/public/html/article.html',
-                // controller: 'articleController'
+                controller: 'articleController'
             })
             .when('/wallet', {
                 templateUrl: '/public/html/wallet.html',
@@ -33,7 +41,7 @@
                 // controller: 'sessionController'
             })
             .otherwise({
-                redirectTo: '/home'
+                redirectTo: '/signin'
             });
 
         $locationProvider.hashPrefix('');
