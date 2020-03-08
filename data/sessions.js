@@ -115,7 +115,7 @@ async function getSession(sessionId) {
         throw error
     }
 
-    session._id = MUUID.from(session._id).toString()
+    session._id = MUUID.from(session._id).toString();
     return session;
 }
 

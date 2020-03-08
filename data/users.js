@@ -101,9 +101,7 @@ async function addUser(newUser) {
 
     const newId = insertInfo.insertedId.toString();
 
-    const keyPair = await stellarService.createAccount();
-    newUser.publicKey = keyPair.publicKey();
-    newUser.keyPair = keyPair;
+    newUser.privateKey = await stellarService.createAccount();
 
     try {
         return await usersCollection.updateOne({_id: MUUID.from(newId)}, {$set: newUser})
@@ -263,6 +261,14 @@ async function getUserById(userId, ...projection) {
     }
 
     user._id = MUUID.from(user._id).toString();
+
+    for (let i = 0; i < user.published.length; i++) {
+        user.published[i].articleId = MUUID.from(user.published[i].articleId).toString();
+    }
+
+    for (let i = 0; i < user.purchased.length; i++) {
+        user.purchased[i].articleId = MUUID.from(user.purchased[i].articleId).toString();
+    }
 
     return user;
 }

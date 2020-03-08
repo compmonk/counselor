@@ -13,7 +13,7 @@ async function createAccount() {
     const response = await axios.get(`https://friendbot.stellar.org/?addr=${keyPair.publicKey()}`);
     // console.log(response);
 
-    return keyPair
+    return keyPair.secret()
 
     // const kp = StellarSdk.Keypair.fromSecret(keypair.secret());
     // kp.publicKey();

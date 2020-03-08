@@ -199,16 +199,8 @@ async function update(articleId, updatedArticle, partial = false) {
     if (!partial && !updatedArticle.hasOwnProperty("html")) {
         errors['html'] = "missing property";
         error.http_code = 400
-    } else if (updatedArticle.hasOwnProperty("html") && typeof updatedArticle["hoursEstimated"] !== "number") {
+    } else if (updatedArticle.hasOwnProperty("html") && typeof updatedArticle["html"] !== "string") {
         errors['html'] = "invalid type";
-        error.http_code = 400
-    }
-
-    if (!partial && !updatedArticle.hasOwnProperty("completed")) {
-        errors['completed'] = "missing property";
-        error.http_code = 400
-    } else if (updatedArticle.hasOwnProperty("completed") && typeof updatedArticle["completed"] !== "boolean") {
-        errors['completed'] = "invalid type";
         error.http_code = 400
     }
 
