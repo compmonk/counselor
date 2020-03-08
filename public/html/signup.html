@@ -1,5 +1,4 @@
 <div>
-
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
@@ -11,29 +10,13 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#home">Home
-                            <span class="sr-only">(current)</span>
+                        <a class="nav-link" href="#signin">Sign In
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#article">Article</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#wallet">Wallet</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#courses">Courses</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link " href="#profile">Profile
+                        <a class="nav-link active" href="#signup">Sign Up
                             <span class="sr-only">(current)</span>
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#sessions">Session</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#logout">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -60,7 +43,14 @@
                     <label for="email" class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-10">
                         <input type="email" class="form-control" id="email" placeholder="Email"
-                               ng-model="user.email" readonly>
+                               ng-model="user.email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password"
+                               placeholder="Password" ng-model="user.password">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -71,22 +61,8 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="stellarId" class="col-sm-2 col-form-label">Stellar ID</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="stellarId" readonly
-                               placeholder="Stellar ID" ng-model="user.publicKey">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="balance" class="col-sm-2 col-form-label">Balance</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="balance" readonly
-                               placeholder="balance" ng-model="user.balance">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary" ng-click="updateUser()">Update</button>
+                        <button type="submit" class="btn btn-primary" ng-click="signin()">Sign Up</button>
                     </div>
                 </div>
             </form>

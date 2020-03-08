@@ -26,7 +26,7 @@
             })
             .when('/wallet', {
                 templateUrl: '/public/html/wallet.html',
-                // controller: 'walletController'
+                controller: 'walletController'
             })
             .when('/courses', {
                 templateUrl: '/public/html/course.html',
@@ -34,11 +34,11 @@
             })
             .when('/profile', {
                 templateUrl: '/public/html/profile.html',
-                // controller: 'userController'
+                controller: 'userController'
             })
             .when('/sessions', {
                 templateUrl: '/public/html/sessions.html',
-                // controller: 'sessionController'
+                controller: 'sessionController'
             })
             .otherwise({
                 redirectTo: '/signin'

@@ -29,12 +29,13 @@ router.post("/", async (request, response) => {
     try {
         request.body.author = request.session.userID.toString();
         const article = await articles.create(request.body);
-        response.status(201).json(article);
+        response.status(201).send(article);
     } catch (e) {
         response.setHeader('content-type', 'application/json');
         response.status(e.http_code).send(e.message)
     }
 });
+
 router.post("/:id/purchase", async (request, response) => {
     try {
         const article = articleService.purchase(request.params.id, request.session.userID);

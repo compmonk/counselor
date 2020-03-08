@@ -12,25 +12,6 @@ router.use(bodyParser.json());
 // router.use(bodyParser.urlencoded());
 
 
-router.get("/:id", async (request, response) => {
-    try {
-        const user = await users.getUserById(request.params.id);
-        response.json(user);
-    } catch (e) {
-        response.setHeader('content-type', 'application/json');
-        response.status(e.http_code).send(e.message)
-    }
-});
-
-router.put("/:id", async (request, response) => {
-    try {
-        const user = await users.updateUser(request.params.id, request.body, true);
-        response.status(201).json(user);
-    } catch (e) {
-        response.setHeader('content-type', 'application/json');
-        response.status(e.http_code).send(e.message)
-    }
-});
 
 // router.get("/:id/transactions", async (request, response) => {
 //     try {
@@ -43,9 +24,9 @@ router.put("/:id", async (request, response) => {
 //     }
 // });
 
-router.get("/:id/balance", async (request, response) => {
+router.get("/balance", async (request, response) => {
     try {
-        const user = await users.getUserById(request.params.id);
+        const user = await users.getUserById(request.session.userID);
         const balance = await stellarService.getBalance(user.privateKey);
         response.send(balance)
     } catch (e) {
@@ -53,5 +34,57 @@ router.get("/:id/balance", async (request, response) => {
         response.status(e.http_code).send(e.message)
     }
 });
+
+router.get("/sessions", async (request, response) => {
+    try {
+        console.log(request.session.userID);
+        const sessionsList = await sessions.getSessionByUserId(request.session.userID);
+        response.send(sessionsList)
+    } catch (e) {
+        response.setHeader('content-type', 'application/json');
+        response.status(e.http_code).send(e.message)
+    }
+});
+
+router.put("/update", async (request, response) => {
+    try {
+        const user = await users.updateUser(request.session.userID, request.body, true);
+        response.status(201).send(user);
+    } catch (e) {
+        response.setHeader('content-type', 'application/json');
+        response.status(e.http_code).send(e.message)
+    }
+});
+
+router.get("/get", async (request, response) => {
+    try {
+        const user = await users.getUserById(request.session.userID);
+        response.send(user);
+    } catch (e) {
+        response.setHeader('content-type', 'application/json');
+        response.status(e.http_code).send(e.message)
+    }
+});
+
+router.get("/:id", async (request, response) => {
+    try {
+        const user = await users.getUserById(request.params.id);
+        response.send(user);
+    } catch (e) {
+        response.setHeader('content-type', 'application/json');
+        response.status(e.http_code).send(e.message)
+    }
+});
+
+router.put("/:id", async (request, response) => {
+    try {
+        const user = await users.updateUser(request.params.id, request.body, true);
+        response.status(201).send(user);
+    } catch (e) {
+        response.setHeader('content-type', 'application/json');
+        response.status(e.http_code).send(e.message)
+    }
+});
+
 
 module.exports = router;

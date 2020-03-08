@@ -17,6 +17,7 @@ router.post("/signup", async (request, response) => {
         request.session.userID = MUUID.from(request.session.user._id).toString();
         await sessions.addSession(request.sessionID, request.session.userID);
         // response.redirect(`/${request.session.user.username}/`);
+        response.cookie('rememberme', 'yes', { maxAge: 3600, httpOnly: false});
         response.send(request.session.user)
     } catch (e) {
         response.setHeader('content-type', 'application/json');
@@ -29,6 +30,7 @@ router.post("/login", async (request, response) => {
     try {
         if (isLoggedIn(request)) {
             // response.redirect(`/${request.session.user.username}/`);
+            response.cookie('rememberme', 'yes', { maxAge: 3600, httpOnly: false});
             response.send(request.session.user)
         }
         const user = await users.isAuthenticated(request.body['email'], request.body['password']);

@@ -12,7 +12,7 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Home</a>
+                            <a class="nav-link" href="#home">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#article">Article</a>
@@ -41,8 +41,25 @@
 
     </div>
     <div>
-        <h1>
-            This is Wallet
-        </h1>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <th>Currency #</th>
+                <th>
+                    Currency
+                </th>
+                <th>
+                    Balance
+                </th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="balance in balances">
+                    <td>{{$index + 1}}</td>
+                    <td>{{balance.asset_type}}</td>
+                    <td>{{balance.balance}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

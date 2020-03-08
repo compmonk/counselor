@@ -11,7 +11,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="#home">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#article">Article</a>
@@ -38,8 +38,29 @@
         </div>
     </nav>
     <div>
-        <h1>
-            This is Sessions
-        </h1>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <th>Session #</th>
+                <th>
+                    Start Time
+                </th>
+                <th>
+                    Is Active
+                </th>
+                <th>
+                    End Time
+                </th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="session in sessions">
+                    <td>{{$index + 1}}</td>
+                    <td>{{session.startTime}}</td>
+                    <td>{{session.isActive}}</td>
+                    <td>{{session.endTime}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

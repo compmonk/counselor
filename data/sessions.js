@@ -161,7 +161,7 @@ async function getSessionByUserId(userId) {
         const user = await users.getUserById(userId);
         const sessionsCollection = await sessions();
         return  await sessionsCollection.find(
-            {userId: user._id},
+            {userId: MUUID.from(user._id)},
             {projection:{"_id": false, userId: false}})
             .sort({'startDate': -1}).toArray();
     } catch (e) {
