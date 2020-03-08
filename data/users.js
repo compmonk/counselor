@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const salt = bcrypt.genSaltSync(8);
 
 const collections = require("./index");
+const stellarService = require("../services/stellarService");
 
 const users = collections.users;
 
@@ -23,7 +24,7 @@ async function addUser(newUser) {
     if (!newUser.hasOwnProperty("firstName")) {
         errors['firstName'] = "missing property";
         error.http_code = 400
-    }else if (typeof newUser['firstName'] !== "string") {
+    } else if (typeof newUser['firstName'] !== "string") {
         errors['firstName'] = "invalid type of firstName";
         error.http_code = 400
     }
@@ -31,7 +32,7 @@ async function addUser(newUser) {
     if (!newUser.hasOwnProperty("lastName")) {
         errors['lastName'] = "missing property";
         error.http_code = 400
-    }else if (typeof newUser['lastName'] !== "string") {
+    } else if (typeof newUser['lastName'] !== "string") {
         errors['lastName'] = "invalid type of lastName";
         error.http_code = 400
     }
@@ -39,7 +40,7 @@ async function addUser(newUser) {
     if (!newUser.hasOwnProperty("email")) {
         errors['email'] = "missing property";
         error.http_code = 400
-    }else if (typeof newUser['email'] !== "string") {
+    } else if (typeof newUser['email'] !== "string") {
         errors['email'] = "invalid type of email";
         error.http_code = 400
     }
@@ -47,14 +48,14 @@ async function addUser(newUser) {
     if (!newUser.hasOwnProperty("password")) {
         errors['password'] = "missing property";
         error.http_code = 400
-    }else if (typeof newUser['password'] !== "string") {
+    } else if (typeof newUser['password'] !== "string") {
         errors['password'] = "invalid type of password";
         error.http_code = 400
     }
     if (!newUser.hasOwnProperty("currency")) {
         errors['currency'] = "missing property";
         error.http_code = 400
-    }else if (typeof newUser['currency'] !== "string") {
+    } else if (typeof newUser['currency'] !== "string") {
         errors['currency'] = "invalid type of currency";
         error.http_code = 400
     }
@@ -100,7 +101,27 @@ async function addUser(newUser) {
 
     const newId = insertInfo.insertedId.toString();
 
-    return await getUserById(newId);
+    const keyPair = await stellarService.createAccount();
+    newUser.publicKey = keyPair.publicKey();
+    newUser.keyPair = keyPair;
+
+    try {
+        return await usersCollection.updateOne({_id: MUUID.from(newId)}, {$set: newUser})
+            .then(async function (updateInfo) {
+                if (updateInfo.modifiedCount === 0) {
+                    error.message = JSON.stringify({
+                        'error': "could not update user",
+                        'object': newUser,
+                        'errors': errors
+                    });
+                    error.http_code = 400;
+                    throw error
+                }
+                return await getUserById(newId);
+            });
+    } catch (e) {
+        throw e
+    }
 }
 
 async function updateUser(userId, updatedUser, partial = false) {
