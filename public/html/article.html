@@ -19,6 +19,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#recommendation">Recommendation</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#wallet">Wallet</a>
                     </li>
                     <li class="nav-item">
@@ -60,6 +63,34 @@
                     </div>
                 </div>
             </form>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <th>Article #</th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Text
+                </th>
+                <th>
+                    Rating
+                </th>
+                <th>
+                    Read by
+                </th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="article in articles">
+                    <td>{{$index + 1}}</td>
+                    <td>{{article.title}}</td>
+                    <td>{{article.text}}</td>
+                    <td>{{article.rating}}</td>
+                    <td>{{article.read}}</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

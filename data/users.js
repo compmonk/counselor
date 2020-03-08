@@ -7,6 +7,7 @@ const collections = require("./index");
 const stellarService = require("../services/stellarService");
 const stellarConfig = require("../settings").stellarConfig;
 const users = collections.users;
+const articles = collections.articles;
 
 async function addUser(newUser) {
     const error = new Error();
@@ -354,6 +355,34 @@ async function emailAvailable(email) {
     return user === null;
 }
 
+async function getArticlesByUserId(userId) {
+    try {
+        const user = await getUserById(userId);
+
+        let articleIds = [];
+        for (let i = 0; i < user.published.length; i++) {
+            articleIds.push(MUUID.from(user.published[i].articleId))
+        }
+        for (let i = 0; i < user.purchased.length; i++) {
+            articleIds.push(MUUID.from(user.purchased[i].articleId))
+        }
+
+        let articleList = [];
+        const articleCollection = await articles();
+
+        for (let i = 0; i < articleIds.length; i++) {
+            const article = await articleCollection.findOne({_id: articleIds[i]});
+            article._id = MUUID.from(article._id).toString();
+            article.author = MUUID.from(article.author).toString();
+            articleList.push(article);
+        }
+
+        return articleList;
+    } catch (e) {
+        throw e
+    }
+}
+
 async function getPurchased(userId) {
     try {
         return await getUserById(userId, {"purchased": true})
@@ -463,5 +492,6 @@ module.exports = {
     getRewards,
     getSpent,
     isAuthenticated,
-    getUsers
+    getUsers,
+    getArticlesByUserId
 };

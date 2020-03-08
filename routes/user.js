@@ -12,7 +12,6 @@ router.use(bodyParser.json());
 // router.use(bodyParser.urlencoded());
 
 
-
 // router.get("/:id/transactions", async (request, response) => {
 //     try {
 //         const user = await users.getUserById(request.params.id);
@@ -60,6 +59,16 @@ router.get("/get", async (request, response) => {
     try {
         const user = await users.getUserById(request.session.userID);
         response.send(user);
+    } catch (e) {
+        response.setHeader('content-type', 'application/json');
+        response.status(e.http_code).send(e.message)
+    }
+});
+
+router.get("/articles", async (request, response) => {
+    try {
+        const articles = await users.getArticlesByUserId(request.session.userID);
+        response.send(articles);
     } catch (e) {
         response.setHeader('content-type', 'application/json');
         response.status(e.http_code).send(e.message)

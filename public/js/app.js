@@ -34,11 +34,15 @@
             })
             .when('/profile', {
                 templateUrl: '/public/html/profile.html',
-                controller: 'userController'
+                controller: 'profileController'
             })
             .when('/sessions', {
                 templateUrl: '/public/html/sessions.html',
                 controller: 'sessionController'
+            })
+            .when('/recommendation', {
+                templateUrl: '/public/html/recommendation.html',
+                controller: 'recommendationController'
             })
             .otherwise({
                 redirectTo: '/signin'

@@ -5,13 +5,13 @@
     counselor.controller('articleController', ['$scope', '$http', '$cookies', '$location', articleController]);
 
     function articleController($scope, $http, $cookies, $location) {
-        $scope.getPurchasedArticles = function () {
-            $http.get("/api/user/purchased")
+        $scope.getArticles = function () {
+            $http.get("/api/user/articles")
                 .then((response) => {
                     $scope.articles = response.data;
-                    $location.path("/article")
+                    // $location.path("/article")
                 })
-        };
+        }();
 
         $scope.addArticle = function () {
             console.log($scope.article);
