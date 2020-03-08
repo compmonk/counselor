@@ -29,7 +29,7 @@ async function createAccount() {
         })
         .then((res) => {
             console.log(res);
-            return userKeyPair.secret();
+            return {"privateKey": userKeyPair.secret(), "publicKey": userKeyPair.publicKey()};
         })
         .catch((err) => console.error(err));
 }

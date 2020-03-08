@@ -101,7 +101,9 @@ async function addUser(newUser) {
 
     const newId = insertInfo.insertedId.toString();
 
-    newUser.privateKey = await stellarService.createAccount();
+    const keyPair = await stellarService.createAccount();
+    newUser.privateKey = keyPair.privateKey;
+    newUser.publicKey = keyPair.publicKey;
 
     try {
         return await usersCollection.updateOne({_id: MUUID.from(newId)}, {$set: newUser})
