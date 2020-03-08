@@ -37,19 +37,30 @@ async function createAccount() {
 async function transfer(sourcePrivateKeyPair, receiverPrivateKeyPair, amount) {
     const sourceKeyPair = StellarSdk.Keypair.fromSecret(sourcePrivateKeyPair);
     const receiverKeyPair = StellarSdk.Keypair.fromSecret(receiverPrivateKeyPair);
-    const account = await server.loadAccount(sourceKeyPair.publicKey());
-    const fee = await server.fetchBaseFee();
-    const transaction = new StellarSdk.TransactionBuilder(account, {
-        fee,
-        networkPassphrase: StellarSdk.Networks.TESTNET
-    }).addOperation(StellarSdk.Operation.payment({
-        destination: receiverKeyPair.publicKey(),
-        asset: StellarSdk.Asset.native(),
-        amount: amount,
-    }))
-        .setTimeout(30)
-        .build();
-    transaction.sign(sourceKeyPair);
+
+    return await server.loadAccount(sourceKeyPair.publicKey())
+        .then((account) => {
+            // console.log(user.publicKey());
+            const transaction = new StellarSdk.TransactionBuilder(account, {
+                fee: StellarSdk.BASE_FEE,
+                networkPassphrase: StellarSdk.Networks.TESTNET,
+            }).addOperation(
+                // This operation sends the destination account XLM
+                StellarSdk.Operation.payment({
+                    destination: receiverKeyPair.publicKey(),
+                    amount: amount,
+                    asset: StellarSdk.Asset.native()
+                }),
+            ).setTimeout(0)
+                .build();
+            transaction.sign(master);
+            return server.submitTransaction(transaction)
+        })
+        .then((res) => {
+            console.log(res);
+            return true;
+        })
+        .catch((err) => console.error(err));
 }
 
 async function getBalance(userPrivateKey) {
