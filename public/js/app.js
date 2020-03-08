@@ -33,7 +33,7 @@
                 // controller: 'sessionController'
             })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/home'
             });
 
         $locationProvider.hashPrefix('');
