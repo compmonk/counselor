@@ -1,10 +1,15 @@
 const MUUID = require('uuid-mongodb');
 const collections = require("./index");
 const _ = require('underscore');
+const stellarService = require("../services/stellarService");
+const articleConfig = require("../settings").articleConfig;
+const stellarConfig = require("../settings").stellarConfig;
+
+
 const articles = collections.articles;
 const users = collections.users;
 
-async function create(newArticle) {
+async function create(newArticle, authorId) {
     const error = new Error();
     error.http_code = 200;
     const errors = {};
@@ -49,16 +54,17 @@ async function create(newArticle) {
     }
 
     newArticle._id = MUUID.v4();
+    let author = null;
     try {
-        newArticle["author"] = MUUID.from(newArticle["author"]);
+        authorId = MUUID.from(authorId);
 
         const usersCollection = await users();
-        await usersCollection.updateOne({_id: newArticle["author"]},
+        await usersCollection.updateOne({_id: authorId},
             {
                 $push: {
                     "published": {
                         "articleId": newArticle._id,
-                        "reward": 1
+                        "reward": parseInt(articleConfig.initialCost)
                     }
                 }
             }).then(async function (updateInfo) {
@@ -71,12 +77,12 @@ async function create(newArticle) {
                 throw error
             }
         });
-        await usersCollection.updateOne({_id: newArticle["author"]},
+        await usersCollection.updateOne({_id: authorId},
             {
                 $push: {
                     "rewards": {
                         "articleId": newArticle._id,
-                        "reward": 1
+                        "reward": parseInt(articleConfig.initialCost)
                     }
                 }
             }).then(async function (updateInfo) {
@@ -89,14 +95,16 @@ async function create(newArticle) {
                 throw error
             }
         });
-        await usersCollection.updateOne({_id: newArticle["author"]}, {$set: { "balance" : 1}})
+        author = await usersCollection.findOne({_id: authorId});
+        await usersCollection.updateOne({_id: authorId}, {$set: {"balance": author.balance + parseInt(articleConfig.initialCost)}})
     } catch (e) {
         throw e;
     }
     newArticle.ratings = [];
-    newArticle.cost = 1;//TODO change the reward in reward array
+    newArticle.cost = parseInt(articleConfig.initialCost);
     newArticle.read = 0;
     newArticle.rating = 0;
+    newArticle.author = authorId;
     const articleCollection = await articles();
 
     const insertInfo = await articleCollection.insertOne(newArticle);
@@ -110,6 +118,8 @@ async function create(newArticle) {
         error.http_code = 400;
         throw error
     }
+
+    await stellarService.transfer(stellarConfig.masterPrivateKey, author.privateKey, articleConfig.initialCost);
 
     const newId = insertInfo.insertedId.toString();
 

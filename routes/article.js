@@ -27,8 +27,7 @@ router.get("/:id", async (request, response) => {
 
 router.post("/", async (request, response) => {
     try {
-        request.body.author = request.session.userID.toString();
-        const article = await articles.create(request.body);
+        const article = await articles.create(request.body, request.session.userID);
         response.status(201).send(article);
     } catch (e) {
         response.setHeader('content-type', 'application/json');

@@ -74,7 +74,7 @@ async function addUser(newUser) {
     newUser.rewards = [];
     newUser.spent = [];
     newUser.courses = [];
-    newUser.balance = stellarConfig.startingBalance;
+    newUser.balance = parseInt(stellarConfig.startingBalance);
 
 
     const usersCollection = await users();
@@ -383,6 +383,28 @@ async function getArticlesByUserId(userId) {
     }
 }
 
+async function getRecommendation(userId) {
+    const articleCollection = await articles();
+    let allArticles = await articleCollection.find({}).toArray();
+    allArticles = allArticles.map((article) => {
+        article._id = MUUID.from(article._id).toString();
+        article.author = MUUID.from(article.author).toString();
+        return article;
+    });
+    const publishedAndPurchasedArticles = await getArticlesByUserId(userId);
+    let recommendedArticles = [];
+    for (let i = 0; i < allArticles.length; i++) {
+        for (let j = 0; j < publishedAndPurchasedArticles; j++) {
+            if (allArticles[i]._id === publishedAndPurchasedArticles[j]._id) {
+                continue;
+            }
+        }
+        recommendedArticles.push(allArticles[i])
+    }
+
+    return recommendedArticles
+}
+
 async function getPurchased(userId) {
     try {
         return await getUserById(userId, {"purchased": true})
@@ -493,5 +515,6 @@ module.exports = {
     getSpent,
     isAuthenticated,
     getUsers,
-    getArticlesByUserId
+    getArticlesByUserId,
+    getRecommendation
 };

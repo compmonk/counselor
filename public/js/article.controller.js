@@ -5,7 +5,7 @@
     counselor.controller('articleController', ['$scope', '$http', '$cookies', '$location', articleController]);
 
     function articleController($scope, $http, $cookies, $location) {
-        $scope.getArticles = function () {
+        $scope.getPurchasedArticles = function () {
             $http.get("/api/user/articles")
                 .then((response) => {
                     $scope.articles = response.data;
@@ -19,7 +19,7 @@
                 .then((response) => {
                     console.log(response.data);
                     $scope.getPurchasedArticles();
-                    $location.path("/article")
+                    $location.path("/wallet")
                 })
         }
     }
