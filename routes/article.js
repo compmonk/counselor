@@ -6,24 +6,28 @@ const users = require("../data/users");
 const articleService = require("../services/articleService");
 
 router.get("/", async (request, response) => {
-  // try {
-  //     const articleList = await tasks.getAll(request.query.take, request.query.skip);
-  //     response.json(tasksList);
-  // } catch (e) {
-  //     response.setHeader('content-type', 'application/json');
-  //     response.status(e.http_code).send(e.message)
-  // }
   try {
-    let test = await client.lrangeAsync();
-    let test1 = [];
-    for (let index = 0; index < test.length; index++) {
-      test1[index] = JSON.parse(test[index]);
-    }
-    res.json(test1);
-    // console.log(test1);
+    const articleList = await tasks.getAll(
+      request.query.take,
+      request.query.skip
+    );
+    response.json(tasksList);
   } catch (e) {
-    res.status(400).json({ error: e });
+    response.setHeader("content-type", "application/json");
+    response.status(e.http_code).send(e.message);
   }
+  //   Added by sanam
+  //   try {
+  //     let test = await client.lrangeAsync();
+  //     let test1 = [];
+  //     for (let index = 0; index < test.length; index++) {
+  //       test1[index] = JSON.parse(test[index]);
+  //     }
+  //     res.json(test1);
+  //     // console.log(test1);
+  //   } catch (e) {
+  //     res.status(400).json({ error: e });
+  //   }
 });
 
 router.get("/:id", async (request, response) => {
