@@ -3,8 +3,37 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "moment": "^2.24.0",
+    "mongodb": "^3.5.5",
+    "stellar-sdk": "^4.1.0",
+    "underscore": "^1.10.2",
+    "uuid-mongodb": "^2.1.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "babel-loader": "^8.1.0",
+    "nodemon": "^2.0.3",
+    "path": "^0.12.7",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-server": "nodemon --exec babel-node src/server.js --ignore public/",
+    "dev-bundle": "webpack -w -d",
+    "prod-bundle": "webpack -w -p",
+    "start": "nodemon --exec babel-node src/server.js --ignore public/ && webpack -w -d"
   },
   "repository": {
     "type": "git",
@@ -15,10 +44,5 @@
   "bugs": {
     "url": "https://github.com/compmonk/counselor/issues"
   },
-  "homepage": "https://github.com/compmonk/counselor#readme",
-  "dependencies": {
-    "express": "^4.17.1",
-    "mongodb": "^3.5.4",
-    "uuid-mongodb": "^2.1.3"
-  }
+  "homepage": "https://github.com/compmonk/counselor#readme"
 }
