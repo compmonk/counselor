@@ -2,8 +2,8 @@ const MUUID = require('uuid-mongodb');
 const collections = require("./index");
 const _ = require('underscore');
 const stellarService = require("../services/stellarService");
-const articleConfig = require("../settings").articleConfig;
-const stellarConfig = require("../settings").stellarConfig;
+const articleConfig = require("../../settings").articleConfig;
+const stellarConfig = require("../../settings").stellarConfig;
 
 
 const articles = collections.articles;

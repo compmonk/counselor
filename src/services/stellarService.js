@@ -1,7 +1,6 @@
 const StellarSdk = require('stellar-sdk');
-const axios = require('axios');
 
-const stellarConfig = require("../settings").stellarConfig;
+const stellarConfig = require("../../settings").stellarConfig;
 const server = new StellarSdk.Server(stellarConfig.testNetUrl);
 
 const master = StellarSdk.Keypair.fromSecret(stellarConfig.masterPrivateKey);

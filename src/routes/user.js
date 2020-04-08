@@ -36,7 +36,6 @@ router.get("/balance", async (request, response) => {
 
 router.get("/sessions", async (request, response) => {
     try {
-        console.log(request.session.userID);
         const sessionsList = await sessions.getSessionByUserId(request.session.userID);
         response.send(sessionsList)
     } catch (e) {

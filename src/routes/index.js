@@ -5,7 +5,7 @@ const MUUID = require('uuid-mongodb');
 
 const articleRoutes = require("./article");
 const userRoutes = require("./user");
-const rootRoutes=require("./root")
+const rootRoutes=require("./root");
 const constructorMethod = app => {
     app.use(session({
         name: 'AuthCookie',

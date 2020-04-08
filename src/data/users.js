@@ -5,7 +5,7 @@ const salt = bcrypt.genSaltSync(8);
 
 const collections = require("./index");
 const stellarService = require("../services/stellarService");
-const stellarConfig = require("../settings").stellarConfig;
+const stellarConfig = require("../../settings").stellarConfig;
 const users = collections.users;
 const articles = collections.articles;
 
