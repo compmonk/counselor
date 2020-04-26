@@ -7,7 +7,7 @@ const articlesSchema = mongoose.Schema({
   title: mongoose.Schema.Types.String,
   text: mongoose.Schema.Types.String,
   html: mongoose.Schema.Types.String,
-  keywords: mongoose.Schema.Types.String,
+  keywords: mongoose.Schema.Types.Mixed,
   ratings: mongoose.Schema.Types.Mixed,
   cost: mongoose.Schema.Types.Number,
   read: mongoose.Schema.Types.Number,

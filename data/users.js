@@ -277,32 +277,74 @@ async function updateUser(userId, updatedUser, partial = false) {
     error.message = JSON.stringify({ errors: errors });
     throw error;
   }
+  if (userId === undefined || userId === null) {
+    errors["id"] = "id is not defined";
+    error.http_code = 400;
+  }
+  // Added By Sanam to Implement Mongoose
+  if (typeof userId === "string") {
+    try {
+      userId = MUUID.from(userId);
+    } catch (e) {
+      errors["id"] = e.message;
+      error.http_code = 400;
+      error.message = JSON.stringify({
+        errors: errors,
+      });
+      throw error;
+    }
+  } else {
+    try {
+      MUUID.from(userId);
+    } catch (e) {
+      errors["id"] = "id is not defined";
+      error.http_code = 400;
+      error.message = JSON.stringify({
+        errors: errors,
+      });
+      throw error;
+    }
+  }
 
   try {
-    const oldUser = await getUserById(userId);
+    // const oldUser = await getUserById(userId);
 
-    const usersCollection = await users();
+    // const usersCollection = await users();
 
-    return await usersCollection
-      .updateOne({ _id: MUUID.from(userId) }, { $set: updatedUser })
-      .then(async function (updateInfo) {
-        if (updateInfo.modifiedCount === 0) {
-          error.message = JSON.stringify({
-            error: "could not update user",
-            object: updatedUser,
-            errors: errors,
-          });
-          error.http_code = 400;
-          throw error;
-        }
-        return await getUserById(userId);
+    // return await usersCollection
+    //   .updateOne({ _id: MUUID.from(userId) }, { $set: updatedUser })
+    //   .then(async function (updateInfo) {
+    //     if (updateInfo.modifiedCount === 0) {
+    //       error.message = JSON.stringify({
+    //         error: "could not update user",
+    //         object: updatedUser,
+    //         errors: errors,
+    //       });
+    //       error.http_code = 400;
+    //       throw error;
+    //     }
+    //     return await getUserById(userId);
+    //   });
+    // commented by sanam
+    const sanam = User123.updateOne({ _id: userId }, { $set: updatedUser })
+      .exec()
+      .then((doc) => {
+        return doc;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err.message;
       });
+    return sanam;
   } catch (e) {
     throw e;
   }
 }
 
-async function getUserById(userId, projection) {
+async function getUserById(
+  userId,
+  projection = { hashedPassword: false, __v: false }
+) {
   const error = new Error();
   error.http_code = 200;
   const errors = {};
@@ -335,12 +377,12 @@ async function getUserById(userId, projection) {
       throw error;
     }
   }
-  const proj1 = {
-    firstName: true,
-    lastName: true,
-    email: true,
-    currency: true,
-  };
+  //   const proj1 = {
+  //     firstName: true,
+  //     lastName: true,
+  //     email: true,
+  //     currency: true,
+  //   };
   const sanam = User123.findOne({ _id: userId }, projection)
     .exec()
     .then((doc) => {
@@ -429,15 +471,18 @@ async function getUserById(userId, projection) {
   //   return user;
 }
 
-async function getUserByEmail(email, projection = { hashedPassword: false }) {
+async function getUserByEmail(
+  email,
+  projection = { hashedPassword: false, __v: false }
+) {
   const error = new Error();
   error.http_code = 200;
   const errors = {};
 
   //   var result = "";
-  var res3 = "'" + projection + "'";
-  const projection3 = JSON.stringify(projection);
-  console.log("Printing Projection => " + projection);
+  //   var res3 = "'" + projection + "'";
+  //   const projection3 = JSON.stringify(projection);
+  //   console.log("Printing Projection => " + projection);
 
   if (email === undefined) {
     //|| userId === null) {
@@ -581,36 +626,113 @@ async function emailAvailable(email) {
     error.http_code = 400;
   }
 
-  const usersCollection = await users();
+  //   const usersCollection = await users();
 
-  const user = await usersCollection.findOne({ email: email });
+  //   const user = await usersCollection.findOne({ email: email });
+  // Commented and updated by sanam to implement mongoose
+  const projection = {
+    _id: false,
+    firstName: false,
+    lastName: false,
+    // email: false,
+    currency: false,
+    hashedPassword: false,
+    privateKey: false,
+    publicKey: false,
+    published: false,
+    purchased: false,
+    courses: false,
+    balance: false,
+    __v: false,
+  };
+  const sanam = User123.findOne({ email: email }, projection)
+    .exec()
+    .then((doc) => {
+      // console.log(doc);
+      if (doc == null) {
+        console.log(doc);
+        return doc;
+      } else {
+        // console.log("Inside data/users/getUserById ID EXISTS");
+        console.log(doc);
+        return doc;
+      }
+      return doc;
+    })
+    .catch((err) => {
+      console.log(err);
+      return err.message;
+      // console.log(err);
+      // res.status(500).json({ error: err });
+    });
+  return sanam;
 
-  return user === null;
+  //   return user === null;
 }
 
 async function getArticlesByUserId(userId) {
   try {
-    const user = await getUserById(userId);
+    // const user = await getUserById(userId);
 
-    let articleIds = [];
-    for (let i = 0; i < user.published.length; i++) {
-      articleIds.push(MUUID.from(user.published[i].articleId));
+    // let articleIds = [];
+    // for (let i = 0; i < user.published.length; i++) {
+    //   articleIds.push(MUUID.from(user.published[i].articleId));
+    // }
+    // for (let i = 0; i < user.purchased.length; i++) {
+    //   articleIds.push(MUUID.from(user.purchased[i].articleId));
+    // }
+
+    // let articleList = [];
+    // const articleCollection = await articles();
+
+    // for (let i = 0; i < articleIds.length; i++) {
+    //   const article = await articleCollection.findOne({ _id: articleIds[i] });
+    //   article._id = MUUID.from(article._id).toString();
+    //   article.author = MUUID.from(article.author).toString();
+    //   articleList.push(article);
+    // }
+
+    // return articleList;
+
+    // commented by sanam to implement mongoose
+    if (userId === undefined || userId === null) {
+      errors["id"] = "id is not defined";
+      error.http_code = 400;
     }
-    for (let i = 0; i < user.purchased.length; i++) {
-      articleIds.push(MUUID.from(user.purchased[i].articleId));
+    // Added By Sanam to Implement Mongoose
+    if (typeof userId === "string") {
+      try {
+        userId = MUUID.from(userId);
+      } catch (e) {
+        errors["id"] = e.message;
+        error.http_code = 400;
+        error.message = JSON.stringify({
+          errors: errors,
+        });
+        throw error;
+      }
+    } else {
+      try {
+        MUUID.from(userId);
+      } catch (e) {
+        errors["id"] = "id is not defined";
+        error.http_code = 400;
+        error.message = JSON.stringify({
+          errors: errors,
+        });
+        throw error;
+      }
     }
-
-    let articleList = [];
-    const articleCollection = await articles();
-
-    for (let i = 0; i < articleIds.length; i++) {
-      const article = await articleCollection.findOne({ _id: articleIds[i] });
-      article._id = MUUID.from(article._id).toString();
-      article.author = MUUID.from(article.author).toString();
-      articleList.push(article);
-    }
-
-    return articleList;
+    const sanam = Article123.find({ author: userId })
+      .exec()
+      .then((doc) => {
+        return doc;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err.message;
+      });
+    return sanam;
   } catch (e) {
     throw e;
   }
@@ -641,8 +763,70 @@ async function getRecommendation(userId) {
 
 async function getPurchased(userId) {
   try {
-    const result = await getUserById(userId, { spent: true });
-    return result.purchased;
+    // const result = await getUserById(userId, { spent: true });
+    // return result.purchased;
+    if (userId === undefined || userId === null) {
+      errors["id"] = "id is not defined";
+      error.http_code = 400;
+    }
+    // Added By Sanam to Implement Mongoose
+    if (typeof userId === "string") {
+      try {
+        userId = MUUID.from(userId);
+      } catch (e) {
+        errors["id"] = e.message;
+        error.http_code = 400;
+        error.message = JSON.stringify({
+          errors: errors,
+        });
+        throw error;
+      }
+    } else {
+      try {
+        MUUID.from(userId);
+      } catch (e) {
+        errors["id"] = "id is not defined";
+        error.http_code = 400;
+        error.message = JSON.stringify({
+          errors: errors,
+        });
+        throw error;
+      }
+    }
+    const projection = {
+      _id: false,
+      firstName: false,
+      lastName: false,
+      email: false,
+      currency: false,
+      hashedPassword: false,
+      privateKey: false,
+      publicKey: false,
+      published: false,
+      // purchased: true,
+      courses: false,
+      balance: false,
+      __v: false,
+    };
+    const sanam = User123.findOne({ _id: userId }, projection)
+      .exec()
+      .then((doc) => {
+        // console.log(doc);
+        if (doc == null) {
+          return "Nothing has been purchased";
+        } else {
+          // console.log("Inside data/users/getUserById ID EXISTS");
+        }
+
+        return doc;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err.message;
+        // console.log(err);
+        // res.status(500).json({ error: err });
+      });
+    return sanam;
   } catch (e) {
     throw e;
   }
@@ -650,8 +834,69 @@ async function getPurchased(userId) {
 
 async function getPublished(userId) {
   try {
-    const result = await getUserById(userId, { spent: true });
-    return result.published;
+    // const result = await getUserById(userId, { spent: true });
+    // return result.published;
+    if (userId === undefined || userId === null) {
+      errors["id"] = "id is not defined";
+      error.http_code = 400;
+    }
+    // Added By Sanam to Implement Mongoose
+    if (typeof userId === "string") {
+      try {
+        userId = MUUID.from(userId);
+      } catch (e) {
+        errors["id"] = e.message;
+        error.http_code = 400;
+        error.message = JSON.stringify({
+          errors: errors,
+        });
+        throw error;
+      }
+    } else {
+      try {
+        MUUID.from(userId);
+      } catch (e) {
+        errors["id"] = "id is not defined";
+        error.http_code = 400;
+        error.message = JSON.stringify({
+          errors: errors,
+        });
+        throw error;
+      }
+    }
+    const projection = {
+      _id: false,
+      firstName: false,
+      lastName: false,
+      email: false,
+      currency: false,
+      hashedPassword: false,
+      privateKey: false,
+      publicKey: false,
+      // published: true,
+      purchased: false,
+      courses: false,
+      balance: false,
+      __v: false,
+    };
+    const sanam = User123.findOne({ _id: userId }, projection)
+      .exec()
+      .then((doc) => {
+        // console.log(doc);
+        if (doc == null) {
+          return "Nothing has been purchased";
+        } else {
+          // console.log("Inside data/users/getUserById ID EXISTS");
+        }
+        return doc;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err.message;
+        // console.log(err);
+        // res.status(500).json({ error: err });
+      });
+    return sanam;
   } catch (e) {
     throw e;
   }
@@ -695,29 +940,57 @@ async function isAuthenticated(email, password) {
     error.http_code = 400;
   }
 
-  const usersCollection = await users();
+  //   const usersCollection = await users();
 
-  const user = await usersCollection.findOne({ email: email });
+  //   const user = await usersCollection.findOne({ email: email });
 
-  if (user === null) {
-    errors["username"] = `user with username ${email} not found`;
-    error.http_code = 404;
-    error.message = JSON.stringify({
-      errors: errors,
+  //   if (user === null) {
+  //     errors["username"] = `user with username ${email} not found`;
+  //     error.http_code = 404;
+  //     error.message = JSON.stringify({
+  //       errors: errors,
+  //     });
+  //     throw error;
+  //   }
+
+  //   if (!bcrypt.compareSync(password, user.hashedPassword)) {
+  //     errors["password"] = "Invalid password";
+  //     error.http_code = 403;
+  //     error.message = JSON.stringify({
+  //       errors: errors,
+  //     });
+  //     throw error;
+  //   }
+  //   user._id = MUUID.from(user._id).toString();
+  //   return user;
+  // commented by sanam
+  const sanam = User123.findOne({ email: email })
+    .exec()
+    .then((doc) => {
+      if (doc == null) {
+        errors["username"] = `user with username ${email} not found`;
+        error.http_code = 404;
+        error.message = JSON.stringify({
+          errors: errors,
+        });
+        throw error;
+      }
+      if (!bcrypt.compareSync(password, doc.hashedPassword)) {
+        errors["password"] = "Invalid password";
+        error.http_code = 403;
+        error.message = JSON.stringify({
+          errors: errors,
+        });
+        throw error;
+      }
+      doc._id = MUUID.from(doc._id).toString();
+      return doc;
+    })
+    .catch((err) => {
+      console.log(err);
+      return err.message;
     });
-    throw error;
-  }
-
-  if (!bcrypt.compareSync(password, user.hashedPassword)) {
-    errors["password"] = "Invalid password";
-    error.http_code = 403;
-    error.message = JSON.stringify({
-      errors: errors,
-    });
-    throw error;
-  }
-  user._id = MUUID.from(user._id).toString();
-  return user;
+  return sanam;
 }
 async function changeArticleOwner(articleId, newAuthor) {
   if (articleId === undefined || articleId === null) {
@@ -816,7 +1089,22 @@ async function getUsers() {
   //   });
 
   // commented by sanam
-  const sanam = User123.find()
+  const projection = {
+    _id: false,
+    // firstName: true,
+    // lastName: true,
+    // email: true,
+    // currency: true,
+    hashedPassword: false,
+    privateKey: false,
+    publicKey: false,
+    // published: true,
+    // purchased: true,
+    // courses: true,
+    // balance: true,
+    __v: false,
+  };
+  const sanam = User123.find({}, projection)
     .exec()
     .then((docs) => {
       return docs;
@@ -828,20 +1116,37 @@ async function getUsers() {
   return sanam;
 }
 
-async function main() {
-  var projection = '"firstName lastName email currency"';
-  const proj = {
-    firstName: true,
-    lastName: true,
-    email: true,
-    currency: true,
-  };
+// async function main() {
+//   //   var projection = '"firstName lastName email currency"';
+//   //   const proj = {
+//   //     firstName: true,
+//   //     lastName: true,
+//   //     email: true,
+//   //     currency: true,
+//   //   };
 
-  const resultss = await getUserByEmail("sjena@stevens.edu", proj);
-  console.log("Printing result => \n" + resultss);
-}
+//   //   const result = await getUserById("2f644541-cb03-429f-850b-b61489d79ce1");
+//   //   const result = await getUsers();
+//   //   const result = await getPurchased("2f644541-cb03-429f-850b-b61489d79ce1");
+//   //   const result = await getPublished("2f644541-cb03-429f-850b-b61489d79ce1");
+//   //   const result = await emailAvailable("sjenastevens.edu");
+//   //   const result = await getArticlesByUserId(
+//   //     "2f644541-cb03-429f-850b-b61489d79ce1"
+//   //   );
+//   //   const upd = {
+//   //     lastName: "Jena",
+//   //   };
+//   //   const result = await updateUser(
+//   //     "2f644541-cb03-429f-850b-b61489d79ce1",
+//   //     upd,
+//   //     true
+//   //   );
 
-main();
+// //   const result = await isAuthenticated("sjena@stevens.edu", "Test@123");
+// //   console.log("Printing result => \n" + result);
+// }
+
+// main();
 module.exports = {
   addUser,
   updateUser,
