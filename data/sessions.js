@@ -91,29 +91,11 @@ async function endSession(sessionId) {
   const error = new Error();
   error.http_code = 200;
   const errors = {};
-  if (typeof sessionId === "string") {
-    try {
-      sessionId = MUUID.from(sessionId);
-    } catch (e) {
-      errors["id"] = e.message;
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  } else {
-    try {
-      MUUID.from(sessionId);
-    } catch (e) {
-      errors["id"] = "id is not defined";
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
+  if (sessionId === undefined || sessionId === null) {
+    errors["id"] = "sessionId is not defined";
+    error.http_code = 400;
   }
+
   if (await isSessionValid(sessionId)) {
     // added by sanam
     const value = {
@@ -134,29 +116,13 @@ async function endSession(sessionId) {
 }
 
 async function isSessionValid(sessionId) {
+  const error = new Error();
+  error.http_code = 200;
+  const errors = {};
   try {
-    if (typeof sessionId === "string") {
-      try {
-        sessionId = MUUID.from(sessionId);
-      } catch (e) {
-        errors["id"] = e.message;
-        error.http_code = 400;
-        error.message = JSON.stringify({
-          errors: errors,
-        });
-        throw error;
-      }
-    } else {
-      try {
-        MUUID.from(sessionId);
-      } catch (e) {
-        errors["id"] = "id is not defined";
-        error.http_code = 400;
-        error.message = JSON.stringify({
-          errors: errors,
-        });
-        throw error;
-      }
+    if (sessionId === undefined || sessionId === null) {
+      errors["id"] = "sessionId is not defined";
+      error.http_code = 400;
     }
     const res = sessionssmodel
       .findById(sessionId)
@@ -179,33 +145,17 @@ async function isSessionValid(sessionId) {
 }
 
 async function getSessionByUserId(userId) {
+  const error = new Error();
+  error.http_code = 200;
+  const errors = {};
   try {
     // Added by sanam
-    if (typeof userId === "string") {
-      try {
-        userId = MUUID.from(userId);
-      } catch (e) {
-        errors["id"] = e.message;
-        error.http_code = 400;
-        error.message = JSON.stringify({
-          errors: errors,
-        });
-        throw error;
-      }
-    } else {
-      try {
-        MUUID.from(userId);
-      } catch (e) {
-        errors["id"] = "id is not defined";
-        error.http_code = 400;
-        error.message = JSON.stringify({
-          errors: errors,
-        });
-        throw error;
-      }
+    if (userId === undefined || userId === null) {
+      errors["id"] = "id is not defined";
+      error.http_code = 400;
     }
-    const res = userssmodel
-      .findById(userId)
+    const res = sessionssmodel
+      .findOne({ userId: userId })
 
       .exec()
       .then((doc) => {

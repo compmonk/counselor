@@ -60,9 +60,10 @@ router.put("/update", async (request, response) => {
   }
 });
 
-router.get("/get", async (request, response) => {
+router.get("/get/:id", async (request, response) => {
   try {
-    const user = await users.getUserById(request.session.userID);
+    // const user = await users.getUserById(request.session.userID);
+    const user = await users.getUserById(request.params.id);
     response.send(user);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -70,9 +71,11 @@ router.get("/get", async (request, response) => {
   }
 });
 
-router.get("/articles", async (request, response) => {
+router.get("/articles/:id", async (request, response) => {
   try {
-    const articles = await users.getArticlesByUserId(request.session.userID);
+    // const articles = await users.getArticlesByUserId(request.session.userID);
+
+    const articles = await users.getArticlesByUserId(request.params.id);
     response.send(articles);
   } catch (e) {
     response.setHeader("content-type", "application/json");

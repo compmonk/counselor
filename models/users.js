@@ -8,7 +8,7 @@ var validateEmail = function (email) {
 };
 
 const usersSchema = mongoose.Schema({
-  _id: { type: mongoose.Schema.Types.UUID, default: uuid.v5 },
+  _id: mongoose.Schema.Types.ObjectId,
   email: {
     type: mongoose.Schema.Types.String,
     trim: true,

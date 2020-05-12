@@ -74,32 +74,9 @@ async function create(newArticle, authorId) {
       error.http_code = 400;
     }
     // Added By Sanam to Implement Mongoose
-    if (typeof authorId === "string") {
-      try {
-        authorId = MUUID.from(authorId);
-      } catch (e) {
-        errors["id"] = e.message;
-        error.http_code = 400;
-        error.message = JSON.stringify({
-          errors: errors,
-        });
-        throw error;
-      }
-    } else {
-      try {
-        MUUID.from(authorId);
-      } catch (e) {
-        errors["id"] = "id is not defined";
-        error.http_code = 400;
-        error.message = JSON.stringify({
-          errors: errors,
-        });
-        throw error;
-      }
-    }
 
     const test1 = new articlesmodel({
-      _id: MUUID.v4(),
+      _id: new mongoose.Types.ObjectId(),
       title: newArticle.title,
       text: newArticle.text,
       html: newArticle.html,
@@ -117,7 +94,7 @@ async function create(newArticle, authorId) {
     const result = test1
       .save()
       .then((result) => {
-        const newId = MUUID.from(result._id).toString();
+        const newId = result._id;
         //adding published
         usersmodel
           .updateOne(
@@ -144,11 +121,11 @@ async function create(newArticle, authorId) {
 
         var bal = upd.balance;
         bal = bal + parseInt(mongoConfig.articleConfig.initialCost);
-        const jena = {
+        const updbal = {
           balance: bal,
         };
         usersmodel
-          .updateOne({ _id: authorId }, { $set: jena })
+          .updateOne({ _id: authorId }, { $set: updbal })
           .exec()
           .then((doc) => {
             return doc;
@@ -189,34 +166,15 @@ async function get(articleId) {
     error.http_code = 400;
   }
 
-  if (typeof articleId === "string") {
-    try {
-      articleId = MUUID.from(articleId);
-    } catch (e) {
-      errors["id"] = e.message;
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  } else {
-    try {
-      articleId = MUUID.from(articleId);
-    } catch (e) {
-      errors["id"] = "id is not defined";
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  }
   // Added By Sanam to Implement Mongoose
   const result = articlesmodel
     .findOne({ _id: articleId })
+    // .select("_id title text html keywords ratings cost read rating author")
     .exec()
     .then((doc) => {
+      if (doc == null) {
+        console.log("Data/articles/get => ID Not found");
+      }
       return doc;
     })
     .catch((error) => {
@@ -290,29 +248,6 @@ async function update(articleId, updatedArticle, partial = false) {
     error.http_code = 400;
   }
   // Added By Sanam to Implement Mongoose
-  if (typeof articleId === "string") {
-    try {
-      articleId = MUUID.from(articleId);
-    } catch (e) {
-      errors["id"] = e.message;
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  } else {
-    try {
-      MUUID.from(articleId);
-    } catch (e) {
-      errors["id"] = "id is not defined";
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  }
 
   try {
     const result = articlesmodel
@@ -331,8 +266,25 @@ async function update(articleId, updatedArticle, partial = false) {
   }
 }
 
+async function getAll() {
+  const allart = articlesmodel
+    .find({})
+    .exec()
+    .then((docs) => {
+      return docs;
+    })
+    .catch((err) => {
+      console.log(err);
+      return err.message;
+    });
+  return allart;
+}
+
 module.exports = {
   create,
   get,
   update,
+  getpurchasedbyuser,
+  getpublishedbyuser,
+  getAll,
 };

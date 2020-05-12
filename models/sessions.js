@@ -3,8 +3,8 @@ var uuid = require("node-uuid");
 require("mongoose-uuid2")(mongoose);
 
 const sessionsSchema = mongoose.Schema({
-  _id: { type: mongoose.Schema.Types.UUID, default: uuid.v5 },
-  userId: { type: mongoose.Schema.Types.UUID, default: uuid.v5 },
+  _id: mongoose.Schema.Types.ObjectId,
+  userId: mongoose.Schema.Types.ObjectId,
   startTime: mongoose.Schema.Types.Date,
   endTime: mongoose.Schema.Types.Date,
   isActive: mongoose.Schema.Types.Boolean,

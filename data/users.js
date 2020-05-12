@@ -95,7 +95,7 @@ async function addUser(newUser) {
   const keyPair = await stellarService.createAccount();
 
   const test1 = new userssmodel({
-    _id: MUUID.v4(),
+    _id: new mongoose.Types.ObjectId(),
     email: newUser.email,
     firstName: newUser.firstName,
     lastName: newUser.lastName,
@@ -117,7 +117,7 @@ async function addUser(newUser) {
   const res = test1
     .save()
     .then((result) => {
-      const newId = MUUID.from(result._id).toString();
+      const newId = result._id;
       return getUserById(newId);
     })
     .catch((err) => {
@@ -205,32 +205,8 @@ async function updateUser(userId, updatedUser, partial = false) {
     error.http_code = 400;
   }
   // Added By Sanam to Implement Mongoose
-  if (typeof userId === "string") {
-    try {
-      userId = MUUID.from(userId);
-    } catch (e) {
-      errors["id"] = e.message;
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  } else {
-    try {
-      MUUID.from(userId);
-    } catch (e) {
-      errors["id"] = "id is not defined";
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  }
 
   try {
-    // commented by sanam
     const res = userssmodel
       .updateOne({ _id: userId }, { $set: updatedUser })
       .exec()
@@ -260,30 +236,6 @@ async function getUserById(
     error.http_code = 400;
   }
   // Added By Sanam to Implement Mongoose
-  if (typeof userId === "string") {
-    try {
-      userId = MUUID.from(userId);
-    } catch (e) {
-      errors["id"] = e.message;
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  } else {
-    try {
-      MUUID.from(userId);
-    } catch (e) {
-      errors["id"] = "id is not defined";
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  }
-
   const res = userssmodel
     .findOne({ _id: userId }, projection)
     .exec()
@@ -350,29 +302,6 @@ async function userExists(userId) {
     error.http_code = 400;
   }
   // Added By Sanam to Implement Mongoose
-  if (typeof userId === "string") {
-    try {
-      userId = MUUID.from(userId);
-    } catch (e) {
-      errors["id"] = e.message;
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  } else {
-    try {
-      MUUID.from(userId);
-    } catch (e) {
-      errors["id"] = "id is not defined";
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  }
   const result = userssmodel
     .findOne({ _id: userId })
     .exec()
@@ -442,29 +371,6 @@ async function getArticlesByUserId(userId) {
       error.http_code = 400;
     }
 
-    if (typeof userId === "string") {
-      try {
-        userId = MUUID.from(userId);
-      } catch (e) {
-        errors["id"] = e.message;
-        error.http_code = 400;
-        error.message = JSON.stringify({
-          errors: errors,
-        });
-        throw error;
-      }
-    } else {
-      try {
-        MUUID.from(userId);
-      } catch (e) {
-        errors["id"] = "id is not defined";
-        error.http_code = 400;
-        error.message = JSON.stringify({
-          errors: errors,
-        });
-        throw error;
-      }
-    }
     const result = articlessmodel
       .find({ author: userId })
       .exec()
@@ -511,29 +417,7 @@ async function getPurchased(userId) {
       error.http_code = 400;
     }
     // Added By Sanam to Implement Mongoose
-    if (typeof userId === "string") {
-      try {
-        userId = MUUID.from(userId);
-      } catch (e) {
-        errors["id"] = e.message;
-        error.http_code = 400;
-        error.message = JSON.stringify({
-          errors: errors,
-        });
-        throw error;
-      }
-    } else {
-      try {
-        MUUID.from(userId);
-      } catch (e) {
-        errors["id"] = "id is not defined";
-        error.http_code = 400;
-        error.message = JSON.stringify({
-          errors: errors,
-        });
-        throw error;
-      }
-    }
+
     const projection = {
       _id: false,
       firstName: false,
@@ -576,29 +460,7 @@ async function getPublished(userId) {
       error.http_code = 400;
     }
     // Added By Sanam to Implement Mongoose
-    if (typeof userId === "string") {
-      try {
-        userId = MUUID.from(userId);
-      } catch (e) {
-        errors["id"] = e.message;
-        error.http_code = 400;
-        error.message = JSON.stringify({
-          errors: errors,
-        });
-        throw error;
-      }
-    } else {
-      try {
-        MUUID.from(userId);
-      } catch (e) {
-        errors["id"] = "id is not defined";
-        error.http_code = 400;
-        error.message = JSON.stringify({
-          errors: errors,
-        });
-        throw error;
-      }
-    }
+
     const projection = {
       _id: false,
       firstName: false,
@@ -675,7 +537,7 @@ async function isAuthenticated(email, password) {
         });
         throw error;
       }
-      doc._id = MUUID.from(doc._id).toString();
+      // doc._id = MUUID.from(doc._id).toString();
       return doc;
     })
     .catch((err) => {
@@ -690,58 +552,7 @@ async function changeArticleOwner(articleId, newAuthor) {
     error.http_code = 400;
   }
   // Added By Sanam to Implement Mongoose
-  if (typeof articleId === "string") {
-    try {
-      articleId = MUUID.from(articleId);
-    } catch (e) {
-      errors["id"] = e.message;
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  } else {
-    try {
-      MUUID.from(articleId);
-    } catch (e) {
-      errors["id"] = "id is not defined";
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  }
 
-  if (newAuthor === undefined || newAuthor === null) {
-    errors["id"] = "id is not defined";
-    error.http_code = 400;
-  }
-  // Added By Sanam to Implement Mongoose
-  if (typeof newAuthor === "string") {
-    try {
-      newAuthor = MUUID.from(newAuthor);
-    } catch (e) {
-      errors["id"] = e.message;
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  } else {
-    try {
-      MUUID.from(newAuthor);
-    } catch (e) {
-      errors["id"] = "id is not defined";
-      error.http_code = 400;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
-    }
-  }
   const value = {
     author: newAuthor,
   };

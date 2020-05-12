@@ -3,7 +3,7 @@ var uuid = require("node-uuid");
 require("mongoose-uuid2")(mongoose);
 
 const articlesSchema = mongoose.Schema({
-  _id: { type: mongoose.Schema.Types.UUID, default: uuid.v5 },
+  _id: mongoose.Schema.Types.ObjectId,
   title: mongoose.Schema.Types.String,
   text: mongoose.Schema.Types.String,
   html: mongoose.Schema.Types.String,
@@ -12,7 +12,7 @@ const articlesSchema = mongoose.Schema({
   cost: mongoose.Schema.Types.Number,
   read: mongoose.Schema.Types.Number,
   rating: mongoose.Schema.Types.Number,
-  author: { type: mongoose.Schema.Types.UUID, default: uuid.v5 },
+  author: mongoose.Schema.Types.ObjectId,
 });
 
 const Articles123 = mongoose.model("articles", articlesSchema);
