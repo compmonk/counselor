@@ -28,5 +28,6 @@ const getCollection = collection => {
 module.exports = {
     users: getCollection("users"),
     articles: getCollection("articles"),
-    sessions: getCollection("sessions")
+    sessions: getCollection("sessions"),
+    courses: getCollection("courses")
 };
