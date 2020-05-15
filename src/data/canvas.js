@@ -1,4 +1,4 @@
-const axios=require("axios")
+const axios=require("axios");
 
 
 
@@ -28,8 +28,6 @@ async function getcourse(token) {
             let courseCode=data[i]["course_code"];
             let courseName=data[i]["name"];
             let canvasUserId=data[i]["enrollments"][0]["user_id"];
-                
-
             
         }
 

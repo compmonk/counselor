@@ -32,4 +32,6 @@ module.exports = {
   users: getCollection("users"),
   articles: getCollection("articles"),
   sessions: getCollection("sessions"),
+  courses: getCollection("courses"),
+  assignments: getCollection("assignments")
 };

@@ -1,4 +1,9 @@
 const mongoose = require("mongoose");
+<<<<<<< Updated upstream
+=======
+// var uuid = require("node-uuid");
+// require("mongoose-uuid2")(mongoose);
+>>>>>>> Stashed changes
 
 const articlesSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
