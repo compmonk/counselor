@@ -383,29 +383,38 @@ async function getArticlesByUserId(userId) {
 }
 
 async function getRecommendation(userId) {
-  // Need to return only the list which are not published and not purchased by the user.
-  // const articleCollection = await articles();
-  // let allArticles = await articleCollection.find({}).toArray();
-  // allArticles = allArticles.map((article) => {
-  //   article._id = MUUID.from(article._id).toString();
-  //   article.author = MUUID.from(article.author).toString();
-  //   return article;
-  // });
-  // const publishedAndPurchasedArticles = await getArticlesByUserId(userId);
-  // let recommendedArticles = [];
-  // for (let i = 0; i < allArticles.length; i++) {
-  //   for (let j = 0; j < publishedAndPurchasedArticles; j++) {
-  //     if (allArticles[i]._id === publishedAndPurchasedArticles[j]._id) {
-  //       continue;
-  //     }
-  //   }
-  //   recommendedArticles.push(allArticles[i]);
-  // }
-  // return recommendedArticles;
-  //NEW RECOMMENDATION LOGIC
+  const error = new Error();
+  error.http_code = 200;
+  const errors = {};
+
+  try {
+    if (userId === undefined || userId === null) {
+      errors["id"] = "id is not defined";
+      error.http_code = 400;
+    }
+    const proj = { _id: true, published: true, purchased: true };
+    const published_purch = await getUserById(userId, proj, true);
+
+    var pub_pur_ids = [];
+    let counter = 0;
+    for (var i = 0; i < published_purch.published.length; i++) {
+      pub_pur_ids[i] = published_purch.published[i].articleId;
+      counter += 1;
+    }
+    for (var j = 0; j < published_purch.purchased.length; j++) {
+      pub_pur_ids[counter] = published_purch.purchased[j].articleId;
+      counter += 1;
+    }
+    return pub_pur_ids;
+  } catch (e) {
+    throw e;
+  }
 }
 
 async function getPurchased(userId) {
+  const error = new Error();
+  error.http_code = 200;
+  const errors = {};
   try {
     if (userId === undefined || userId === null) {
       errors["id"] = "id is not defined";
@@ -449,6 +458,9 @@ async function getPurchased(userId) {
 }
 
 async function getPublished(userId) {
+  const error = new Error();
+  error.http_code = 200;
+  const errors = {};
   try {
     if (userId === undefined || userId === null) {
       errors["id"] = "id is not defined";
@@ -541,6 +553,9 @@ async function isAuthenticated(email, password) {
   return auth;
 }
 async function changeArticleOwner(articleId, newAuthor) {
+  const error = new Error();
+  error.http_code = 200;
+  const errors = {};
   if (articleId === undefined || articleId === null) {
     errors["id"] = "id is not defined";
     error.http_code = 400;
@@ -565,6 +580,9 @@ async function changeArticleOwner(articleId, newAuthor) {
 }
 
 async function getUsers() {
+  const error = new Error();
+  error.http_code = 200;
+  const errors = {};
   // commented by sanam
   const projection = {
     _id: false,
