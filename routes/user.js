@@ -1,7 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const MUUID = require("uuid-mongodb");
-
 const { isLoggedIn } = require("../core/login");
 const users = require("../data/users");
 const sessions = require("../data/sessions");
@@ -62,8 +60,8 @@ router.put("/update", async (request, response) => {
 
 router.get("/get/:id", async (request, response) => {
   try {
-    // const user = await users.getUserById(request.session.userID);
-    const user = await users.getUserById(request.params.id);
+    const user = await users.getUserById(request.session.userID);
+    //const user = await users.getUserById(request.params.id);
     response.send(user);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -73,9 +71,8 @@ router.get("/get/:id", async (request, response) => {
 
 router.get("/articles/:id", async (request, response) => {
   try {
-    // const articles = await users.getArticlesByUserId(request.session.userID);
-
-    const articles = await users.getArticlesByUserId(request.params.id);
+    const articles = await users.getArticlesByUserId(request.session.userID);
+    //const articles = await users.getArticlesByUserId(request.params.id);
     response.send(articles);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -95,17 +92,21 @@ router.get("/recommendation", async (request, response) => {
 
 router.get("/purchased", async (request, response) => {
   try {
-    return true;
+    const articles = await users.getPurchased(request.session.userID);
+    response.send(articles);
   } catch (e) {
-    console.log(e);
+    response.setHeader("content-type", "application/json");
+    response.status(e.http_code).send(e.message);
   }
 });
 
 router.get("/published", async (request, response) => {
   try {
-    return true;
+    const articles = await users.getPublished(request.session.userID);
+    response.send(articles);
   } catch (e) {
-    console.log(e);
+    response.setHeader("content-type", "application/json");
+    response.status(e.http_code).send(e.message);
   }
 });
 

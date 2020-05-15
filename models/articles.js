@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-var uuid = require("node-uuid");
-require("mongoose-uuid2")(mongoose);
 
 const articlesSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,

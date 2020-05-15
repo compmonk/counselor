@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-var uuid = require("node-uuid");
-require("mongoose-uuid2")(mongoose);
 
 var validateEmail = function (email) {
   var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

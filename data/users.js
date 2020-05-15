@@ -1,4 +1,3 @@
-const MUUID = require("uuid-mongodb");
 const _ = require("underscore");
 const bcrypt = require("bcryptjs");
 const salt = bcrypt.genSaltSync(8);
@@ -9,21 +8,17 @@ const stellarConfig = require("../settings").stellarConfig;
 const users = collections.users;
 const articles = collections.articles;
 var mongoose = require("mongoose");
-require("mongoose-uuid2")(mongoose);
-var uuid = require("node-uuid");
-require("mongoose-uuid2")(mongoose);
-const uuidv5 = require("uuid/v5");
-var UUID = mongoose.Types.UUID;
+
 const mongoConfig = require("../settings");
 const userssmodel = require("../models/users");
 const articlessmodel = require("../models/articles");
 
 mongoose.Promise = global.Promise;
 
-const conn = mongoose.connect(mongoConfig.env.serverUrl, {
+const conn = mongoose.connect(mongoConfig.mongoConfig.serverUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  dbName: mongoConfig.env.database,
+  dbName: mongoConfig.mongoConfig.database,
 });
 
 mongoose.connection
@@ -389,25 +384,25 @@ async function getArticlesByUserId(userId) {
 
 async function getRecommendation(userId) {
   // Need to return only the list which are not published and not purchased by the user.
-  const articleCollection = await articles();
-  let allArticles = await articleCollection.find({}).toArray();
-  allArticles = allArticles.map((article) => {
-    article._id = MUUID.from(article._id).toString();
-    article.author = MUUID.from(article.author).toString();
-    return article;
-  });
-  const publishedAndPurchasedArticles = await getArticlesByUserId(userId);
-  let recommendedArticles = [];
-  for (let i = 0; i < allArticles.length; i++) {
-    for (let j = 0; j < publishedAndPurchasedArticles; j++) {
-      if (allArticles[i]._id === publishedAndPurchasedArticles[j]._id) {
-        continue;
-      }
-    }
-    recommendedArticles.push(allArticles[i]);
-  }
-
-  return recommendedArticles;
+  // const articleCollection = await articles();
+  // let allArticles = await articleCollection.find({}).toArray();
+  // allArticles = allArticles.map((article) => {
+  //   article._id = MUUID.from(article._id).toString();
+  //   article.author = MUUID.from(article.author).toString();
+  //   return article;
+  // });
+  // const publishedAndPurchasedArticles = await getArticlesByUserId(userId);
+  // let recommendedArticles = [];
+  // for (let i = 0; i < allArticles.length; i++) {
+  //   for (let j = 0; j < publishedAndPurchasedArticles; j++) {
+  //     if (allArticles[i]._id === publishedAndPurchasedArticles[j]._id) {
+  //       continue;
+  //     }
+  //   }
+  //   recommendedArticles.push(allArticles[i]);
+  // }
+  // return recommendedArticles;
+  //NEW RECOMMENDATION LOGIC
 }
 
 async function getPurchased(userId) {
@@ -537,7 +532,6 @@ async function isAuthenticated(email, password) {
         });
         throw error;
       }
-      // doc._id = MUUID.from(doc._id).toString();
       return doc;
     })
     .catch((err) => {

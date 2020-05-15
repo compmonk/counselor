@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const MUUID = require("uuid-mongodb");
 
 const { isLoggedIn } = require("../core/login");
 const users = require("../data/users");

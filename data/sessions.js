@@ -1,4 +1,3 @@
-const MUUID = require("uuid-mongodb");
 const moment = require("moment");
 
 const collections = require("./index");
@@ -9,10 +8,10 @@ const mongoose = require("mongoose");
 
 const sessions = collections.sessions;
 const users = require("./users");
-const conn = mongoose.connect(mongoConfig.env.serverUrl, {
+const conn = mongoose.connect(mongoConfig.mongoConfig.serverUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  dbName: mongoConfig.env.database,
+  dbName: mongoConfig.mongoConfig.database,
 });
 
 mongoose.connection

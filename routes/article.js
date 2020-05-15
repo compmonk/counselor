@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const MUUID = require("uuid-mongodb");
 const articles = require("../data/articles");
 const users = require("../data/users");
 const articleService = require("../services/articleService");
