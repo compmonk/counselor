@@ -235,8 +235,32 @@ async function getCoursesByUserId(userId) {
 
     }
 }
+
+async function getAssignmentsByUserId(userId) {
+    if (userId === undefined || userId === null) {
+        errors["id"] = "id is not defined";
+        error.http_code = 400;
+    }
+    if (error.http_code !== 200) {
+        error.message = JSON.stringify({ errors: errors });
+        throw error;
+    }
+    try {
+        let courses = await assignmentmodel.find({ userId: userId });
+        return courses;
+
+    }
+    catch (e) {
+        console.log(e)
+        throw e;
+
+    }
+
+}
+
 module.exports = {
     getCoursesByUserId,
     sendAssignmentToDb,
-    sendCoursesToDb
+    sendCoursesToDb,
+    getAssignmentsByUserId
 };
