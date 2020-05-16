@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { isLoggedIn } = require("../core/login");
 const users = require("../data/users");
+const canvas = require("../data/canvas");
 const sessions = require("../data/sessions");
 const stellarService = require("../services/stellarService");
 const recommendationService  = require("../services/recommendationService");
@@ -32,6 +33,19 @@ router.get("/balance", async (request, response) => {
     response.status(e.http_code).send(e.message);
   }
 });
+
+router.get("/integrate", async (request, response) => {
+  try {
+    //const user = await users.getUserById();
+    const x= await canvas.sendCoursesToDb("5eb9bb4afda1a60b18bc8040")
+    //const balance = await stellarService.getBalance(user.privateKey);
+    response.send(x);
+  } catch (e) {
+    response.setHeader("content-type", "application/json");
+    response.status(e.http_code).send(e.message);
+  }
+});
+
 
 router.get("/sessions", async (request, response) => {
   try {
