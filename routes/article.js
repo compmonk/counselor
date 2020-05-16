@@ -74,9 +74,11 @@ router.post("/", async (request, response) => {
 
 router.post("/:id/purchase", async (request, response) => {
   try {
+    console.log("test sdef");
     const article = articleService.purchase(
       request.params.id,
-      request.session.userID
+      "5eb9bb4afda1a60b18bc8040"
+      //request.session.userID
     );
     response.status(201).json(article);
   } catch (e) {

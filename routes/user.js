@@ -4,25 +4,27 @@ const { isLoggedIn } = require("../core/login");
 const users = require("../data/users");
 const sessions = require("../data/sessions");
 const stellarService = require("../services/stellarService");
+const recommendationService  = require("../services/recommendationsService");
 
 const router = express.Router();
 router.use(bodyParser.json());
-// router.use(bodyParser.urlencoded());
+router.use(bodyParser.urlencoded());
 
-// router.get("/:id/transactions", async (request, response) => {
-//     try {
-//         const user = await users.getUserById(request.params.id);
-//         const transactions = await stellarService.getTransactions(user.publicKey);
-//         response.send(transactions)
-//     } catch (e) {
-//         response.setHeader('content-type', 'application/json');
-//         response.status(e.http_code).send(e.message)
-//     }
-// });
+router.get("/:id/transactions", async (request, response) => {
+    try {
+        const user = await users.getUserById(request.params.id);
+        const transactions = await stellarService.getTransactions(user.publicKey);
+        response.send(transactions)
+    } catch (e) {
+        response.setHeader('content-type', 'application/json');
+        response.status(e.http_code).send(e.message)
+    }
+});
 
 router.get("/balance", async (request, response) => {
   try {
-    const user = await users.getUserById(request.session.userID);
+    //const user = await users.getUserById(request.session.userID);
+    const user = await users.getUserById("5eb9bb4afda1a60b18bc8040");
     const balance = await stellarService.getBalance(user.privateKey);
     response.send(balance);
   } catch (e) {
@@ -58,7 +60,7 @@ router.put("/update", async (request, response) => {
   }
 });
 
-router.get("/get/:id", async (request, response) => {
+router.get("/get", async (request, response) => {
   try {
     const user = await users.getUserById(request.session.userID);
     //const user = await users.getUserById(request.params.id);
@@ -69,7 +71,7 @@ router.get("/get/:id", async (request, response) => {
   }
 });
 
-router.get("/articles/:id", async (request, response) => {
+router.get("/articles", async (request, response) => {
   try {
     const articles = await users.getArticlesByUserId(request.session.userID);
     //const articles = await users.getArticlesByUserId(request.params.id);
@@ -82,7 +84,8 @@ router.get("/articles/:id", async (request, response) => {
 
 router.get("/recommendation", async (request, response) => {
   try {
-    const articles = await users.getRecommendation(request.session.userID);
+    //const articles = await recommendationService.recommend(request.session.userID);
+    const articles = await recommendationService.recommend("5eb9bb4afda1a60b18bc8040");
     response.send(articles);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -112,7 +115,8 @@ router.get("/published", async (request, response) => {
 
 router.get("/:id", async (request, response) => {
   try {
-    const user = await users.getUserById(request.params.id);
+    //const user = await users.getUserById(request.params.id);
+    const user = await users.getUserById("5eb9bb4afda1a60b18bc8040");
     response.send(user);
   } catch (e) {
     response.setHeader("content-type", "application/json");

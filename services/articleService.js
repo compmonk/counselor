@@ -1,13 +1,16 @@
 const articles = require("../data/articles");
 const userfunction = require("../data/users");
-const usersmodel = require("../models/users");
-const articlesmodel = require("../models/articles");
+const usersmodel = require("../data/models/users");
+const articlesmodel = require("../data/models/articles");
+const ObjectId = require("mongodb").ObjectId;
 
 async function purchase(articleId, purchaserId) {
   const error = new Error();
   error.http_code = 200;
   const errors = {};
-
+  if (typeof articleId === "string") {
+    articleId = new ObjectId(articleId);
+  }
   let article = await articles.get(articleId);
   let purchaser = await userfunction.getUserById(purchaserId);
 
@@ -25,6 +28,7 @@ async function purchase(articleId, purchaserId) {
     if (purchaser.purchased[i].articleId === articleId) {
       errors["article"] = "article is already purchased";
       error.http_code = 400;
+      break;
     }
   }
 
@@ -42,7 +46,6 @@ async function purchase(articleId, purchaserId) {
     error.message = JSON.stringify({ errors: errors });
     throw error;
   }
-
   purchaser.purchased.push({
     articleId: articleId,
     cost: article.cost,
@@ -60,9 +63,9 @@ async function purchase(articleId, purchaserId) {
 
   let author = await userfunction.getUserById(article.author);
 
-  for (let i = 0; i < author.rewards.length; i++) {
-    if (author.rewards[i].articleId === articleId) {
-      author.rewards[i].reward += article.cost;
+  for (let i = 0; i < author.published.length; i++) {
+    if (author.published[i].articleId === articleId) {
+      author.published[i].cost += article.cost;
     }
   }
   author.balance += article.cost;
@@ -70,13 +73,19 @@ async function purchase(articleId, purchaserId) {
   await userfunction.updateUser(
     article.author,
     {
-      rewards: author.rewards,
+      published: author.published,
       balance: author.balance,
     },
     true
   );
 
-  return await articles.update(article._id, { read: article.read + 1 }, true);
+  const artupd = await articles.get(article._id);
+  artupd.read += 1;
+
+  const result = await articles.update(artupd._id, artupd, true);
+  console.log("purchase finished", result);
+  // return await articles.update(article._id, { read: article.read + 1 }, true);
+  return result.nModified;
 }
 
 module.exports = {

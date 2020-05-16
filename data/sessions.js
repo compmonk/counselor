@@ -2,25 +2,25 @@ const moment = require("moment");
 
 const collections = require("./index");
 const mongoConfig = require("../settings");
-const userssmodel = require("../models/users");
-const sessionssmodel = require("../models/sessions");
+const userssmodel = require("./models/users");
+const sessionssmodel = require("./models/sessions");
 const mongoose = require("mongoose");
 
 const sessions = collections.sessions;
 const users = require("./users");
-const conn = mongoose.connect(mongoConfig.mongoConfig.serverUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  dbName: mongoConfig.mongoConfig.database,
-});
+// const conn = mongoose.connect(mongoConfig.mongoConfig.serverUrl, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   dbName: mongoConfig.mongoConfig.database,
+// });
 
-mongoose.connection
-  .once("open", () =>
-    console.log("Connected to Atlas Using Mongoose inside data/sessions")
-  )
-  .on("error", (error) => {
-    console.log("error is: " + error);
-  });
+// mongoose.connection
+//   .once("open", () =>
+//     console.log("Connected to Atlas Using Mongoose inside data/sessions")
+//   )
+//   .on("error", (error) => {
+//     console.log("error is: " + error);
+//   });
 
 async function addSession(sessionId, userId) {
   const error = new Error();
@@ -39,7 +39,7 @@ async function addSession(sessionId, userId) {
       startTime: new Date(),
       isActive: true,
     });
-    // ADDED BY SANAM
+
     const result = session
       .save()
       .then((result) => {
@@ -66,7 +66,7 @@ async function getSession(sessionId) {
     error.http_code = 400;
   }
 
-  // UPDATED BY SANAM TO IMPLEMENT MONGOOSE
+
   const result = sessionssmodel
     .findById(sessionId)
 
@@ -96,7 +96,7 @@ async function endSession(sessionId) {
   }
 
   if (await isSessionValid(sessionId)) {
-    // added by sanam
+
     const value = {
       isActive: false,
     };
@@ -148,7 +148,7 @@ async function getSessionByUserId(userId) {
   error.http_code = 200;
   const errors = {};
   try {
-    // Added by sanam
+
     if (userId === undefined || userId === null) {
       errors["id"] = "id is not defined";
       error.http_code = 400;

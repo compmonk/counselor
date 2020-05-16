@@ -8,5 +8,4 @@ const sessionsSchema = mongoose.Schema({
   isActive: mongoose.Schema.Types.Boolean,
 });
 
-const Sessions123 = mongoose.model("sessions", sessionsSchema);
-module.exports = Sessions123;
+module.exports = mongoose.model("sessions", sessionsSchema);

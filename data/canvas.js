@@ -1,29 +1,29 @@
 const axios = require("axios")
-const coursesmodel = require("../models/canvas");
-const assignmentmodel = require("../models/assignments");
+const coursesmodel = require("./models/course");
+const assignmentmodel = require("./models/assignments");
 const mongoose = require("mongoose");
 const collections = require("./index");
 var ObjectId = require('mongodb').ObjectId
 const users = require("../data/users");
 
-const userssmodel = require("../models/users");
-const articlesmodel = require("../models/articles");
+const userssmodel = require("./models/users");
+const articlesmodel = require("./models/articles");
 mongoose.Promise = global.Promise;
 
-const mongoConfig = require("../settings");
-const conn = mongoose.connect(mongoConfig.env.serverUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    dbName: mongoConfig.env.database,
-});
+// const mongoConfig = require("../settings");
+// const conn = mongoose.connect(mongoConfig.mongoConfig.serverUrl, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     dbName: mongoConfig.mongoConfig.database,
+// });
 
-mongoose.connection
-    .once("open", () =>
-        console.log("Connected to Atlas Using Mongoose inside data/articles")
-    )
-    .on("error", (error) => {
-        console.log("error is: " + error);
-    });
+// mongoose.connection
+//     .once("open", () =>
+//         console.log("Connected to Atlas Using Mongoose inside data/articles")
+//     )
+//     .on("error", (error) => {
+//         console.log("error is: " + error);
+//     });
 
 
 async function sendCoursesToDb(token, userId) {
@@ -215,6 +215,9 @@ async function sendAssignmentToDb(userId) {
 }
 
 async function getCoursesByUserId(userId) {
+    const error = new Error();
+    error.http_code = 200;
+    const errors = {};
     if (userId === undefined || userId === null) {
         errors["id"] = "id is not defined";
         error.http_code = 400;
@@ -235,8 +238,69 @@ async function getCoursesByUserId(userId) {
 
     }
 }
+
+async function getAssignmentsByUserId(userId) {
+    const error = new Error();
+    error.http_code = 200;
+    const errors = {};
+
+    if (userId === undefined || userId === null) {
+        errors["id"] = "id is not defined";
+        error.http_code = 400;
+    }
+    if (error.http_code !== 200) {
+        error.message = JSON.stringify({ errors: errors });
+        throw error;
+    }
+    try {
+        let assignments = await assignmentmodel.find({ userId: userId });
+        return assignments;
+
+    }
+    catch (e) {
+        console.log(e)
+        throw e;
+
+    }
+
+}
+async function getAssignmentKeywordsByUserId(userId) {
+    userId="5eb9bb4afda1a60b18bc8040";
+    const error = new Error();
+    error.http_code = 200;
+    const errors = {};
+    if (userId === undefined || userId === null) {
+        errors["id"] = "id is not defined";
+        error.http_code = 400;
+    }
+    if (error.http_code !== 200) {
+        error.message = JSON.stringify({ errors: errors });
+        throw error;
+    }
+    try {
+        projection = { "keywords": true }
+        let allkeyword=new Set(); 
+        let allkeywordsarray = await assignmentmodel.find({ userId: userId },projection);
+        for(let i=0;i<allkeywordsarray.length;i++){
+            for(let j=0;j<allkeywordsarray[i]["keywords"].length;j++){
+                allkeyword.add(allkeywordsarray[i]["keywords"][j]);
+            }
+        }
+        console.log(allkeyword);
+        return allkeyword;
+
+    }
+    catch (e) {
+        console.log(e)
+        throw e;
+
+    }
+
+}
 module.exports = {
     getCoursesByUserId,
     sendAssignmentToDb,
-    sendCoursesToDb
+    sendCoursesToDb,
+    getAssignmentsByUserId,
+    getAssignmentKeywordsByUserId
 };

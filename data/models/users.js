@@ -29,7 +29,8 @@ const usersSchema = mongoose.Schema({
   balance: mongoose.Schema.Types.Number,
   privateKey: mongoose.Schema.Types.String,
   publicKey: mongoose.Schema.Types.String,
+  canvasToken: mongoose.Schema.Types.String,
+  canvasUserId: mongoose.Schema.Types.Number
 });
 
-const Users123 = mongoose.model("users", usersSchema);
-module.exports = Users123;
+module.exports = mongoose.model("users", usersSchema);

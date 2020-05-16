@@ -10,8 +10,8 @@ const articles = collections.articles;
 var mongoose = require("mongoose");
 
 const mongoConfig = require("../settings");
-const userssmodel = require("../models/users");
-const articlessmodel = require("../models/articles");
+const userssmodel = require("./models/users");
+const articlessmodel = require("./models/articles");
 
 mongoose.Promise = global.Promise;
 
@@ -86,7 +86,14 @@ async function addUser(newUser) {
     throw error;
   }
 
-  // Added by sanam to implement mongoose user creation
+  const emailCheck = await emailAvailable(newUser.email);
+  if (emailCheck != null) {
+    errors["email"] = "email unavailable";
+    error.http_code = 400;
+    error.message = JSON.stringify({ errors: errors });
+    throw error;
+  }
+
   const keyPair = await stellarService.createAccount();
 
   const test1 = new userssmodel({
@@ -98,8 +105,6 @@ async function addUser(newUser) {
     hashedPassword: bcrypt.hashSync(newUser.password, salt),
     published: [],
     purchased: [],
-    // rewards: [],
-    // spent: [],
     courses: [],
     balance: parseInt(stellarConfig.startingBalance),
     privateKey: keyPair.privateKey,
@@ -190,6 +195,16 @@ async function updateUser(userId, updatedUser, partial = false) {
     errors["currency"] = "invalid type";
     error.http_code = 400;
   }
+  if (!partial && !updatedUser.hasOwnProperty("canvasToken")) {
+    errors["canvasToken"] = "missing property";
+    error.http_code = 400;
+  } else if (
+    updatedUser.hasOwnProperty("canvasToken") &&
+    typeof updatedUser["canvasToken"] !== "string"
+  ) {
+    errors["canvasToken"] = "invalid type";
+    error.http_code = 400;
+  }
 
   if (error.http_code !== 200) {
     error.message = JSON.stringify({ errors: errors });
@@ -199,7 +214,7 @@ async function updateUser(userId, updatedUser, partial = false) {
     errors["id"] = "id is not defined";
     error.http_code = 400;
   }
-  // Added By Sanam to Implement Mongoose
+
 
   try {
     const res = userssmodel
@@ -210,7 +225,11 @@ async function updateUser(userId, updatedUser, partial = false) {
       })
       .catch((err) => {
         console.log(err);
-        return err.message;
+        errors["message"]=err.message;
+        error.http_code = 400;
+        error.message = JSON.stringify({ errors: errors });
+        throw error;
+        // return err.message;
       });
     return res;
   } catch (e) {
@@ -230,7 +249,7 @@ async function getUserById(
     errors["id"] = "id is not defined";
     error.http_code = 400;
   }
-  // Added By Sanam to Implement Mongoose
+
   const res = userssmodel
     .findOne({ _id: userId }, projection)
     .exec()
@@ -296,7 +315,7 @@ async function userExists(userId) {
     errors["id"] = "id is not defined";
     error.http_code = 400;
   }
-  // Added By Sanam to Implement Mongoose
+
   const result = userssmodel
     .findOne({ _id: userId })
     .exec()
@@ -340,6 +359,8 @@ async function emailAvailable(email) {
     courses: false,
     balance: false,
     __v: false,
+    canvasToken: false,
+    canvasUserId: false
   };
   const result = userssmodel
     .findOne({ email: email }, projection)
@@ -360,7 +381,7 @@ async function emailAvailable(email) {
 
 async function getArticlesByUserId(userId) {
   try {
-    // commented by sanam to implement mongoose
+
     if (userId === undefined || userId === null) {
       errors["id"] = "id is not defined";
       error.http_code = 400;
@@ -420,7 +441,7 @@ async function getPurchased(userId) {
       errors["id"] = "id is not defined";
       error.http_code = 400;
     }
-    // Added By Sanam to Implement Mongoose
+
 
     const projection = {
       _id: false,
@@ -436,6 +457,8 @@ async function getPurchased(userId) {
       courses: false,
       balance: false,
       __v: false,
+      canvasToken: false,
+canvasUserId: false
     };
     const result = userssmodel
       .findOne({ _id: userId }, projection)
@@ -466,7 +489,7 @@ async function getPublished(userId) {
       errors["id"] = "id is not defined";
       error.http_code = 400;
     }
-    // Added By Sanam to Implement Mongoose
+
 
     const projection = {
       _id: false,
@@ -482,6 +505,8 @@ async function getPublished(userId) {
       courses: false,
       balance: false,
       __v: false,
+      canvasToken: false,
+      canvasUserId: false
     };
     const published = userssmodel
       .findOne({ _id: userId }, projection)
@@ -523,7 +548,7 @@ async function isAuthenticated(email, password) {
     error.http_code = 400;
   }
 
-  // commented by sanam
+ 
   const auth = userssmodel
     .findOne({ email: email })
     .exec()
@@ -560,7 +585,7 @@ async function changeArticleOwner(articleId, newAuthor) {
     errors["id"] = "id is not defined";
     error.http_code = 400;
   }
-  // Added By Sanam to Implement Mongoose
+
 
   const value = {
     author: newAuthor,
@@ -583,7 +608,7 @@ async function getUsers() {
   const error = new Error();
   error.http_code = 200;
   const errors = {};
-  // commented by sanam
+
   const projection = {
     _id: false,
     hashedPassword: false,

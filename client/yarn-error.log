@@ -1,0 +1,75 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn start
+
+PATH: 
+  /tmp/yarn--1587272941789-0.44608311424182956:/home/india/Documents/ReactTTT/try/example-create-react-app-express/node_modules/.bin:/home/india/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/tmp/yarn--1587272941414-0.48616270933369865:/home/india/Documents/ReactTTT/try/example-create-react-app-express/node_modules/.bin:/home/india/.config/yarn/link/node_modules/.bin:/home/india/.yarn/bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/home/india/anaconda3/bin:/home/india/anaconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+Yarn version: 
+  1.22.4
+
+Node version: 
+  13.9.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/india/Documents/ReactTTT/try/example-create-react-app-express/client/package.json: Unexpected token } in JSON at position 650
+      at JSON.parse (<anonymous>)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "example-create-react-app-express",
+    "version": "0.1.0",
+    "private": true,
+    "proxy": "http://localhost:5000/",
+    "dependencies": {
+      "@testing-library/jest-dom": "^4.2.4",
+      "@testing-library/react": "^9.5.0",
+      "@testing-library/user-event": "^7.2.1",
+      "react": "^16.13.1",
+      "react-dom": "^16.13.1",
+      "react-scripts": "3.4.1",
+      "axios": "^0.19.2",
+      "bootstrap": "^4.4.1",
+      "gulp": "^4.0.2",
+      "jquery": "^3.4.1",
+      "mongo-client": "^0.2.1",
+      "mongodb": "^3.5.5",
+      "mongodb-client-encryption": "^1.0.1",
+      "popper.js": "^1.16.1",
+      "react-bootstrap": "^1.0.0",
+      "react-router-dom": "^5.1.2",
+    },
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+      "extends": "react-app"
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

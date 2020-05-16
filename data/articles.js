@@ -4,25 +4,25 @@ const stellarService = require("../services/stellarService");
 const articleConfig = require("../settings").articleConfig;
 const stellarConfig = require("../settings").stellarConfig;
 const mongoConfig = require("../settings");
-const usersmodel = require("../models/users");
-const articlesmodel = require("../models/articles");
+const usersmodel = require("./models/users");
+const articlesmodel = require("./models/articles");
 const mongoose = require("mongoose");
 
 const sessions = collections.sessions;
 const userfunction = require("./users");
-const conn = mongoose.connect(mongoConfig.mongoConfig.serverUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  dbName: mongoConfig.mongoConfig.database,
-});
+// const conn = mongoose.connect(mongoConfig.mongoConfig.serverUrl, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   dbName: mongoConfig.mongoConfig.database,
+// });
 
-mongoose.connection
-  .once("open", () =>
-    console.log("Connected to Atlas Using Mongoose inside data/articles")
-  )
-  .on("error", (error) => {
-    console.log("error is: " + error);
-  });
+// mongoose.connection
+//   .once("open", () =>
+//     console.log("Connected to Atlas Using Mongoose inside data/articles")
+//   )
+//   .on("error", (error) => {
+//     console.log("error is: " + error);
+//   });
 
 async function create(newArticle, authorId) {
   const error = new Error();
@@ -72,7 +72,7 @@ async function create(newArticle, authorId) {
       errors["id"] = "id is not defined";
       error.http_code = 400;
     }
-    // Added By Sanam to Implement Mongoose
+  
 
     const test1 = new articlesmodel({
       _id: new mongoose.Types.ObjectId(),
@@ -139,21 +139,19 @@ async function create(newArticle, authorId) {
         console.log(error);
         return error.message;
       });
+      let transResult = await stellarService.transfer(
+        stellarConfig.masterPrivateKey,
+        author.privateKey,
+        articleConfig.initialCost
+      );
+      if (!transResult)
+        throw (errors["message"] = "Can not successfully transfer payment");
     return result;
   } catch (e) {
     throw e;
   }
 }
 
-async function getpublishedbyuser(userId) {
-  const result = await userfunction.getPublished(userId);
-  return result;
-}
-
-async function getpurchasedbyuser(userId) {
-  const result = await userfunction.getPurchased(userId);
-  return result;
-}
 
 async function get(articleId) {
   const error = new Error();
@@ -165,10 +163,10 @@ async function get(articleId) {
     error.http_code = 400;
   }
 
-  // Added By Sanam to Implement Mongoose
+
   const result = articlesmodel
     .findOne({ _id: articleId })
-    // .select("_id title text html keywords ratings cost read rating author")
+
     .exec()
     .then((doc) => {
       if (doc == null) {
@@ -241,12 +239,12 @@ async function update(articleId, updatedArticle, partial = false) {
     throw error;
   }
 
-  //   added by sanam
+
   if (articleId === undefined || articleId === null) {
     errors["id"] = "id is not defined";
     error.http_code = 400;
   }
-  // Added By Sanam to Implement Mongoose
+
 
   try {
     const result = articlesmodel
@@ -257,7 +255,11 @@ async function update(articleId, updatedArticle, partial = false) {
       })
       .catch((err) => {
         console.log(err);
-        return err.message;
+        error.http_code = 400;
+        errors["message"]=err.message;
+        error.message = JSON.stringify({ errors: errors });
+        throw error;
+        // return err.message;
       });
     return result;
   } catch (e) {
@@ -283,7 +285,5 @@ module.exports = {
   create,
   get,
   update,
-  getpurchasedbyuser,
-  getpublishedbyuser,
   getAll,
 };

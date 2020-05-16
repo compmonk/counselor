@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 
-const assSchema = mongoose.Schema({
+const assignmentSchema = mongoose.Schema({
         "id": mongoose.Schema.Types.Number,
         "courseId":mongoose.Schema.Types.Number,
         "userId": mongoose.Schema.Types.ObjectId,
@@ -63,5 +63,4 @@ const assSchema = mongoose.Schema({
   });
 
 
-const assSchema1 = mongoose.model("assignments", assSchema);
-module.exports = assSchema1;
+module.exports = mongoose.model("assignments", assignmentSchema);
