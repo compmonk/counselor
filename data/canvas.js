@@ -215,6 +215,9 @@ async function sendAssignmentToDb(userId) {
 }
 
 async function getCoursesByUserId(userId) {
+    const error = new Error();
+    error.http_code = 200;
+    const errors = {};
     if (userId === undefined || userId === null) {
         errors["id"] = "id is not defined";
         error.http_code = 400;
@@ -237,6 +240,10 @@ async function getCoursesByUserId(userId) {
 }
 
 async function getAssignmentsByUserId(userId) {
+    const error = new Error();
+    error.http_code = 200;
+    const errors = {};
+
     if (userId === undefined || userId === null) {
         errors["id"] = "id is not defined";
         error.http_code = 400;
@@ -246,8 +253,8 @@ async function getAssignmentsByUserId(userId) {
         throw error;
     }
     try {
-        let courses = await assignmentmodel.find({ userId: userId });
-        return courses;
+        let assignments = await assignmentmodel.find({ userId: userId });
+        return assignments;
 
     }
     catch (e) {
@@ -257,6 +264,41 @@ async function getAssignmentsByUserId(userId) {
     }
 
 }
+async function getAssignmentKeywordsByUserId(userId) {
+    userId="5eb9bb4afda1a60b18bc8040";
+    const error = new Error();
+    error.http_code = 200;
+    const errors = {};
+    if (userId === undefined || userId === null) {
+        errors["id"] = "id is not defined";
+        error.http_code = 400;
+    }
+    if (error.http_code !== 200) {
+        error.message = JSON.stringify({ errors: errors });
+        throw error;
+    }
+    try {
+        projection = { "keywords": true }
+        let allkeyword=new Set(); 
+        let allkeywordsarray = await assignmentmodel.find({ userId: userId },projection);
+        for(let i=0;i<allkeywordsarray.length;i++){
+            for(let j=0;j<allkeywordsarray[i]["keywords"].length;j++){
+                allkeyword.add(allkeywordsarray[i]["keywords"][j]);
+            }
+        }
+        console.log(allkeyword);
+        return allkeyword;
+
+    }
+    catch (e) {
+        console.log(e)
+        throw e;
+
+    }
+
+}
+
+getAssignmentKeywordsByUserId();
 
 module.exports = {
     getCoursesByUserId,

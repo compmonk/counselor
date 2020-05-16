@@ -190,6 +190,16 @@ async function updateUser(userId, updatedUser, partial = false) {
     errors["currency"] = "invalid type";
     error.http_code = 400;
   }
+  if (!partial && !updatedUser.hasOwnProperty("canvasToken")) {
+    errors["canvasToken"] = "missing property";
+    error.http_code = 400;
+  } else if (
+    updatedUser.hasOwnProperty("canvasToken") &&
+    typeof updatedUser["canvasToken"] !== "string"
+  ) {
+    errors["canvasToken"] = "invalid type";
+    error.http_code = 400;
+  }
 
   if (error.http_code !== 200) {
     error.message = JSON.stringify({ errors: errors });
