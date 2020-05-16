@@ -1,6 +1,7 @@
 const _ = require("underscore");
 const bcrypt = require("bcryptjs");
 const salt = bcrypt.genSaltSync(8);
+const mongoose = require("mongoose")
 
 const stellarService = require("../services/stellarService");
 const stellarConfig = require("../../settings").stellarConfig;
@@ -74,38 +75,31 @@ async function addUser(newUser) {
         throw error;
     }
 
-    const keyPair = await stellarService.createAccount();
+    try {
+        const keyPair = await stellarService.createAccount();
 
-    const test1 = new userModel({
-        _id: new mongoose.Types.ObjectId(),
-        email: newUser.email,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        currency: newUser.currency,
-        hashedPassword: bcrypt.hashSync(newUser.password, salt),
-        published: [],
-        purchased: [],
-        courses: [],
-        balance: parseInt(stellarConfig.startingBalance),
-        privateKey: keyPair.privateKey,
-        publicKey: keyPair.publicKey,
-    });
-    console.log("Printing user details inside data/users/addUser => " + test1);
-
-    delete newUser.password;
-
-    const res = test1
-        .save()
-        .then((result) => {
-            const newId = result._id;
-            return getUserById(newId);
-        })
-        .catch((err) => {
-            console.log(err);
-            return err.message;
+        const user = new userModel({
+            _id: new mongoose.Types.ObjectId(),
+            email: newUser.email,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+            currency: newUser.currency,
+            published: [],
+            purchased: [],
+            courses: [],
+            balance: parseInt(stellarConfig.startingBalance),
+            privateKey: keyPair.privateKey,
+            publicKey: keyPair.publicKey,
+            firebaseId: newUser.firebaseId,
+            createdAt: newUser.createdAt,
+            lastLoginAt: newUser.lastLoginAt,
         });
 
-    return res;
+        const insertInfo = await user.save()
+        return insertInfo._doc
+    } catch (e) {
+        throw e
+    }
 }
 
 async function updateUser(userId, updatedUser, partial = false) {
@@ -217,10 +211,7 @@ async function updateUser(userId, updatedUser, partial = false) {
     }
 }
 
-async function getUserById(
-    userId,
-    projection = {hashedPassword: false, __v: false}
-) {
+async function getUserById(userId, projection = {hashedPassword: false, __v: false}) {
     const error = new Error();
     error.http_code = 200;
     const errors = {};
@@ -609,6 +600,33 @@ async function getUsers() {
     return allusers;
 }
 
+async function getUserByFirebaseId(firebaseId, projection = {hashedPassword: false, __v: false}) {
+    const error = new Error();
+    error.http_code = 200;
+    const errors = {};
+
+    if (firebaseId === undefined || firebaseId === null) {
+        errors["id"] = "id is not defined";
+        error.http_code = 400;
+    }
+
+    const res = userModel
+        .findOne({firebaseId: firebaseId}, projection)
+        .exec()
+        .then((doc) => {
+            if (doc == null) {
+                return "ID does not exist";
+            }
+            return doc._doc;
+        })
+        .catch((err) => {
+            console.log(err);
+            return err.message;
+        });
+    return res;
+}
+
+
 module.exports = {
     addUser,
     updateUser,
@@ -623,4 +641,5 @@ module.exports = {
     getArticlesByUserId,
     getRecommendation,
     changeArticleOwner,
+    getUserByFirebaseId
 };

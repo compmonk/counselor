@@ -41,9 +41,9 @@ async function createAccount() {
 
     const transactionResult = await server.submitTransaction(tx);
     if (transactionResult && transactionResult.successful) {
-      console.log(JSON.stringify(transactionResult, null, 2));
-      console.log("\nSuccess! View the transaction at: ");
-      console.log(transactionResult._links.transaction.href);
+      // console.log(JSON.stringify(transactionResult, null, 2));
+      // console.log("\nSuccess! View the transaction at: ");
+      // console.log(transactionResult._links.transaction.href);
 
       return {
         privateKey: userKeyPair.secret(),

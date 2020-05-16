@@ -22,7 +22,6 @@ const userSchema = mongoose.Schema({
     firstName: mongoose.Schema.Types.String,
     lastName: mongoose.Schema.Types.String,
     currency: mongoose.Schema.Types.String,
-    hashedPassword: mongoose.Schema.Types.String,
     published: mongoose.Schema.Types.Mixed,
     purchased: mongoose.Schema.Types.Mixed,
     courses: mongoose.Schema.Types.Mixed,
