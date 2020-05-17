@@ -34,10 +34,10 @@ router.get("/balance", async (request, response) => {
   }
 });
 
-router.get("/integrate", async (request, response) => {
+router.post("/integrate", async (request, response) => {
   try {
     //const user = await users.getUserById();
-    const x= await canvas.sendCoursesToDb("5eb9bb4afda1a60b18bc8040")
+    const x= await canvas.sendCoursesToDb("5eb9bb4afda1a60b18bc8040",request.body.token)
     //const balance = await stellarService.getBalance(user.privateKey);
     response.send(x);
   } catch (e) {
@@ -45,6 +45,21 @@ router.get("/integrate", async (request, response) => {
     response.status(e.http_code).send(e.message);
   }
 });
+
+router.get("/courses", async (request, response) => {
+  try {
+    //const user = await users.getUserById();
+    console.log(request.body.token);
+    const courses= await canvas.getCoursesByUserId("5eb9bb4afda1a60b18bc8040");
+    console.log(courses);
+    //const balance = await stellarService.getBalance(user.privateKey);
+    response.send(courses);
+  } catch (e) {
+    response.setHeader("content-type", "application/json");
+    response.status(e.http_code).send(e.message);
+  }
+});
+
 
 
 router.get("/sessions", async (request, response) => {
