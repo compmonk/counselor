@@ -11,45 +11,44 @@ const userModel = require("./models/user");
 mongoose.Promise = global.Promise;
 
 
-async function sendCoursesToDb(token, userId) {
-    // userId="5eb9bb4afda1a60b18bc8040"
+async function sendCoursesToDb(userId) {
     const error = new Error();
     error.http_code = 200;
     const errors = {};
-    // token="1030~89QvpLfRQqfzX858dxlmXxmoeT9QYlafLA40h4R2LmPEgsv18RtljF3WCNOodFUP"
-    const config = {
-        headers: {Authorization: `Bearer ${token}`}
-    };
-
-    if (token === undefined || token === null || typeof token !== "string") {
-        errors['token'] = "id is not defined or not valid";
-        error.http_code = 400
-    }
 
     if (userId === undefined || userId === null) {
         errors["id"] = "id is not defined";
         error.http_code = 400;
     }
+    const res = await userModel.findOne({ _id: userId });
+    let token = res["canvasToken"];
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    if (token === undefined || token === null || typeof token !== "string") {
+        errors['token'] = "id is not defined or not valid";
+        error.http_code = 400
+    }
+
 
     if (error.http_code !== 200) {
-        error.message = JSON.stringify({errors: errors});
+        error.message = JSON.stringify({ errors: errors });
         throw error;
     }
 
 
     try {
-        const res = await userModel.findOne({_id: userId});
+
         let courseList = []
         let response = await axios.get("https://canvas.instructure.com/api/v1/courses", config)
 
         let data = response.data
         let res1 = await users.updateUser(userId, {
-            "canvasToken": token,
             "canvasUserId": data[0]["enrollments"][0]["user_id"]
         }, true);
 
         for (let i = 0; i < data.length; i++) {
-            console.log(data[i])
+
             if (data[i]["enrollments"][0]["type"] == "student") {
                 try {
                     let course = await courseModel.create({
@@ -83,12 +82,14 @@ async function sendCoursesToDb(token, userId) {
                         "restrict_enrollments_to_course_dates": data[i]["restrict_enrollments_to_course_dates"],
                         "overridden_course_visibility": data[i]["overridden_course_visibility"]
                     })
+                    courseList.push(course);
                 } catch (e) {
                     console.log(e)
                     throw e;
                 }
             }
         }
+        await sendAssignmentToDb(userId);
         return courseList;
     } catch (e) {
         throw e;
@@ -105,22 +106,25 @@ async function sendAssignmentToDb(userId) {
         error.http_code = 400;
     }
     if (error.http_code !== 200) {
-        error.message = JSON.stringify({errors: errors});
+        error.message = JSON.stringify({ errors: errors });
         throw error;
     }
     let courses = await getCoursesByUserId(userId);
-    const res = await userModel.findOne({_id: userId});
+    const res = await userModel.findOne({ _id: userId });
     let token = res["canvasToken"];
     const config = {
-        headers: {Authorization: `Bearer ${token}`}
+        headers: { Authorization: `Bearer ${token}` }
     };
 
     for (let j = 0; j < courses.length; j++) {
         try {
-
-            let response = await axios.get("https://canvas.instructure.com//api/v1/users/" + courses[j]["enrollments"][0]["user_id"].toString() + "/courses/" + courses[j]["id"] + "/assignments", config)
-            response = response.data;
-            //  console.log(response);
+            let response;
+            try {
+                response = await axios.get("https://canvas.instructure.com//api/v1/users/" + courses[j]["enrollments"][0]["user_id"].toString() + "/courses/" + courses[j]["id"] + "/assignments", config)
+                response = response.data;
+            } catch (e) {
+                continue;
+            }
             for (let i = 0; i < response.length; i++) {
                 let keywords = [];
                 keywords.push(courses[j]["name"]);
@@ -205,12 +209,12 @@ async function getCoursesByUserId(userId) {
         error.http_code = 400;
     }
     if (error.http_code !== 200) {
-        error.message = JSON.stringify({errors: errors});
+        error.message = JSON.stringify({ errors: errors });
         throw error;
     }
 
     try {
-        let courses = await courseModel.find({UserID: userId});
+        let courses = await courseModel.find({ UserID: userId });
         return courses;
 
     } catch (e) {
@@ -230,11 +234,11 @@ async function getAssignmentsByUserId(userId) {
         error.http_code = 400;
     }
     if (error.http_code !== 200) {
-        error.message = JSON.stringify({errors: errors});
+        error.message = JSON.stringify({ errors: errors });
         throw error;
     }
     try {
-        let assignments = await assignmentModel.find({userId: userId});
+        let assignments = await assignmentModel.find({ userId: userId });
         return assignments;
 
     } catch (e) {
@@ -255,13 +259,13 @@ async function getAssignmentKeywordsByUserId(userId) {
         error.http_code = 400;
     }
     if (error.http_code !== 200) {
-        error.message = JSON.stringify({errors: errors});
+        error.message = JSON.stringify({ errors: errors });
         throw error;
     }
     try {
-        projection = {"keywords": true}
+        projection = { "keywords": true }
         let allkeyword = new Set();
-        let allkeywordsarray = await assignmentModel.find({userId: userId}, projection);
+        let allkeywordsarray = await assignmentModel.find({ userId: userId }, projection);
         for (let i = 0; i < allkeywordsarray.length; i++) {
             for (let j = 0; j < allkeywordsarray[i]["keywords"].length; j++) {
                 allkeyword.add(allkeywordsarray[i]["keywords"][j]);
