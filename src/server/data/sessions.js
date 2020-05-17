@@ -158,6 +158,7 @@ async function getSessionByUserId(userId) {
   }
 }
 
+//Updated
 module.exports = {
   addSession,
   endSession,

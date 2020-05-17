@@ -595,6 +595,7 @@ async function getUserByFirebaseId(
   }
 }
 
+//Updated
 module.exports = {
   addUser,
   updateUser,
