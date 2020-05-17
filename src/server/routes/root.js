@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const {isLoggedIn} = require("../core/login");
 const users = require("../data/users");
 const sessions = require("../data/sessions");
+const {getAllCurrencies} = require("../data/currency")
 const userService = require("../services/userService")
 
 const router = express.Router();
@@ -17,11 +18,11 @@ router.post("/signup", async (request, response) => {
         request.session.user = await users.addUser(user);
 
         request.session.userID = request.session.user._id;
-        // await sessions.addSession(request.sessionID,
-        //     request.session.userID,
-        //     session.refreshToken,
-        //     session.accessToken,
-        //     session.expirationTime);
+        const serverSession = await sessions.addSession(request.sessionID,
+            request.session.userID,
+            session.refreshToken,
+            session.accessToken,
+            session.expirationTime);
         response.cookie("accessToken", session.accessToken, {
             expires: session.expirationTime.toDate(),
             httpOnly: false
@@ -71,11 +72,11 @@ router.post("/login", async (request, response) => {
                 httpOnly: false
             })
 
-            // await sessions.addSession(request.sessionID,
-            //     request.session.userID,
-            //     session.refreshToken,
-            //     session.accessToken,
-            //     session.expirationTime);
+            await sessions.addSession(request.sessionID,
+                request.session.userID,
+                session.refreshToken,
+                session.accessToken,
+                session.expirationTime);
 
             response.send(request.session.user);
         }
@@ -86,7 +87,7 @@ router.post("/login", async (request, response) => {
 
 // logout web api
 router.get("/logout", async function (request, response) {
-    // await sessions.endSession(request.sessionID);
+    await sessions.endSession(request.sessionID);
     response.clearCookie("accessToken")
     response.clearCookie("refreshToken")
     response.clearCookie("uid")
@@ -94,4 +95,14 @@ router.get("/logout", async function (request, response) {
         return response.status(204).send(userService.signOut());
     });
 });
+
+router.get("/currency", async function (request, response) {
+    try {
+        const currencies = await getAllCurrencies()
+        response.send(currencies)
+    } catch (e) {
+        response.status(500).json(e)
+    }
+})
+
 module.exports = router;
