@@ -2,8 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
 import { Button, Col, Form } from "react-bootstrap";
-//import Page404 from "./Page404";
-//import "../App.css";
 import axios from "axios";
 function CoursesContainer() {
     const [courses, setCourses] = useState([]);
@@ -12,9 +10,7 @@ function CoursesContainer() {
     let list = undefined;
     useEffect(() => {
         async function fetch() {
-            console.log("heyy")
             const { data } = await axios.get("/api/user/courses");
-          //  console.log("lists->", data);
             setCourses(data);
             if(courses.length>0){
                 setisLoading(false)
@@ -34,7 +30,6 @@ function CoursesContainer() {
             }
           });
           console.log("onClick");
-          //console.log(data);
           setCourses(data)
        
     };
@@ -65,7 +60,6 @@ function CoursesContainer() {
             <div className="flex row">
                 {(courses &&
                     courses.map((course, index) => {
-                        // article.text = article.text.substring(0, 100) + "...";
                         return (
                             <div key={index} className="col-sm-4 col-md-4 col-lg-4">
                                 <Card key={index}>
@@ -87,48 +81,3 @@ function CoursesContainer() {
 }
 
 export default CoursesContainer;
-
-
-// import Page404 from "./Page404";
-// import "../App.css";
-// import axios from "axios";
-
-// function Recommend() {
-
-// }
-// export default Recommend;
-
-
-// import React from 'react'
-
-// import Select from 'react-select';
-// function SignUp()
-//  {    const scaryAnimals = [
-//         {label: "Alligators", value: 1},
-//         {label: "Crocodiles", value: 2},
-//         {label: "Sharks", value: 3},
-//         {label: "Small crocodiles", value: 4},
-//         {label: "Smallest crocodiles", value: 5},
-//         {label: "Snakes", value: 6},
-//     ];    return (
-//         <Form className="container-fluid col-lg-6 form">            <Form.Group as={Col} controlId="formGridFirstName">
-//                 <Form.Label>First Name</Form.Label>
-//                 <Form.Control type="input" placeholder="John"/>
-//             </Form.Group>            <Form.Group as={Col} controlId="formGridLastName">
-//                 <Form.Label>Last Name</Form.Label>
-//                 <Form.Control type="input" placeholder="Doe"/>
-//             </Form.Group>            <Form.Group as={Col} controlId="formGridEmail">
-//                 <Form.Label>Email</Form.Label>
-//                 <Form.Control type="email" placeholder="johndoe@example.com"/>
-//             </Form.Group>            <Form.Group as={Col} controlId="formGridPassword">
-//                 <Form.Label>Password</Form.Label>
-//                 <Form.Control type="password" placeholder="S3cR3t"/>
-//             </Form.Group>            <Form.Group as={Col} controlId="formGridState">
-//                 <Form.Label>Currency</Form.Label>
-//                 <Select options={scaryAnimals}/>
-//             </Form.Group>            <Button variant="primary" type="submit">
-//                 Submit
-//             </Button>
-//         </Form>
-//     )
-// }export default SignUp;

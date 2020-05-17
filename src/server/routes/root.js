@@ -18,7 +18,7 @@ router.post("/signup", async (request, response) => {
         request.session.user = await users.addUser(user);
 
         request.session.userID = request.session.user._id;
-        const serverSession = await sessions.addSession(request.sessionID,
+        await sessions.addSession(request.sessionID,
             request.session.userID,
             session.refreshToken,
             session.accessToken,
