@@ -11,10 +11,9 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded());
 
-router.get("/:id/transactions", async (request, response) => {
+router.get("/transactions", async (request, response) => {
   try {
-    const user = await users.getUserById(request.params.id);
-    const transactions = await stellarService.getTransactions(user.publicKey);
+    const transactions = await stellarService.getTransactions(request.session.user.publicKey);
     response.send(transactions);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -24,8 +23,8 @@ router.get("/:id/transactions", async (request, response) => {
 
 router.get("/balance", async (request, response) => {
   try {
-    //const user = await users.getUserById(request.session.userID);
-    const user = await users.getUserById("5eb9bb4afda1a60b18bc8040");
+    const user = await users.getUserById(request.session.userID);
+    //const user = await users.getUserById("5eb9bb4afda1a60b18bc8040");
     const balance = await stellarService.getBalance(user.privateKey);
     response.send(balance);
   } catch (e) {
@@ -68,6 +67,9 @@ router.get("/sessions", async (request, response) => {
     const sessionsList = await sessions.getSessionByUserId(
       request.session.userID
     );
+    // const sessionsList = await sessions.getSessionByUserId(
+    //   "5ebfcffa0bf14120998928f7"
+    // );
     response.send(sessionsList);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -82,6 +84,11 @@ router.put("/update", async (request, response) => {
       request.body,
       true
     );
+    // const user = await users.updateUser(
+    //   "5eb9bb4afda1a60b18bc8040",
+    //   request.body,
+    //   true
+    // );
     response.status(201).send(user);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -113,10 +120,10 @@ router.get("/articles", async (request, response) => {
 
 router.get("/recommendation", async (request, response) => {
   try {
-    //const articles = await recommendationService.recommend(request.session.userID);
-    const articles = await recommendationService.recommend(
-      "5eb9bb4afda1a60b18bc8040"
-    );
+    const articles = await recommendationService.recommend(request.session.userID);
+    // const articles = await recommendationService.recommend(
+    //   "5eb9bb4afda1a60b18bc8040"
+    // );
     response.send(articles);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -146,8 +153,8 @@ router.get("/published", async (request, response) => {
 
 router.get("/:id", async (request, response) => {
   try {
-    //const user = await users.getUserById(request.params.id);
-    const user = await users.getUserById("5eb9bb4afda1a60b18bc8040");
+    const user = await users.getUserById(request.params.id);
+    //const user = await users.getUserById("5eb9bb4afda1a60b18bc8040");
     response.send(user);
   } catch (e) {
     response.setHeader("content-type", "application/json");
