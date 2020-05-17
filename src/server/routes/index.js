@@ -13,7 +13,7 @@ const constructorMethod = (app) => {
       resave: false,
       saveUninitialized: true,
       genid: function (request) {
-        return new mongoose.Types.ObjectId();
+        return new mongoose.Types.ObjectId().toString();
       },
     })
   );

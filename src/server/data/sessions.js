@@ -1,4 +1,5 @@
 const sessionModel = require("./models/session");
+const {ObjectId} = require("mongodb");
 
 async function addSession(
   sessionId,
@@ -18,7 +19,7 @@ async function addSession(
 
   try {
     const session = new sessionModel({
-      _id: sessionId,
+      _id: new ObjectId(sessionId),
       userId: userId,
       startTime: new Date(),
       isActive: true,
@@ -27,17 +28,6 @@ async function addSession(
       expirationTime,
     });
 
-    // const result = session
-    //   .save()
-    //   .then((result) => {
-    //     const res = getSession(result._id);
-    //     return res;
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     return err.message;
-    //   });
-    // return result;
     const insertInfo = await session.save();
     return insertInfo._doc;
   } catch (e) {
@@ -114,10 +104,7 @@ async function isSessionValid(sessionId) {
 
     const sessionActive = await sessionModel.findById(sessionId);
     if (sessionActive == null) {
-      errors["message"] = `Session with Id ${sessionId} does not exist`;
-      error.http_code = 400;
-      error.message = JSON.stringify({ errors: errors });
-      throw error;
+      return false
     }
     return sessionActive._doc.isActive;
   } catch (e) {
