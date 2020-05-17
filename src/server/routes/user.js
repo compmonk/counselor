@@ -4,21 +4,21 @@ const { isLoggedIn } = require("../core/login");
 const users = require("../data/users");
 const sessions = require("../data/sessions");
 const stellarService = require("../services/stellarService");
-const recommendationService  = require("../services/recommendationService");
+const recommendationService = require("../services/recommendationService");
 
 const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded());
 
 router.get("/:id/transactions", async (request, response) => {
-    try {
-        const user = await users.getUserById(request.params.id);
-        const transactions = await stellarService.getTransactions(user.publicKey);
-        response.send(transactions)
-    } catch (e) {
-        response.setHeader('content-type', 'application/json');
-        response.status(e.http_code).send(e.message)
-    }
+  try {
+    const user = await users.getUserById(request.params.id);
+    const transactions = await stellarService.getTransactions(user.publicKey);
+    response.send(transactions);
+  } catch (e) {
+    response.setHeader("content-type", "application/json");
+    response.status(e.http_code).send(e.message);
+  }
 });
 
 router.get("/balance", async (request, response) => {
@@ -63,7 +63,7 @@ router.put("/update", async (request, response) => {
 router.get("/detail", async (request, response) => {
   try {
     const user = await users.getUserById(request.session.userID);
-    //const user = await users.getUserById(request.params.id);
+    // const user = await users.getUserById(request.params.id);
     response.send(user);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -85,7 +85,9 @@ router.get("/articles", async (request, response) => {
 router.get("/recommendation", async (request, response) => {
   try {
     //const articles = await recommendationService.recommend(request.session.userID);
-    const articles = await recommendationService.recommend("5eb9bb4afda1a60b18bc8040");
+    const articles = await recommendationService.recommend(
+      "5eb9bb4afda1a60b18bc8040"
+    );
     response.send(articles);
   } catch (e) {
     response.setHeader("content-type", "application/json");
