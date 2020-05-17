@@ -11,7 +11,7 @@ const userModel = require("./models/user");
 mongoose.Promise = global.Promise;
 
 
-async function sendCoursesToDb(userId) {
+async function sendCoursesToDb(userId,token) {
     const error = new Error();
     error.http_code = 200;
     const errors = {};
@@ -21,7 +21,6 @@ async function sendCoursesToDb(userId) {
         error.http_code = 400;
     }
     const res = await userModel.findOne({ _id: userId });
-    let token = res["canvasToken"];
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
@@ -44,6 +43,7 @@ async function sendCoursesToDb(userId) {
 
         let data = response.data
         let res1 = await users.updateUser(userId, {
+            "canvasToken": token,
             "canvasUserId": data[0]["enrollments"][0]["user_id"]
         }, true);
 
@@ -84,8 +84,10 @@ async function sendCoursesToDb(userId) {
                     })
                     courseList.push(course);
                 } catch (e) {
-                    console.log(e)
-                    throw e;
+                    errors['token'] = "Invalid Token for Canvas";
+                    error.http_code = 400
+                    error.message = JSON.stringify({ errors: errors });
+                    throw error;
                 }
             }
         }
