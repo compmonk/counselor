@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
-import {AuthContext} from "./auth/AuthContext";
+import {AuthContext} from "../auth/AuthContext";
 import {Nav, Navbar, NavDropdown} from "react-bootstrap";
-import {isLoggedIn} from "./auth/LoginValidator";
+import {isLoggedIn} from "../auth/LoginValidator";
 
 const Navigation = () => {
     const {currentUser} = useContext(AuthContext);

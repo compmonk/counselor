@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Card, Button, Modal } from "react-bootstrap";
-import Page404 from "../FourZeroFour";
+import Page404 from "../others/FourZeroFour";
 import "../../sass/App.css";
 import axios from "axios";
 

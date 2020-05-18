@@ -1,11 +1,18 @@
-import React from 'react'
-import Home from "../Home";
+import React, {useState} from 'react'
+import Home from "../others/Home";
+import Loading from "../others/Loading"
 
 function SignOut({signout}) {
-    signout().then((response) => {
-        window.location.href = "/";
-        return <Home/>
-    })
+    const [isLoading, setIsLoading] = useState(true)
+
+    if (isLoading) {
+        signout().then((response) => {
+            window.location.href = "/";
+            setIsLoading(false)
+            return <Home/>
+        })
+        return <Loading/>
+    }
 }
 
 export default SignOut;

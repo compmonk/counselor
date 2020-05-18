@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useContext } from "react";
 import { Form, Button, Table } from "react-bootstrap";
-import Page404 from "../FourZeroFour";
+import Page404 from "../others/FourZeroFour";
 import { AuthContext } from "../auth/AuthContext";
 import "../../sass/App.css";
 import axios from "axios";
