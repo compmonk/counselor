@@ -5,7 +5,7 @@ const redisClient = require("../core/redisClient")
 async function getAllCurrencies() {
     try {
         const idx = await redisClient.llenAsync("currencies");
-        if (idx !== 0) {
+        if (idx) {
             return await redisClient.lrangeAsync(
                 "currencies", 0, -1).map(JSON.parse);
         }
