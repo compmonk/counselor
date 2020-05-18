@@ -57,6 +57,14 @@ async function create(newArticle, authorId) {
       error.http_code = 400;
     }
 
+    if (typeof authorId === "string") {
+      try {
+        authorId = new mongoose.Types.ObjectId(authorId);
+      } catch (e) {
+        throw e;
+      }
+    }
+
     const test1 = new articleModel({
       _id: new mongoose.Types.ObjectId(),
       title: newArticle.title,
@@ -69,59 +77,34 @@ async function create(newArticle, authorId) {
       read: 0,
       rating: 0,
     });
-    const projection = {
-      balance: true,
+    // const projection = {
+    //   balance: true,
+    // };
+    const author = await userDao.getUserById(authorId);
+    const article = await test1.save();
+    const userPubupd = await userModel.updateOne(
+      { _id: authorId },
+      {
+        $push: {
+          published: {
+            articleId: article._doc._id,
+            cost: articleConfig.initialCost,
+          },
+        },
+      }
+    );
+
+    //adding balance
+    var bal = author.balance;
+    bal = bal + parseInt(articleConfig.initialCost);
+    const updbal = {
+      balance: bal,
     };
-    const upd = await userDao.getUserById(authorId, projection);
-    const result = test1
-      .save()
-      .then((result) => {
-        const newId = result._id;
-        //adding published
-        userModel
-          .updateOne(
-            { _id: authorId },
-            {
-              $push: {
-                published: {
-                  articleId: result._id,
-                  cost: articleConfig.initialCost,
-                },
-              },
-            }
-          )
-          .exec()
-          .then((res) => {
-            return res;
-          })
-          .catch((error) => {
-            console.log(error);
-            return error.message;
-          });
+    const addbal = await userModel.updateOne(
+      { _id: authorId },
+      { $set: updbal }
+    );
 
-        //adding balance
-
-        var bal = upd.balance;
-        bal = bal + parseInt(articleConfig.initialCost);
-        const updbal = {
-          balance: bal,
-        };
-        userModel
-          .updateOne({ _id: authorId }, { $set: updbal })
-          .exec()
-          .then((doc) => {
-            return doc;
-          })
-          .catch((err) => {
-            throw (errors["message"] = err.message);
-            // return err.message;
-          });
-        return get(newId);
-      })
-      .catch((error1) => {
-        throw (errors["message"] = error1.message);
-        // return error.message;
-      });
     let transResult = await stellarService.transfer(
       stellarConfig.masterPrivateKey,
       author.privateKey,
@@ -129,7 +112,7 @@ async function create(newArticle, authorId) {
     );
     if (!transResult)
       throw (errors["message"] = "Can not successfully transfer payment");
-    return result;
+    return article;
   } catch (e) {
     throw e;
   }

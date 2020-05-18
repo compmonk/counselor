@@ -347,7 +347,7 @@ async function getArticlesByUserId(userId) {
       errors["id"] = "id is not defined";
       error.http_code = 400;
     }
-
+    let allArticles = [];
     const articlesByUser = await articleModel.find({ author: userId });
     if (articlesByUser.length === 0) {
       errors["authorId"] = `No articles found with author Id ${userId} `;
@@ -357,7 +357,14 @@ async function getArticlesByUserId(userId) {
       });
       throw error;
     }
-    return articlesByUser;
+    allArticles = articlesByUser;
+    const usr = await userModel.findOne({ _id: userId });
+    for (let i = 0; i < usr["purchased"].length; i++) {
+      let articleId = usr["purchased"][i]["articleId"];
+      let article = await articleModel.findOne({ _id: articleId });
+      allArticles.push(article);
+    }
+    return allArticles;
   } catch (e) {
     throw e;
   }
