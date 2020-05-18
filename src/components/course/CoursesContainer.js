@@ -1,59 +1,104 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
-import { Button, Col, Form } from "react-bootstrap";
+import { Button, Col, Form , Badge  } from "react-bootstrap";
 import axios from "axios";
 function CoursesContainer() {
     const [courses, setCourses] = useState([]);
     const [token, setToken] = useState("");
     const [isLoading, setisLoading] = useState(false);
+    const [error,setError]=useState(false);
+    const[ isChanged,setisChanged]= useState(true);
     let list = undefined;
     useEffect(() => {
         async function fetch() {
-            const { data } = await axios.get("/api/user/courses");
+            console.log("heyy")
+            var { data } = await axios.get("/api/user/courses");
+          //  console.log("lists->", data);
             setCourses(data);
-            if(courses.length>0){
-                setisLoading(false)
+            if(data.length>0){
+                setisLoading(false);
+                setError(false);
+                setisChanged(false);
             }
+          
         }
-        fetch();
-    }, [courses]);
+    if(isChanged) fetch();
 
-    const getCourses = async function getCourses() {
+    }, [isChanged]);
+
+    const getCourses = async function getCourses(e) {
         setisLoading(true);
-       let {data} = await axios({
-            method: 'post',
-            url: "/api/user/integrate",
-            headers: {}, 
-            data: {
-            token: token,
-            }
-          });
-          console.log("onClick");
-          setCourses(data)
+        setError(false);
+       
+        var dat = {
+            token : token
+        }
+       try{
+        var {data} = await axios.post("/api/user/integrate", dat)
+        if(data[0]["name"]!==undefined)  setisChanged(true);
+       
+    }catch(er){
+        setisChanged(false);
+        setError(true)
+    } 
        
     };
-
-    if(isLoading){
+    if(error) {
+        return (
+            <div>
+                <Form className="container-fluid col-lg-6 form">
+                <Badge variant="danger">Please enter valid token!</Badge>{' '}
+                    <Form.Group as={Col} controlId="formGridGenerateToken">
+                    <Form.Text className="text-muted">
+                        Please Integrate Canvas by generating a Token.
+                    </Form.Text>
+                    <Button onClick={() => window.open("https://sit.instructure.com/profile/settings#")}>
+                        Generate Canvas Token
+                    </Button>
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCanvasToken">
+                        <Form.Label>
+                            Canvas Token:
+                        </Form.Label>
+                        <Form.Control name="token" type="input" onChange={e => setToken(e.target.value)}
+                                      placeholder="Canvas Token"/>
+                    </Form.Group>
+                    <Button variant="primary" type="button" onClick={getCourses}>
+                        Submit
+                    </Button>
+                </Form>
+            </div>
+        )
+    }
+   else if(isLoading){
         return <div>Loading....</div>;
     }
     else if (!courses.length) {
         return (
-        <div>
-            <div>Please Integrate Canvas!</div>
-            <Form className="container-fluid col-lg-6 form" >           
-             <Form.Group as={Col} controlId="formGridFirstName">
-                <Form.Label>
-                    Enter Canvas Token:
-                </Form.Label>
-                <Form.Control name="token" type="input"  onChange={e => setToken(e.target.value)}  placeholder="token" />
-            </Form.Group>  
-            <Button variant="primary" type="submit" onClick={getCourses} >
-                    Submit
-            </Button>
-            </Form>
+            <div>
+                <Form className="container-fluid col-lg-6 form">
+                    <Form.Group as={Col} controlId="formGridGenerateToken">
+                    <Form.Text className="text-muted">
+                        Please Integrate Canvas by generating a Token.
+                    </Form.Text>
+                    <Button onClick={() => window.open("https://sit.instructure.com/profile/settings#")}>
+                        Generate Canvas Token
+                    </Button>
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCanvasToken">
+                        <Form.Label>
+                            Canvas Token:
+                        </Form.Label>
+                        <Form.Control name="token" type="input" onChange={e => setToken(e.target.value)}
+                                      placeholder="Canvas Token"/>
+                    </Form.Group>
+                    <Button variant="primary" type="button" onClick={getCourses}>
+                        Submit
+                    </Button>
+                </Form>
             </div>
-            )
+        )
     }
     else {
         return (

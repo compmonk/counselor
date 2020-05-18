@@ -39,7 +39,7 @@ router.get("/:id", async (request, response) => {
             }
             await redisClient.rpushAsync("ArticleList", JSON.stringify(article_res));
             const idx = await redisClient.llenAsync("ArticleList");
-            await redisClient.hmsetAsync("ArticleIds", article_res.id, idx);
+            await redisClient.hmsetAsync("ArticleIds", article_res._id.toString(), idx);
         } else {
             article_res = await redisClient.lrangeAsync(
                 "ArticleList",

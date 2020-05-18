@@ -11,7 +11,7 @@ const userModel = require("./models/user");
 mongoose.Promise = global.Promise;
 
 
-async function sendCoursesToDb(userId,token) {
+async function sendCoursesToDb(userId, token) {
     const error = new Error();
     error.http_code = 200;
     const errors = {};
@@ -39,8 +39,12 @@ async function sendCoursesToDb(userId,token) {
     try {
 
         let courseList = []
-        let response = await axios.get("https://canvas.instructure.com/api/v1/courses", config)
-
+        let response;
+        try {
+            response = await axios.get("https://canvas.instructure.com/api/v1/courses", config)
+        } catch (e) {
+            throw e;
+        }
         let data = response.data
         let res1 = await users.updateUser(userId, {
             "canvasToken": token,
@@ -94,7 +98,10 @@ async function sendCoursesToDb(userId,token) {
         await sendAssignmentToDb(userId);
         return courseList;
     } catch (e) {
-        throw e;
+        errors['token'] = "Invalid Token for Canvas";
+        error.http_code = 400
+        error.message = JSON.stringify({ errors: errors });
+        throw error;
     }
 }
 
@@ -191,10 +198,10 @@ async function sendAssignmentToDb(userId) {
                     "anonymize_students": response[i]["anonymize_students"],
                     "require_lockdown_browser": response[i]["require_lockdown_browser"]
                 })
-                console.log(assignments)
+               // console.log(assignments)
             }
         } catch (e) {
-            console.log(e);
+            //console.log(e);
             throw e;
         }
     }
@@ -220,7 +227,7 @@ async function getCoursesByUserId(userId) {
         return courses;
 
     } catch (e) {
-        console.log(e)
+      //  console.log(e)
         throw e;
 
     }
@@ -244,7 +251,7 @@ async function getAssignmentsByUserId(userId) {
         return assignments;
 
     } catch (e) {
-        console.log(e)
+      //  console.log(e)
         throw e;
 
     }
@@ -252,7 +259,6 @@ async function getAssignmentsByUserId(userId) {
 }
 
 async function getAssignmentKeywordsByUserId(userId) {
-    userId = "5eb9bb4afda1a60b18bc8040";
     const error = new Error();
     error.http_code = 200;
     const errors = {};
@@ -273,11 +279,11 @@ async function getAssignmentKeywordsByUserId(userId) {
                 allkeyword.add(allkeywordsarray[i]["keywords"][j]);
             }
         }
-        console.log(allkeyword);
+       // console.log(allkeyword);
         return allkeyword;
 
     } catch (e) {
-        console.log(e)
+       // console.log(e)
         throw e;
 
     }
