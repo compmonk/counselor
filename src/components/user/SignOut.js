@@ -14,11 +14,11 @@ function SignOut() {
         async function fetchData() {
             const {data} = await axios.get("/api/root/logout")
             fetchData()
-            setCurrentUser(null)
-            setCookies("")
         }
 
         fetchData();
+        setCurrentUser(null)
+        setCookies("")
 
     }, []);
 
