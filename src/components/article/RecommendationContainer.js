@@ -1,10 +1,11 @@
 import React from "react";
+import {CardDeck} from "react-bootstrap";
 import Recommend from "./RecommendedArticle";
 function RecommendationContainer() {
   return (
-      <div className="col-sm-4 col-md-4 col-lg-4">
+      <div>
         <Recommend></Recommend>
-      </div>
+        </div>
   );
 }
 

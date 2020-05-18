@@ -9,7 +9,7 @@ async function recommend(userId) {
   try {
     const allArticles = await articles.getAll();
 
-    const MyPurchasedPublished = await users.getRecommendation("5eb9bb4afda1a60b18bc8040");
+    const MyPurchasedPublished = await users.getRecommendation(userId);
 
     //filter by own articles
     let recommendations = _.filter(allArticles, (article) => {
@@ -27,7 +27,7 @@ async function recommend(userId) {
       if(!value[article.title])value[article.title] = 1;
       article.keywords.map((i) => {
         if(intrestedKeywords.includes(i)){
-          value[article.title] += 100; 
+          value[article.title] += 10; 
         }
       });
     });
@@ -37,7 +37,6 @@ async function recommend(userId) {
       let yPoint = value[y.title] * y.rating * y.read + x.read ;
       return yPoint - xPoint;
     });
-
     return recommendations;
   } catch (e) {
     console.log(e);

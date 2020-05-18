@@ -34,11 +34,12 @@ function Recommend() {
   };
   if (!articles) return <Page404></Page404>;
   return (
-    <div>
+    <div className="flex row">
       {(articles &&
         articles.map((article, index) => {
           article.text = article.text.substring(0, 100) + "...";
           return (
+            <div className="col-sm-4 col-md-4 col-lg-4">
             <Card key={index}>
               <Card.Body>
                 <Card.Title>
@@ -52,7 +53,7 @@ function Recommend() {
                   Buy
                 </Button>
               </Card.Body>
-            </Card>
+            </Card></div>
           );
         })) ||
         "No Data"}

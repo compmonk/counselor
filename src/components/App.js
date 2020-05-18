@@ -12,10 +12,11 @@ import RecommendationContainer from "./article/RecommendationContainer";
 import FourZeroFour from "./FourZeroFour";
 import UserSession from "./user/UserSession";
 import UserProfile from "./user/UserProfile";
-
+import PurchasedArticles from "./article/PurchasedArticles";
 import UserWallet from "./user/UserWallet";
 import SignUp from "./user/SignUp";
 import SignIn from "./user/SignIn";
+import NewArticle from "./article/NewArticle";
 import Navigation from "./Navigation";
 import Home from "./Home";
 import CoursesContainer from "./course/CoursesContainer";
@@ -56,6 +57,12 @@ function App() {
                     </Route>
                     <Route path="/courses">
                         <CoursesContainer/>
+                    </Route>
+                    <Route path="/articles/all">
+                        <PurchasedArticles />
+                    </Route>
+                    <Route path="/articles/new">
+                        <NewArticle/>
                     </Route>
                 </Switch>
             </Router>

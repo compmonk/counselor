@@ -9,28 +9,31 @@ function UserSession() {
     async function fetchData() {
       const sessions  = await axios.get("/api/user/sessions");
       console.log("session data-->", sessions, typeof (sessions.data));
-      setSessions(sessions);
+      setSessions(sessions.data);
     }
     fetchData();
   }, []);
 
-  console.log(sessions);
   return (
     <div className="container">
       <Table striped bordered hover>
         <thead>
           <tr><td>Start Time</td>
           <td>End Time</td>
-          <td>Active</td></tr>
+          <td>Active</td>
+          <td>Expiration Time</td>
+          
+          </tr>
         </thead>
         <tbody>
-          {sessions.map((session) => (
-            <tr>
+          {sessions && sessions.map((session, index) => (
+            <tr key={index}>
               <td>{session.startTime}</td>
-              <td>{session.endTime}</td>
-              <td>{session.isActive}</td>
+              <td>{session.endTime?session.endTime:"NA"}</td>
+              <td>{session.isActive?"true":"false"}</td>
+              <td>{session.expirationTime}</td>
             </tr>
-          ))}
+          )) || "No Data"}
         </tbody>
       </Table>
     </div>
