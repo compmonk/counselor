@@ -76,7 +76,6 @@ router.post("/", async (request, response) => {
 
 router.post("/:id/purchase", async (request, response) => {
   try {
-    console.log("test sdef");
     const article = await articleService.purchase(
       request.params.id,
       // "5eb9bb4afda1a60b18bc8040"

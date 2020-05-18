@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.7.2",
     "express": "^4.17.1",
@@ -14,10 +15,10 @@
     "moment": "^2.25.3",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.14",
+    "react-rating": "^2.0.5",
     "react-scripts": "3.4.1",
     "redis": "^3.0.2",
     "stellar-sdk": "^5.0.2",
-    "axios": "^0.19.2",
     "underscore": "^1.10.2"
   },
   "scripts": {

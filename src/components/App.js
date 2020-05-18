@@ -24,6 +24,7 @@ import SignOut from "./user/SignOut";
 import PrivateRoute from "./auth/PrivateRoute";
 import UserTransactions from "./user/UserTransactions";
 import {LoginValidator} from "./auth/LoginValidator";
+import Article from "./article/Article";
 import axios from "axios";
 
 function App() {
@@ -71,6 +72,9 @@ function App() {
                     </Route>
                     <Route path="/courses">
                         <LoginValidator ChildComponent={CoursesContainer}/>
+                    </Route>
+                    <Route path="/articles/:articleId">
+                        <LoginValidator ChildComponent={Article}/>
                     </Route>
                 </Switch>
             </Router>

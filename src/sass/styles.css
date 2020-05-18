@@ -8,3 +8,9 @@
 .counselor-table {
     margin-top: 70px;
 }
+.navbar-light .navbar-nav .nav-link {
+    
+    font-weight: bold;
+    color: #332f2f;
+    text-shadow: 0 0 black;
+}
