@@ -201,7 +201,50 @@ async function update(articleId, updatedArticle, partial = false) {
     errors["keywords"] = "invalid type";
     error.http_code = 400;
   }
-
+  if (updatedArticle.hasOwnProperty("ratings")) {
+    if (!Array.isArray(updatedArticle["ratings"])) {
+      errors["ratings"] = "invalid type";
+      error.http_code = 400;
+    }
+    if (typeof updatedArticle.ratings.reviewerId === "string") {
+      try {
+        updatedArticle.ratings.reviewerId = new mongoose.Types.ObjectId(
+          updatedArticle.ratings.reviewerId
+        );
+      } catch (e) {
+        throw e;
+      }
+    }
+    if (error.http_code !== 200) {
+      error.message = JSON.stringify({ errors: errors });
+      throw error;
+    }
+    // let getArt = await get(articleId);
+    const artRtgUpd = await articleModel.updateOne(
+      { _id: articleId },
+      {
+        $push: {
+          ratings: {
+            reviewerId: updatedArticle.ratings.reviewerId,
+            rating: updatedArticle.ratings.rating,
+          },
+        },
+      }
+    );
+    const getting = await get(articleId);
+    if (getting && getting.ratings.length > 0) {
+      let totalRating = 0;
+      for (var i = 0; i < getting.ratings.length; i++) {
+        totalRating = totalRating + getting.ratings[i].rating;
+      }
+      let avgRating = totalRating / getting.ratings.length;
+    }
+    const ratingUpdate = await articleModel.updateOne(
+      { _id: articleId },
+      { $set: { rating: avgRating } }
+    );
+    return await get(articleId);
+  }
   if (error.http_code !== 200) {
     error.message = JSON.stringify({ errors: errors });
     throw error;

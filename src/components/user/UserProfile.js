@@ -33,21 +33,20 @@ function UserProfile() {
         className="col-sm-8 col-md-8 col-lg-8 counselor-form"
         onSubmit={submitNameChange}
       >
-        <Form.Label>First Name</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder={currentUser.firstName}
-          onChange={changeFirstName}
-        />
-
-        <Form.Label>Last Name</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder={currentUser.lastName}
-          onChange={changeLastName}
-        />
-
         <Form.Group controlId="formBasicEmail">
+          <Form.Label>First Name</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder={currentUser.firstName}
+            onChange={changeFirstName}
+          />
+
+          <Form.Label>Last Name</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder={currentUser.lastName}
+            onChange={changeLastName}
+          />
           <Form.Label>Email address</Form.Label>
           <Form.Control disabled type="email" placeholder={currentUser.email} />
           <Form.Text className="text-muted">
@@ -88,7 +87,7 @@ function UserProfile() {
                 : "No Articles"
             }
           />
-          <br/>
+          <br />
           <Button variant="primary" type="submit">
             Update
           </Button>

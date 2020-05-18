@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Table} from "react-bootstrap";
+import _ from "underscore";
 import axios from "axios";
 
 function UserSession() {
@@ -7,9 +8,9 @@ function UserSession() {
 
     useEffect(() => {
         async function fetchData() {
-            const sessions = await axios.get("/api/user/sessions");
-            console.log("session data-->", sessions, typeof (sessions.data));
-            setSessions(sessions.data);
+            let sessions = await axios.get("/api/user/sessions");
+            sessions = _.last(sessions.data,15);
+            setSessions(sessions);
         }
 
         fetchData();

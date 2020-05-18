@@ -7,25 +7,22 @@ import axios from "axios";
 
 function PurchasedArticles() {
   const [articles, setArticles] = useState([]);
-  const [show, setShow] = useState(false);
-
-  let list = [];
+  const [show, setShow] = useState({view:false, id:100});
+  let list;
   useEffect(() => {
     async function fetch() {
       list = (await axios.get("/api/user/articles")).data;
-
-      console.log(typeof list, "list -->", list);
-
       setArticles(list);
     }
     fetch();
   }, []);
 
   const handleClose = () => {
-    setShow(false);
+    console.log("calling handleClose again?xxxxxxxxx")
+    setShow({view:false, id:show.id});
   };
   const handleShow = () => {
-    setShow(true);
+    setShow({view:true,id:(show.id+1)});
   };
 
   if (!articles) return <Page404></Page404>;
@@ -35,7 +32,7 @@ function PurchasedArticles() {
         articles.map((article, index) => {
           return (
             <div>
-              <Card key={index}>
+              <Card>
                 <Card.Body>
                   <Card.Title>
                     {index + 1}.{article.title}
@@ -44,12 +41,12 @@ function PurchasedArticles() {
                   <Card.Text>Read Count {article.read}</Card.Text>
 
                   <Card.Text>Ratings {article.rating}</Card.Text>
-                  {/* <Button type="button" class="btn btn-primary">
+                  <Button type="button" onClick={handleShow}>
                     Show Details
-                  </Button> */}
+                  </Button>
                 </Card.Body>
               </Card>
-              {/* <Modal id={article.title} show={show} onHide={handleClose}>
+              <Modal key={index} id={show.id} show={show.view} onHide={handleClose}>
                 <Modal.Header closeButton>
                   <Modal.Title>{article.title}</Modal.Title>
                 </Modal.Header>
@@ -59,7 +56,7 @@ function PurchasedArticles() {
                     Close
                   </Button>
                 </Modal.Footer>
-              </Modal> */}
+              </Modal>
             </div>
           );
         })) ||
