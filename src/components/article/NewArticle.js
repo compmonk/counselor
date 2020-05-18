@@ -9,7 +9,7 @@ function UserProfile() {
   const [title, setTitle] = useState({});
   const [text, setText] = useState({});
   const [html, setHtml] = useState({});
-  const [keyword, setKeyword] = useState({});
+  const [keywords, setKeyword] = useState(undefined);
 
   const handleTitle = function (e) {
     setTitle(e.target.value);
@@ -25,36 +25,25 @@ function UserProfile() {
   };
   const handleKeywords = function (e) {
     setKeyword(e.target.value);
-    console.log("set arr", e.target.value);
     e.preventDefault();
   };
   const submitNameChange = async (e) => {
-    
-    let arr = keyword.split(" ", ",");
+    let arr = keywords.split(" ");
     let article = {
       title: title,
       text: text,
       html: html,
-      keyword: keyword
+      keywords: arr,
     };
-    alert(keyword);
-    try {
-      let rec_article = await axios.post("/api/articles/", article);
-      if (rec_article) {
-        alert("Create Success");
-        e.preventDefault();
-      } else {
-        alert("Create Failed, login First");
-        e.preventDefault();
-      }
-    } catch (e) {
-      alert("Internal error" + e);
-    }
+    await axios.post("/api/articles/", article)
   };
 
   return (
     <div className="row justify-content-center">
-      <Form className="col-sm-8 col-md-8 col-lg-8 counselor-form" onSubmit={submitNameChange}>
+      <Form
+        className="col-sm-8 col-md-8 col-lg-8 counselor-form"
+        onSubmit={submitNameChange}
+      >
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Title</Form.Label>
           <Form.Control

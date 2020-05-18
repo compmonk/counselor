@@ -31,7 +31,7 @@ function UserTransactions() {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((tx, index) => (
+            {transactions && transactions.map((tx, index) => (
               <tr key={index}>
                 <td>{tx.created_at}</td>
                 <td>{tx.fee_charged ? tx.fee_charged : "NA"}</td>
@@ -41,7 +41,7 @@ function UserTransactions() {
                 <td>{tx.valid_after ? tx.valid_after : "NA"}</td>
                 <td>{tx.expirationTime ? tx.expirationTime : "NA"}</td>
               </tr>
-            ))}
+            ))||"No Transactions data"}
           </tbody>
         </Table>
       </div>
