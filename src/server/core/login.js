@@ -1,7 +1,7 @@
 const sessions = require("../data/sessions");
 
 const isLoggedIn = function (request) {
-    return !!(request.session.user && sessions.isSessionValid(request.sessionID));
+    return !!(request && request.session && request.session.user && sessions.isSessionValid(request.sessionID));
 };
 
 module.exports = {

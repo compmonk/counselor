@@ -36,7 +36,7 @@ function UserProfile() {
 
   return (
     <div className="row justify-content-center">
-      <Form className="col-sm-8 col-md-8 col-lg-8" onSubmit={submitNameChange}>
+      <Form className="col-sm-8 col-md-8 col-lg-8 counselor-form" onSubmit={submitNameChange}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control disabled type="email" placeholder={profile.email} />

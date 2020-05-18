@@ -23,15 +23,19 @@ router.post("/signup", async (request, response) => {
             session.refreshToken,
             session.accessToken,
             session.expirationTime);
-        response.cookie("accessToken", session.accessToken, {
-            expires: session.expirationTime.toDate(),
-            httpOnly: false
-        });
-        response.cookie("refreshToken", session.refreshToken, {
-            expires: session.expirationTime.toDate(),
-            httpOnly: false
-        });
+        // response.cookie("accessToken", session.accessToken, {
+        //     expires: session.expirationTime.toDate(),
+        //     httpOnly: false
+        // });
+        // response.cookie("refreshToken", session.refreshToken, {
+        //     expires: session.expirationTime.toDate(),
+        //     httpOnly: false
+        // });
         response.cookie("uid", request.session.user._id.toString(), {
+            expires: session.expirationTime.toDate(),
+            httpOnly: false
+        })
+        response.cookie("sid", request.sessionID, {
             expires: session.expirationTime.toDate(),
             httpOnly: false
         })
@@ -59,15 +63,11 @@ router.post("/login", async (request, response) => {
             request.session.user = user;
             request.session.userID = user._id;
 
-            response.cookie("accessToken", session.accessToken, {
-                expires: session.expirationTime.toDate(),
-                httpOnly: false
-            });
-            response.cookie("refreshToken", session.refreshToken, {
-                expires: session.expirationTime.toDate(),
-                httpOnly: false
-            });
             response.cookie("uid", request.session.user._id.toString(), {
+                expires: session.expirationTime.toDate(),
+                httpOnly: false
+            })
+            response.cookie("sid", request.sessionID, {
                 expires: session.expirationTime.toDate(),
                 httpOnly: false
             })

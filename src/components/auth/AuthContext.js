@@ -2,5 +2,9 @@ import React from "react";
 
 export const AuthContext = React.createContext({
     currentUser:{},
-    setUser:() => {}
+    setUser:() => {},
+    isUserLoading:false,
+    setIsUserLoading:() => {},
+    cookies:"",
+    setCookies:() => {},
 }) ;

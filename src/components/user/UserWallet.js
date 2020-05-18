@@ -23,7 +23,7 @@ function UserWallet() {
     (
       <div className="row justify-content-center" style={{paddingTop: "5%"}}>
         <div className="col-sm-8 col-md-8 col-lg-8">
-          <Table striped bordered hover>
+          <Table striped bordered hover className="counselor-table">
             <thead>
               <tr>
                 <th>Currency</th>

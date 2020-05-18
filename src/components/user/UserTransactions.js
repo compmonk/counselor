@@ -18,16 +18,16 @@ function UserTransactions() {
   return (
     <div className="flex-sm row">
       <div className="col-sm-8 col-md-8 col-lg-8">
-        <Table striped bordered hover>
+        <Table striped bordered hover className="counselor-table">
           <thead>
             <tr>
-              <td>Created Time</td>
-              <td>Fees Charged</td>
-              <td>Transaction ID</td>
-              <td>Source Account</td>
-              <td>Was Successful?</td>
-              <td>Valid After</td>
-              <td>Expiration Time</td>
+              <th>Created Time</th>
+              <th>Fees Charged</th>
+              <th>Transaction ID</th>
+              <th>Source Account</th>
+              <th>Was Successful?</th>
+              <th>Valid After</th>
+              <th>Expiration Time</th>
             </tr>
           </thead>
           <tbody>

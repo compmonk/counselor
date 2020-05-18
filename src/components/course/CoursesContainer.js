@@ -47,7 +47,7 @@ function CoursesContainer() {
     if(error) {
         return (
             <div>
-                <Form className="container-fluid col-lg-6 form">
+                <Form className="container-fluid col-lg-6 counselor-form">
                 <Badge variant="danger">Please enter valid token!</Badge>{' '}
                     <Form.Group as={Col} controlId="formGridGenerateToken">
                     <Form.Text className="text-muted">
@@ -77,7 +77,7 @@ function CoursesContainer() {
     else if (!courses.length) {
         return (
             <div>
-                <Form className="container-fluid col-lg-6 form">
+                <Form className="container-fluid col-lg-6 counselor-form">
                     <Form.Group as={Col} controlId="formGridGenerateToken">
                     <Form.Text className="text-muted">
                         Please Integrate Canvas by generating a Token.

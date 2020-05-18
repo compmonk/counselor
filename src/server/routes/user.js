@@ -24,7 +24,6 @@ router.get("/transactions", async (request, response) => {
 router.get("/balance", async (request, response) => {
   try {
     const user = await users.getUserById(request.session.userID);
-    //const user = await users.getUserById("5eb9bb4afda1a60b18bc8040");
     const balance = await stellarService.getBalance(user.privateKey);
     response.send(balance);
   } catch (e) {
@@ -35,10 +34,8 @@ router.get("/balance", async (request, response) => {
 
 router.post("/integrate", async (request, response) => {
   try {
-    //const user = await users.getUserById();
-    const x= await canvas.sendCoursesToDb("5eb9bb4afda1a60b18bc8040",request.body.token)
-    //const balance = await stellarService.getBalance(user.privateKey);
-    response.send(x);
+    const courses= await canvas.sendCoursesToDb(request.session.userID,request.body.token)
+    response.send(courses);
   } catch (e) {
     response.setHeader("content-type", "application/json");
     response.status(e.http_code).send(e.message);
@@ -47,11 +44,7 @@ router.post("/integrate", async (request, response) => {
 
 router.get("/courses", async (request, response) => {
   try {
-    //const user = await users.getUserById();
-    console.log(request.body.token);
-    const courses= await canvas.getCoursesByUserId("5eb9bb4afda1a60b18bc8040");
-    console.log(courses);
-    //const balance = await stellarService.getBalance(user.privateKey);
+    const courses= await canvas.getCoursesByUserId(request.session.userID);
     response.send(courses);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -67,9 +60,7 @@ router.get("/sessions", async (request, response) => {
     const sessionsList = await sessions.getSessionByUserId(
       request.session.userID
     );
-    // const sessionsList = await sessions.getSessionByUserId(
-    //   "5ebfcffa0bf14120998928f7"
-    // );
+
     response.send(sessionsList);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -84,11 +75,6 @@ router.put("/update", async (request, response) => {
       request.body,
       true
     );
-    // const user = await users.updateUser(
-    //   "5eb9bb4afda1a60b18bc8040",
-    //   request.body,
-    //   true
-    // );
     response.status(201).send(user);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -99,7 +85,6 @@ router.put("/update", async (request, response) => {
 router.get("/detail", async (request, response) => {
   try {
     const user = await users.getUserById(request.session.userID);
-    // const user = await users.getUserById(request.params.id);
     response.send(user);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -110,7 +95,6 @@ router.get("/detail", async (request, response) => {
 router.get("/articles", async (request, response) => {
   try {
     const articles = await users.getArticlesByUserId(request.session.userID);
-    //const articles = await users.getArticlesByUserId(request.params.id);
     response.send(articles);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -121,9 +105,6 @@ router.get("/articles", async (request, response) => {
 router.get("/recommendation", async (request, response) => {
   try {
     const articles = await recommendationService.recommend(request.session.userID);
-    // const articles = await recommendationService.recommend(
-    //   "5eb9bb4afda1a60b18bc8040"
-    // );
     response.send(articles);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -154,7 +135,6 @@ router.get("/published", async (request, response) => {
 router.get("/:id", async (request, response) => {
   try {
     const user = await users.getUserById(request.params.id);
-    //const user = await users.getUserById("5eb9bb4afda1a60b18bc8040");
     response.send(user);
   } catch (e) {
     response.setHeader("content-type", "application/json");

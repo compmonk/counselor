@@ -6,7 +6,14 @@ import {AuthContext} from "../auth/AuthContext";
 import {Redirect} from "react-router-dom";
 
 function SignIn() {
-    const {currentUser, setCurrentUser} = useContext(AuthContext);
+    const {
+        currentUser,
+        setCurrentUser,
+        loadingUser,
+        setLoadingUser,
+        cookies,
+        setCookies
+    } = useContext(AuthContext);
     const [currencies, setCurrencies] = useState([])
 
     useEffect(() => {
@@ -32,10 +39,9 @@ function SignIn() {
             "email": email.value,
             "password": password.value,
         }
-        console.log(user)
-        const {data} = await axios.post("/api/root/login", user)
-        console.log(data)
+        const {data} = await axios.post("/api/root/login", user, {withCredentials:true, headers:cookies})
         setCurrentUser(data);
+        setCookies(document.cookie)
     }
 
     if (currentUser) {
@@ -44,7 +50,7 @@ function SignIn() {
 
 
     return (
-        <Form className="container-fluid col-lg-6 form" onSubmit={signin}>
+        <Form className="container-fluid col-lg-6 counselor-form" onSubmit={signin}>
 
             <Form.Group as={Col} controlId="formGridEmail">
                 <Form.Label>Email</Form.Label>

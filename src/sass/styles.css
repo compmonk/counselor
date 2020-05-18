@@ -1,6 +1,10 @@
-.form {
+.counselor-form {
     margin-top: 70px;
     border: 1px solid gray;
     border-radius: 5px;
     padding: 25px;
+}
+
+.counselor-table {
+    margin-top: 70px;
 }

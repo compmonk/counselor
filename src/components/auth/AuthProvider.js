@@ -7,6 +7,7 @@ import {AuthContext} from "./AuthContext";
 export const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [loadingUser, setLoadingUser] = useState(false);
+    const [cookies, setCookies] = useState("");
 
     useEffect(() => {
         async function fetchData() {
@@ -21,5 +22,12 @@ export const AuthProvider = ({children}) => {
         return <div>Loading....</div>;
     }
 
-    return <AuthContext.Provider value={{currentUser, setCurrentUser}}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{
+        currentUser,
+        setCurrentUser,
+        loadingUser,
+        setLoadingUser,
+        cookies,
+        setCookies
+    }}>{children}</AuthContext.Provider>;
 };
