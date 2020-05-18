@@ -23,6 +23,8 @@ import CoursesContainer from "./course/CoursesContainer";
 import SignOut from "./user/SignOut";
 import PrivateRoute from "./auth/PrivateRoute";
 import UserTransactions from "./user/UserTransactions";
+import {LoginValidator} from "./auth/LoginValidator";
+import axios from "axios";
 
 function App() {
 
@@ -40,36 +42,36 @@ function App() {
                     <Route path="/signin">
                         <SignIn/>
                     </Route>
-                    <PrivateRoute path="/logout">
-                        <SignOut/>
-                    </PrivateRoute>
-                    <PrivateRoute exact path="/articles">
-                        <ArticlesContainer/>
-                    </PrivateRoute>
-                    <PrivateRoute path="/articles/all">
-                        <PurchasedArticles/>
-                    </PrivateRoute>
-                    <PrivateRoute path="/articles/new">
-                        <NewArticle/>
-                    </PrivateRoute>
-                    <PrivateRoute exact path="/articles/recommendations">
-                        <RecommendationContainer/>
-                    </PrivateRoute>
-                    <PrivateRoute path="/user/account">
-                        <UserProfile/>
-                    </PrivateRoute>
-                    <PrivateRoute path="/user/wallet">
-                        <UserWallet/>
-                    </PrivateRoute>
-                    <PrivateRoute path="/user/sessions">
-                        <UserSession/>
-                    </PrivateRoute>
-                    <PrivateRoute path="/user/transactions">
-                        <UserTransactions/>
-                    </PrivateRoute>
-                    <PrivateRoute path="/courses">
-                        <CoursesContainer/>
-                    </PrivateRoute>
+                    <Route path="/logout">
+                        <SignOut signout={() => (axios.get("/api/root/logout" ))}/>
+                    </Route>
+                    <Route exact path="/articles">
+                        <LoginValidator ChildComponent={ArticlesContainer}/>
+                    </Route>
+                    <Route path="/articles/all">
+                        <LoginValidator ChildComponent={PurchasedArticles}/>
+                    </Route>
+                    <Route path="/articles/new">
+                        <LoginValidator ChildComponent={NewArticle}/>
+                    </Route>
+                    <Route exact path="/articles/recommendations">
+                        <LoginValidator ChildComponent={RecommendationContainer}/>
+                    </Route>
+                    <Route path="/user/account">
+                        <LoginValidator ChildComponent={UserProfile}/>
+                    </Route>
+                    <Route path="/user/wallet">
+                        <LoginValidator ChildComponent={UserWallet}/>
+                    </Route>
+                    <Route path="/user/sessions">
+                        <LoginValidator ChildComponent={UserSession}/>
+                    </Route>
+                    <Route path="/user/transactions">
+                        <LoginValidator ChildComponent={UserTransactions}/>
+                    </Route>
+                    <Route path="/courses">
+                        <LoginValidator ChildComponent={CoursesContainer}/>
+                    </Route>
                 </Switch>
             </Router>
         </AuthProvider>

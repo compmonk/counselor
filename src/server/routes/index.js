@@ -8,7 +8,7 @@ const rootRoutes = require("./root");
 const constructorMethod = (app) => {
   app.use(
     session({
-      name: "AuthCookie",
+      name: "session",
       secret: "meetmetatthetogaparty",
       resave: false,
       saveUninitialized: true,

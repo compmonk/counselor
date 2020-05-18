@@ -23,14 +23,6 @@ router.post("/signup", async (request, response) => {
             session.refreshToken,
             session.accessToken,
             session.expirationTime);
-        // response.cookie("accessToken", session.accessToken, {
-        //     expires: session.expirationTime.toDate(),
-        //     httpOnly: false
-        // });
-        // response.cookie("refreshToken", session.refreshToken, {
-        //     expires: session.expirationTime.toDate(),
-        //     httpOnly: false
-        // });
         response.cookie("uid", request.session.user._id.toString(), {
             expires: session.expirationTime.toDate(),
             httpOnly: false
@@ -50,8 +42,6 @@ router.post("/signup", async (request, response) => {
 router.post("/login", async (request, response) => {
     try {
         if (isLoggedIn(request)) {
-            // response.redirect(`/${request.session.user.username}/`);
-            response.cookie("rememberme", "yes", {maxAge: 3600, httpOnly: false});
             response.send(request.session.user);
         }
 
@@ -88,8 +78,7 @@ router.post("/login", async (request, response) => {
 // logout web api
 router.get("/logout", async function (request, response) {
     await sessions.endSession(request.sessionID);
-    response.clearCookie("accessToken")
-    response.clearCookie("refreshToken")
+    response.clearCookie("sid")
     response.clearCookie("uid")
     request.session.destroy(function (err) {
         return response.status(204).send(userService.signOut());
