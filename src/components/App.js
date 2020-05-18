@@ -20,6 +20,9 @@ import NewArticle from "./article/NewArticle";
 import Navigation from "./Navigation";
 import Home from "./Home";
 import CoursesContainer from "./course/CoursesContainer";
+import SignOut from "./user/SignOut";
+import PrivateRoute from "./auth/PrivateRoute";
+import UserTransactions from "./user/UserTransactions";
 
 function App() {
 
@@ -37,33 +40,36 @@ function App() {
                     <Route path="/signin">
                         <SignIn/>
                     </Route>
-                    <Route exact path="/articles">
+                    <PrivateRoute path="/logout">
+                        <SignOut/>
+                    </PrivateRoute>
+                    <PrivateRoute exact path="/articles">
                         <ArticlesContainer/>
-                    </Route>
-                    <Route exact path="/articles/recommendations">
-                        <RecommendationContainer/>
-                    </Route>
-                    <Route path="/user/account">
-                        <UserProfile/>
-                    </Route>
-                    <Route path="/user/wallet">
-                        <UserWallet/>
-                    </Route>
-                    <Route path="/user/sessions">
-                        <UserSession/>
-                    </Route>
-                    <Route path="/user/transaction">
-                        <UserProfile/>
-                    </Route>
-                    <Route path="/courses">
-                        <CoursesContainer/>
-                    </Route>
-                    <Route path="/articles/all">
-                        <PurchasedArticles />
-                    </Route>
-                    <Route path="/articles/new">
+                    </PrivateRoute>
+                    <PrivateRoute path="/articles/all">
+                        <PurchasedArticles/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/articles/new">
                         <NewArticle/>
-                    </Route>
+                    </PrivateRoute>
+                    <PrivateRoute exact path="/articles/recommendations">
+                        <RecommendationContainer/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/user/account">
+                        <UserProfile/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/user/wallet">
+                        <UserWallet/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/user/sessions">
+                        <UserSession/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/user/transactions">
+                        <UserTransactions/>
+                    </PrivateRoute>
+                    <PrivateRoute path="/courses">
+                        <CoursesContainer/>
+                    </PrivateRoute>
                 </Switch>
             </Router>
         </AuthProvider>
