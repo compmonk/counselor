@@ -348,14 +348,9 @@ async function getArticlesByUserId(userId) {
       error.http_code = 400;
     }
     let allArticles = [];
-    const articlesByUser = await articleModel.find({ author: userId });
+    let articlesByUser = await articleModel.find({ author: userId });
     if (articlesByUser.length === 0) {
-      errors["authorId"] = `No articles found with author Id ${userId} `;
-      error.http_code = 404;
-      error.message = JSON.stringify({
-        errors: errors,
-      });
-      throw error;
+        articlesByUser=[];
     }
     allArticles = articlesByUser;
     const usr = await userModel.findOne({ _id: userId });
