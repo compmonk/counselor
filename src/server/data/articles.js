@@ -148,6 +148,31 @@ async function get(articleId) {
     throw e;
   }
 }
+async function updateByAuthor(
+  articleId,
+  updatedArticle,
+  updaterId,
+  partial = false
+) {
+  const error = new Error();
+  error.http_code = 200;
+  const errors = {};
+  try {
+    const getArt = await get(articleId);
+    if (getArt.author.toString() === updaterId) {
+      return await update(articleId, updatedArticle, partial);
+    } else {
+      errors[
+        "article"
+      ] = `User ${updaterId} is not the author of articleId ${articleId}`;
+      error.http_code = 403;
+      error.message = JSON.stringify({ errors: errors });
+      throw error;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
 
 async function update(articleId, updatedArticle, partial = false) {
   const error = new Error();
@@ -201,61 +226,33 @@ async function update(articleId, updatedArticle, partial = false) {
     errors["keywords"] = "invalid type";
     error.http_code = 400;
   }
-  if (updatedArticle.hasOwnProperty("ratings")) {
-    if (!Array.isArray(updatedArticle["ratings"])) {
-      errors["ratings"] = "invalid type";
-      error.http_code = 400;
+  if (!partial && !updatedArticle.hasOwnProperty("ratings")) {
+    errors["ratings"] = "missing property";
+    error.http_code = 400;
+  }
+  if (typeof updatedArticle.author === "string") {
+    try {
+      updatedArticle.author = new mongoose.Types.ObjectId(
+        updatedArticle.author
+      );
+    } catch (e) {
+      throw e;
     }
-    if (typeof updatedArticle.ratings.reviewerId === "string") {
-      try {
-        updatedArticle.ratings.reviewerId = new mongoose.Types.ObjectId(
-          updatedArticle.ratings.reviewerId
-        );
-      } catch (e) {
-        throw e;
-      }
-    }
-    if (error.http_code !== 200) {
-      error.message = JSON.stringify({ errors: errors });
-      throw error;
-    }
-    // let getArt = await get(articleId);
-    const artRtgUpd = await articleModel.updateOne(
-      { _id: articleId },
-      {
-        $push: {
-          ratings: {
-            reviewerId: updatedArticle.ratings.reviewerId,
-            rating: updatedArticle.ratings.rating,
-          },
-        },
-      }
-    );
-    const getting = await get(articleId);
-    if (getting && getting.ratings.length > 0) {
-      let totalRating = 0;
-      for (var i = 0; i < getting.ratings.length; i++) {
-        totalRating = totalRating + getting.ratings[i].rating;
-      }
-      let avgRating = totalRating / getting.ratings.length;
-    }
-    const ratingUpdate = await articleModel.updateOne(
-      { _id: articleId },
-      { $set: { rating: avgRating } }
-    );
-    return await get(articleId);
   }
   if (error.http_code !== 200) {
     error.message = JSON.stringify({ errors: errors });
     throw error;
   }
 
-  if (articleId === undefined || articleId === null) {
-    errors["id"] = "id is not defined";
-    error.http_code = 400;
-  }
-
   try {
+    delete updatedArticle._id;
+    let totalRating = 0;
+    for (var i = 0; i < updatedArticle.ratings.length; i++) {
+      totalRating = totalRating + updatedArticle.ratings[i].rating;
+    }
+    let avgRating = totalRating / updatedArticle.ratings.length;
+    updatedArticle.rating = avgRating;
+
     const change = await articleModel.update(
       { _id: articleId },
       { $set: updatedArticle }
@@ -303,4 +300,5 @@ module.exports = {
   get,
   update,
   getAll,
+  updateByAuthor,
 };

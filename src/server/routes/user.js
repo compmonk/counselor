@@ -4,6 +4,7 @@ const { isLoggedIn } = require("../core/login");
 const users = require("../data/users");
 const canvas = require("../data/canvas");
 const sessions = require("../data/sessions");
+const articles = require("../data/articles");
 const stellarService = require("../services/stellarService");
 const recommendationService = require("../services/recommendationService");
 
@@ -13,7 +14,9 @@ router.use(bodyParser.urlencoded());
 
 router.get("/transactions", async (request, response) => {
   try {
-    const transactions = await stellarService.getTransactions(request.session.user.publicKey);
+    const transactions = await stellarService.getTransactions(
+      request.session.user.publicKey
+    );
     response.send(transactions);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -34,7 +37,10 @@ router.get("/balance", async (request, response) => {
 
 router.post("/integrate", async (request, response) => {
   try {
-    const courses= await canvas.sendCoursesToDb(request.session.userID,request.body.token)
+    const courses = await canvas.sendCoursesToDb(
+      request.session.userID,
+      request.body.token
+    );
     response.send(courses);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -44,15 +50,13 @@ router.post("/integrate", async (request, response) => {
 
 router.get("/courses", async (request, response) => {
   try {
-    const courses= await canvas.getCoursesByUserId(request.session.userID);
+    const courses = await canvas.getCoursesByUserId(request.session.userID);
     response.send(courses);
   } catch (e) {
     response.setHeader("content-type", "application/json");
     response.status(e.http_code).send(e.message);
   }
 });
-
-
 
 router.get("/sessions", async (request, response) => {
   try {
@@ -104,7 +108,9 @@ router.get("/articles", async (request, response) => {
 
 router.get("/recommendation", async (request, response) => {
   try {
-    const articles = await recommendationService.recommend(request.session.userID);
+    const articles = await recommendationService.recommend(
+      request.session.userID
+    );
     response.send(articles);
   } catch (e) {
     response.setHeader("content-type", "application/json");
@@ -146,6 +152,20 @@ router.put("/:id", async (request, response) => {
   try {
     const user = await users.updateUser(request.params.id, request.body, true);
     response.status(201).send(user);
+  } catch (e) {
+    response.setHeader("content-type", "application/json");
+    response.status(e.http_code).send(e.message);
+  }
+});
+
+router.put("/:articleId/update", async (request, response) => {
+  try {
+    const article = await articles.updateByAuthor(
+      request.params.articleId,
+      request.body,
+      request.session.userID
+    );
+    response.status(201).json(article);
   } catch (e) {
     response.setHeader("content-type", "application/json");
     response.status(e.http_code).send(e.message);
