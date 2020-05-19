@@ -89,6 +89,9 @@ async function purchase(articleId, purchaserId) {
     // return await articles.update(article._id, { read: article.read + 1 }, true);
     return result;
   } catch (e) {
+    errors["error"] = e;
+    error.http_code = 400;
+    throw error;
     throw e;
   }
 }
