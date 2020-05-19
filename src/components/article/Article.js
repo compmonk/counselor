@@ -5,6 +5,7 @@ import {useParams} from "react-router-dom";
 import {AuthContext} from "../auth/AuthContext";
 import "../../sass/App.css";
 import axios from "axios";
+import Rating from "react-rating";
 
 
 function Article() {
@@ -26,24 +27,39 @@ function Article() {
     const onSubmit = async (e) => {
         e.preventDefault();
         let updatedArticle = article;
-        const {title, text, html, keywords} = e.target.elements;
-        updatedArticle["title"] = title.value
-        updatedArticle["text"] = text.value
-        updatedArticle["html"] = html.value
-        updatedArticle["keywords"] = keywords.value.split(",")
-        console.log(updatedArticle)
+
+        if (userRating && userRating.rating) {
+            if (!userRating.hasOwnProperty("reviewerId")) {
+                userRating.reviewerId = currentUser._id
+                updatedArticle.ratings.push(userRating);
+            } else {
+                updatedArticle.ratings.map(rating => rating.reviewerId === userRating.reviewerId ? userRating : rating);
+            }
+        }
+
 
         if (isAuthor) {
+            const {title, text, html, keywords, rating} = e.target.elements;
+            updatedArticle["title"] = title.value
+            updatedArticle["text"] = text.value
+            updatedArticle["html"] = html.value
+            updatedArticle["keywords"] = keywords.value.split(",")
+
             const {data} = await axios.put(`/api/user/${updatedArticle._id}/update`, updatedArticle, {
+                withCredentials: true,
+                headers: cookies
+            })
+        } else {
+            const {data} = await axios.put(`/api/articles/${articleId}`, updatedArticle, {
                 withCredentials: true,
                 headers: cookies
             })
         }
 
-        window.location.href = "/articles/all";
+        window.location.href = `/articles/${articleId}`;
 
-        // userRating & userRating.rating ? userRating.rating = rating.value : {} = {}
     }
+
 
     if (currentUser && article) {
         isAuthor = article.author === currentUser._id
@@ -88,18 +104,20 @@ function Article() {
                 <Form.Label>Cost</Form.Label>
                 <Form.Control disabled type="text" value={article.cost}/>
             </Form.Group>
-            {/*<Form.Row as={Col}>*/}
-            {/*    <Form.Group as={Col}>*/}
-            {/*        <Form.Label>Your Rating</Form.Label>*/}
-            {/*        <Form.Group as={Col}><Rating*/}
-            {/*            name="rating"*/}
-            {/*            placeholderRating={userRating && userRating.rating ? userRating.rating : 0}/></Form.Group>*/}
-            {/*    </Form.Group>*/}
-            {/*    <Form.Group>*/}
-            {/*        <Form.Label>Average Rating</Form.Label>*/}
-            {/*        <Form.Group as={Col}><Rating readonly={true} placeholderRating={article.rating}/></Form.Group>*/}
-            {/*    </Form.Group>*/}
-            {/*</Form.Row>*/}
+            <Form.Row as={Col}>
+                <Form.Group as={Col}>
+                    <Form.Label>Your Rating</Form.Label>
+                    <Form.Group as={Col}><Rating
+                        name="rating" onChange={(rating) => {
+                        userRating ? userRating.rating = rating : userRating = {rating}
+                    }}
+                        placeholderRating={userRating && userRating.rating ? userRating.rating : 0}/></Form.Group>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Average Rating</Form.Label>
+                    <Form.Group as={Col}><Rating readonly={true} initialRating={article.rating}/></Form.Group>
+                </Form.Group>
+            </Form.Row>
             <Button type="submit">
                 {isAuthor ? "Update" : "Rate"}
             </Button>

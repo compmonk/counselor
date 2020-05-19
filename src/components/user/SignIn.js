@@ -31,7 +31,6 @@ function SignIn() {
 
     const signin = async (e) => {
         e.preventDefault();
-        console.log(e.target.elements)
         const {email, password} = e.target.elements;
         const user = {
             "email": email.value,
