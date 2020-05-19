@@ -8,6 +8,13 @@
 .counselor-table {
     margin-top: 70px;
 }
+
+.counselor-box {
+    margin-top: 70px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 25px;
+}
 .navbar-light .navbar-nav .nav-link {
     
     font-weight: bold;
