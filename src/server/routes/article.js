@@ -63,7 +63,7 @@ router.post("/:id/purchase", async (request, response) => {
 
 router.put("/:id", async (request, response) => {
   try {
-    const article = await articles.update(request.params.id, request.body);
+    const article = await articles.update(request.params.id, request.body, true);
     response.status(201).json(article);
   } catch (e) {
     response.setHeader("content-type", "application/json");
