@@ -48,7 +48,7 @@ function Recommend() {
                 <Card.Text>{article.text}</Card.Text>
                 <Card.Text>Read Count {article.read}</Card.Text>
 
-                <Card.Text>Ratings {article.rating}</Card.Text>
+                <Card.Text>Rating {article.rating}</Card.Text>
                 <Button variant="primary" value={article._id} onClick={buy}>
                   Buy
                 </Button>
