@@ -14,7 +14,7 @@ const Navigation = () => {
 
 const UserNavigation = () => {
     return (<div className="nav-bar">
-            <Navbar bg="light">
+            <Navbar bg="dark" variant="dark">
                 <Navbar.Brand href="/">
                     Counselor
                 </Navbar.Brand>
@@ -44,7 +44,7 @@ const UserNavigation = () => {
 
 const GuestNavigation = () => {
     return (<div className="nav-bar">
-            <Navbar bg="light">
+            <Navbar bg="dark" variant="dark">
                 <Navbar.Brand href="/">
                     Counselor
                 </Navbar.Brand>

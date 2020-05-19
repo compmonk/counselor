@@ -27,6 +27,7 @@ const Home = () => {
                         src="https://assets-global.website-files.com/5deac75ecad2173c2ccccbc7/5dec8960504967fd31147f62_Stellar_lockup_black_RGB.svg"
                         height="100"
                         width="100"
+                        alt="Stellar Logo"
                     />
                 </div>
                 <div>
@@ -34,6 +35,7 @@ const Home = () => {
                         src="https://alpineschools.org/wp-content/uploads/2018/04/Canvas-Logo.png"
                         height="50"
                         width="100"
+                        alt="Canvas Logo"
                     />
                 </div>
             </div>
