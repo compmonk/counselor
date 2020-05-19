@@ -150,12 +150,7 @@ async function get(articleId) {
     }
 }
 
-async function updateByAuthor(
-    articleId,
-    updatedArticle,
-    updaterId,
-    partial = false
-) {
+async function updateByAuthor(articleId, updatedArticle, updaterId, partial = false) {
     const error = new Error();
     error.http_code = 200;
     const errors = {};
@@ -261,7 +256,7 @@ async function update(articleId, updatedArticle, partial = false) {
 
     try {
         delete updatedArticle._id;
-        if (updatedArticle.hasOwnProperty("ratings") && Array.isArray(updatedArticle.ratings)) {
+        if (updatedArticle.hasOwnProperty("ratings") && Array.isArray(updatedArticle.ratings) && updatedArticle.ratings.length) {
             let totalRating = 0;
             for (var i = 0; i < updatedArticle.ratings.length; i++) {
                 totalRating = totalRating + updatedArticle.ratings[i].rating;
