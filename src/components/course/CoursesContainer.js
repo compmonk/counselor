@@ -1,7 +1,8 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Card } from "react-bootstrap";
 import { Button, Col, Form , Badge  } from "react-bootstrap";
+import { AuthContext } from "../auth/AuthContext";
 import axios from "axios";
 function CoursesContainer() {
     const [courses, setCourses] = useState([]);
@@ -9,18 +10,29 @@ function CoursesContainer() {
     const [isLoading, setisLoading] = useState(false);
     const [error,setError]=useState(false);
     const[ isChanged,setisChanged]= useState(true);
+    const { currentUser, setCurrentUser } = useContext(AuthContext);
     let list = undefined;
     useEffect(() => {
         async function fetch() {
             console.log("heyy")
-            var { data } = await axios.get("/api/user/courses");
-          //  console.log("lists->", data);
-            setCourses(data);
-            if(data.length>0){
+            var {data} = await axios.get("/api/user/detail")
+            if(data["canvasToken"]!=undefined){
+                var { data } = await axios.get("/api/user/courses");
+                //  console.log("lists->", data);
+                  setCourses(data);
+                  if(data.length>0){
+                    setisLoading(false);
+                    setError(false);
+                    setisChanged(false);
+                }
+            }else{
+                setCourses([]);
                 setisLoading(false);
                 setError(false);
                 setisChanged(false);
             }
+           
+            
           
         }
     if(isChanged) fetch();
