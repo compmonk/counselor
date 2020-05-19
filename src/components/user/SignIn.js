@@ -9,8 +9,6 @@ function SignIn() {
     const {
         currentUser,
         setCurrentUser,
-        loadingUser,
-        setLoadingUser,
         cookies,
         setCookies
     } = useContext(AuthContext);
@@ -39,7 +37,7 @@ function SignIn() {
             "email": email.value,
             "password": password.value,
         }
-        const {data} = await axios.post("/api/root/login", user, {withCredentials:true, headers:cookies})
+        const {data} = await axios.post("/api/root/login", user, {withCredentials: true, headers: cookies})
         setCurrentUser(data);
         setCookies(document.cookie)
     }

@@ -10,8 +10,6 @@ function SignUp() {
     const {
         currentUser,
         setCurrentUser,
-        loadingUser,
-        setLoadingUser,
         cookies,
         setCookies
     } = useContext(AuthContext);
@@ -34,7 +32,6 @@ function SignUp() {
 
     const signup = async (e) => {
         e.preventDefault();
-        console.log(e.target.elements)
         const {firstName, lastName, email, password, currency} = e.target.elements;
         const user = {
             "firstName": firstName.value,

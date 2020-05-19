@@ -21,7 +21,6 @@ import Navigation from "./others/Navigation";
 import Home from "./others/Home";
 import CoursesContainer from "./course/CoursesContainer";
 import SignOut from "./user/SignOut";
-import PrivateRoute from "./auth/PrivateRoute";
 import UserTransactions from "./user/UserTransactions";
 import {LoginValidator} from "./auth/LoginValidator";
 import Article from "./article/Article";
