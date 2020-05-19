@@ -1,99 +1,85 @@
 import React from "react";
-import { useState, useContext } from "react";
-import { Form, Button, Table } from "react-bootstrap";
+import {useState, useContext} from "react";
+import {Form, Button, Table, Col} from "react-bootstrap";
 import Page404 from "../others/FourZeroFour";
-import { AuthContext } from "../auth/AuthContext";
+import {AuthContext} from "../auth/AuthContext";
 import "../../sass/App.css";
 import axios from "axios";
+import FourZeroFour from "../others/FourZeroFour";
 
 function UserProfile() {
-  const { currentUser, setCurrentUser } = useContext(AuthContext);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+    const {currentUser, setCurrentUser, cookies, setCookies} = useContext(AuthContext);
 
-  const changeFirstName = (e) => {
-    setFirstName(e.target.value);
-    e.preventDefault();
-  };
-  const changeLastName = (e) => {
-    setLastName(e.target.value);
-    e.preventDefault();
-  };
-  const submitNameChange = async () => {
-    currentUser.firstName = firstName;
-    currentUser.lastName = lastName;
-    let person = await axios.put("/api/user/update", currentUser);
-    setCurrentUser(person);
-  };
-  if (!currentUser) return <Page404></Page404>;
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        const {firstName, lastName} = e.target.elements;
+        const user = {
+            "firstName": firstName.value,
+            "lastName": lastName.value
+        }
+        const {data} = await axios.put("/api/user/update", user, {withCredentials: true, headers: cookies})
+        setCurrentUser(data);
+        setCookies(document.cookie)
+        window.location.href = "/"
+    }
 
-  return (
-    <div className="row justify-content-center">
-      <Form
-        className="col-sm-8 col-md-8 col-lg-8 counselor-form"
-        onSubmit={submitNameChange}
-      >
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>First Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder={currentUser.firstName}
-            onChange={changeFirstName}
-          />
 
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder={currentUser.lastName}
-            onChange={changeLastName}
-          />
-          <Form.Label>Email address</Form.Label>
-          <Form.Control disabled type="email" placeholder={currentUser.email} />
-          <Form.Text className="text-muted">
-            You can't change your email here.
-          </Form.Text>
+    if (!currentUser) {
+        return <FourZeroFour/>;
+    }
 
-          <Form.Label>Stellar Public Key</Form.Label>
-          <Form.Control
-            disabled
-            type="text"
-            placeholder={currentUser.publicKey}
-          />
+    return (
+        <Form className="container col-sm-8 col-md-8 col-lg-8 counselor-form" onSubmit={onSubmit}>
+            <Form.Group as={Col}>
+                <Form.Label>First Name</Form.Label>
+                <Form.Control type="text" defaultValue={currentUser.firstName} name="firstName"/>
+            </Form.Group>
 
-          <Form.Label>Canvas User ID</Form.Label>
-          <Form.Control
-            disabled
-            type="text"
-            placeholder={currentUser.canvasUserId}
-          />
+            <Form.Group as={Col}>
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control type="text" defaultValue={currentUser.lastName} name="lastName"/>
+            </Form.Group>
 
-          <Form.Label>Total Purchased</Form.Label>
-          <Form.Control
-            disabled
-            type="text"
-            placeholder={
-              currentUser.purchased
-                ? currentUser.purchased.length
-                : "No Articles"
-            }
-          />
-          <Form.Label>Total Published</Form.Label>
-          <Form.Control
-            disabled
-            type="text"
-            placeholder={
-              currentUser.published
-                ? currentUser.published.length
-                : "No Articles"
-            }
-          />
-          <br />
-          <Button variant="primary" type="submit">
-            Update
-          </Button>
-        </Form.Group>
-      </Form>
-    </div>
-  );
+            <Form.Group as={Col}>
+                <Form.Label>Email address</Form.Label>
+                <Form.Control disabled type="email" defaultValue={currentUser.email}/>
+                <Form.Text className="text-muted">
+                    You can't change your email here.
+                </Form.Text>
+            </Form.Group>
+
+            <Form.Group as={Col}>
+                <Form.Label>Stellar Public Key</Form.Label>
+                <Form.Control disabled type="text" defaultValue={currentUser.publicKey}/>
+            </Form.Group>
+
+            <Form.Group as={Col}>
+                <Form.Label>Canvas User ID</Form.Label>
+                <Form.Control disabled type="text" defaultValue={currentUser.canvasUserId}/>
+            </Form.Group>
+
+            <Form.Group as={Col}>
+                <Form.Label>Total Purchased</Form.Label>
+                <Form.Control disabled type="text"
+                              defaultValue={currentUser.purchased ? currentUser.purchased.length : "No Articles"}
+                />
+            </Form.Group>
+
+            <Form.Group as={Col}>
+                <Form.Label>Currency</Form.Label>
+                <Form.Control disabled type="text" defaultValue={currentUser.currency}/>
+            </Form.Group>
+
+            <Form.Group as={Col}>
+                <Form.Label>Total Published</Form.Label>
+                <Form.Control disabled type="text"
+                              defaultValue={currentUser.published ? currentUser.published.length : "No Articles"}/>
+            </Form.Group>
+            <Button variant="primary" type="submit">
+                Update
+            </Button>
+        </Form>
+    );
 }
+
 export default UserProfile;

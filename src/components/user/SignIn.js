@@ -29,7 +29,7 @@ function SignIn() {
     }, []);
 
 
-    const signin = async (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         const {email, password} = e.target.elements;
         const user = {
@@ -47,7 +47,7 @@ function SignIn() {
 
 
     return (
-        <Form className="container-fluid col-lg-6 counselor-form" onSubmit={signin}>
+        <Form className="container-fluid col-sm-4 col-md-4 col-lg-4 counselor-form" onSubmit={onSubmit}>
 
             <Form.Group as={Col} controlId="formGridEmail">
                 <Form.Label>Email</Form.Label>

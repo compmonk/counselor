@@ -30,7 +30,7 @@ function SignUp() {
     }, []);
 
 
-    const signup = async (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         const {firstName, lastName, email, password, currency} = e.target.elements;
         const user = {
@@ -50,7 +50,7 @@ function SignUp() {
     }
 
     return (
-        <Form className="container-fluid col-lg-6 counselor-form" onSubmit={signup}>
+        <Form className="container-fluid col-sm-4 col-md-4 col-lg-4 counselor-form" onSubmit={onSubmit}>
 
             <Form.Group as={Col} controlId="formGridFirstName">
                 <Form.Label>First Name</Form.Label>

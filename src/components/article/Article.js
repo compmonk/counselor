@@ -39,18 +39,18 @@ function Article() {
 
 
         if (isAuthor) {
-            const {title, text, html, keywords, rating} = e.target.elements;
+            const {title, text, html, keywords} = e.target.elements;
             updatedArticle["title"] = title.value
             updatedArticle["text"] = text.value
             updatedArticle["html"] = html.value
             updatedArticle["keywords"] = keywords.value.split(",")
 
-            const {data} = await axios.put(`/api/user/${updatedArticle._id}/update`, updatedArticle, {
+            await axios.put(`/api/user/${updatedArticle._id}/update`, updatedArticle, {
                 withCredentials: true,
                 headers: cookies
             })
         } else {
-            const {data} = await axios.put(`/api/articles/${articleId}`, updatedArticle, {
+            await axios.put(`/api/articles/${articleId}`, updatedArticle, {
                 withCredentials: true,
                 headers: cookies
             })

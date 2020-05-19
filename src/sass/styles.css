@@ -10,6 +10,7 @@
 }
 
 .counselor-box {
+    width: 1000px !important;
     margin-top: 70px;
     border: 1px solid gray;
     border-radius: 5px;
@@ -19,13 +20,3 @@
 a.nav-link {
     color: #ffffff !important;
 }
-
-/*.navbar-dark .navbar-nav .nav-link {*/
-/*    font-weight: bold;*/
-/*    color: #a0a3a5;*/
-/*    text-shadow: 0 0 black;*/
-/*}*/
-
-/*.nav-link {*/
-/*    color: #a0a3a5;*/
-/*}*/

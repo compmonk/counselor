@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import '../sass/App.css';
 import '../sass/styles.css';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -7,9 +7,7 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
 
 import {AuthProvider} from "./auth/AuthProvider";
-import ArticlesContainer from "./article/ArticlesContainer";
 import RecommendationContainer from "./article/RecommendationContainer";
-import FourZeroFour from "./others/FourZeroFour";
 import UserSession from "./user/UserSession";
 import UserProfile from "./user/UserProfile";
 import PurchasedArticles from "./article/PurchasedArticles";
@@ -43,10 +41,7 @@ function App() {
                         <SignIn/>
                     </Route>
                     <Route path="/logout">
-                        <SignOut signout={() => (axios.get("/api/root/logout" ))}/>
-                    </Route>
-                    <Route exact path="/articles">
-                        <LoginValidator ChildComponent={ArticlesContainer}/>
+                        <SignOut signout={() => (axios.get("/api/root/logout"))}/>
                     </Route>
                     <Route path="/articles/all">
                         <LoginValidator ChildComponent={PurchasedArticles}/>
