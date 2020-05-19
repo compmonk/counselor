@@ -239,6 +239,17 @@ async function update(articleId, updatedArticle, partial = false) {
       throw e;
     }
   }
+  for (var i = 0; i< updatedArticle.ratings.length;i++){
+    if (typeof updatedArticle.ratings[i].reviewerId === "string") {
+      try {
+        updatedArticle.ratings[i].reviewerId = new mongoose.Types.ObjectId(
+          updatedArticle.ratings[i].reviewerId
+        );
+      } catch (e) {
+        throw e;
+      }
+    }
+  }
   if (error.http_code !== 200) {
     error.message = JSON.stringify({ errors: errors });
     throw error;
