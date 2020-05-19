@@ -3,16 +3,17 @@ import {AuthContext} from "../auth/AuthContext";
 import {Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {isLoggedIn} from "../auth/LoginValidator";
 import "../../sass/styles.css";
+
 const Navigation = () => {
     const {currentUser} = useContext(AuthContext);
     return (
         <div>
-            {isLoggedIn() ? <UserNavigation/> : <GuestNavigation/>}
+            {isLoggedIn() ? <UserNavigation user={currentUser}/> : <GuestNavigation/>}
         </div>
     )
 }
 
-const UserNavigation = () => {
+const UserNavigation = ({user}) => {
     return (<div className="nav-bar">
             <Navbar bg="dark" variant="dark">
                 <Navbar.Brand href="/">
@@ -35,6 +36,11 @@ const UserNavigation = () => {
                     </NavDropdown>
                     <Nav.Item>
                         <Nav.Link href="/courses" title="Courses">Courses</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link eventKey="disabled" disabled>
+                            {user ? `${user.firstName} ${user.lastName}` : ""}
+                        </Nav.Link>
                     </Nav.Item>
                 </Nav>
             </Navbar>
