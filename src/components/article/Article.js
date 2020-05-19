@@ -60,12 +60,9 @@ function Article() {
 
     }
 
-
     if (currentUser && article) {
         isAuthor = article.author === currentUser._id
         userRating = article.ratings ? article.ratings.filter((rating) => (rating.reviewerId === currentUser._id))[0] : {}
-        console.log("isAuthor", isAuthor)
-        console.log("userRating", userRating);
     }
 
     return (
