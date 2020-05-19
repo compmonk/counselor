@@ -3,8 +3,6 @@ const router = express.Router();
 const articles = require("../data/articles");
 const articleService = require("../services/articleService");
 
-const redisClient = require("../core/redisClient");
-
 router.get("/", async (request, response) => {
   try {
     var skip = 0;

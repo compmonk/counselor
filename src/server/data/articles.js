@@ -5,6 +5,7 @@ const stellarConfig = require("../../settings").stellarConfig;
 const userModel = require("./models/user");
 const articleModel = require("./models/article");
 const mongoose = require("mongoose");
+const redisClient = require("../core/redisClient");
 
 const userDao = require("./users");
 
@@ -313,7 +314,34 @@ async function getArticleByIdForUser(articleId, userId) {
     const permittedArticles = await userDao.getRecommendation(userId);
     for (var i = 0; i < permittedArticles.length; i++) {
       if (permittedArticles[i].toString() === articleId) {
-        return await get(articleId);
+        let article_res;
+        const personIdx = await redisClient.hmgetAsync("ArticleIds", articleId);
+        if (personIdx[0] === null) {
+          article_res = await get(articleId);
+          if (article_res == null) {
+            throw "Article Id not found";
+          }
+          await redisClient.rpushAsync(
+            "ArticleList",
+            JSON.stringify(article_res)
+          );
+          const idx = await redisClient.llenAsync("ArticleList");
+          await redisClient.hmsetAsync(
+            "ArticleIds",
+            article_res._id.toString(),
+            idx
+          );
+        } else {
+          article_res = await redisClient.lrangeAsync(
+            "ArticleList",
+            personIdx[0] - 1,
+            personIdx[0] - 1
+          );
+          await redisClient.rpushAsync("ArticleList", article_res[0]);
+          article_res = JSON.parse(article_res[0]);
+        }
+
+        return article_res;
       }
     }
     errors[
