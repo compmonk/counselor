@@ -388,11 +388,11 @@ async function getRecommendation(userId) {
     var pub_pur_ids = [];
     let counter = 0;
     for (var i = 0; i < published_purch.published.length; i++) {
-      pub_pur_ids[i] = published_purch.published[i].articleId;
+      pub_pur_ids[i] = published_purch.published[i].articleId.toString();
       counter += 1;
     }
     for (var j = 0; j < published_purch.purchased.length; j++) {
-      pub_pur_ids[counter] = published_purch.purchased[j].articleId;
+      pub_pur_ids[counter] = published_purch.purchased[j].articleId.toString();
       counter += 1;
     }
     return pub_pur_ids;
@@ -646,6 +646,7 @@ async function getcoursesByuserId(userId) {
     throw e;
   }
 }
+
 //Updated
 module.exports = {
   addUser,
