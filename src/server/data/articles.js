@@ -239,7 +239,7 @@ async function update(articleId, updatedArticle, partial = false) {
       throw e;
     }
   }
-  for (var i = 0; i< updatedArticle.ratings.length;i++){
+  for (var i = 0; i < updatedArticle.ratings.length; i++) {
     if (typeof updatedArticle.ratings[i].reviewerId === "string") {
       try {
         updatedArticle.ratings[i].reviewerId = new mongoose.Types.ObjectId(
@@ -305,6 +305,30 @@ async function getAll() {
   }
 }
 
+async function getArticleByIdForUser(articleId, userId) {
+  const error = new Error();
+  error.http_code = 200;
+  const errors = {};
+  try {
+    const permittedArticles = await userDao.getRecommendation(userId);
+    for (var i = 0; i < permittedArticles.length; i++) {
+      if (permittedArticles[i].toString() === articleId) {
+        return await get(articleId);
+      }
+    }
+    errors[
+      "article"
+    ] = `The user with Id ${userId} is not authorized to view article with ID ${articleId}`;
+    error.http_code = 403;
+    error.message = JSON.stringify({
+      errors: errors,
+    });
+    throw error;
+  } catch (e) {
+    throw e;
+  }
+}
+
 //Updated
 module.exports = {
   create,
@@ -312,4 +336,5 @@ module.exports = {
   update,
   getAll,
   updateByAuthor,
+  getArticleByIdForUser,
 };
