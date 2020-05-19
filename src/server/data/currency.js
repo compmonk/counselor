@@ -9,7 +9,7 @@ async function getAllCurrencies() {
             return await redisClient.lrangeAsync(
                 "currencies", 0, -1).map(JSON.parse);
         }
-        const currencies = await currencyModel.find({})
+        const currencies = await currencyModel.find({}).sort({"code": 1})
         const multi = redisClient.multi()
         currencies.map(JSON.stringify).map((currency) => multi.rpush("currencies", currency))
         await multi.exec()
