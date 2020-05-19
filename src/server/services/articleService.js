@@ -1,6 +1,7 @@
 const articles = require("../data/articles");
 const userDao = require("../data/users");
 const ObjectId = require("mongodb").ObjectId;
+const articleModel = require("../data/models/article");
 
 async function purchase(articleId, purchaserId) {
   const error = new Error();
@@ -72,7 +73,7 @@ async function purchase(articleId, purchaserId) {
     }
     author.balance += article.cost;
 
-    await userDao.updateUser(
+    let resultModified = await userDao.updateUser(
       article.author,
       {
         published: author.published,
@@ -80,11 +81,26 @@ async function purchase(articleId, purchaserId) {
       },
       true
     );
-
-    const artupd = await articles.get(article._id);
+    if (resultModified.nModified == 0) {
+      errors["message"] = `Cannot update Article with ID ${articleId}`;
+      error.http_code = 400;
+      error.message = JSON.stringify({ errors: errors });
+      throw error;
+    }
+    let artupd = await articles.get(article._id);
     artupd.read += 1;
-
-    const result = await articles.update(artupd._id, artupd, true);
+    
+    
+    const result = await articleModel.update(
+      { _id: articleId },
+      { $set: artupd}
+    ); 
+    if (result.nModified == 0) {
+      errors["message"] = `Cannot update Article with ID ${articleId}`;
+      error.http_code = 400;
+      error.message = JSON.stringify({ errors: errors });
+      throw error;
+    }
     console.log("purchase finished", result);
     // return await articles.update(article._id, { read: article.read + 1 }, true);
     return result;
@@ -92,7 +108,6 @@ async function purchase(articleId, purchaserId) {
     errors["error"] = e;
     error.http_code = 400;
     throw error;
-    throw e;
   }
 }
 
