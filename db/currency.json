@@ -1,0 +1,1148 @@
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfa99"
+  },
+  "currency": "Algerian Dinar",
+  "code": "DZD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfa9a"
+  },
+  "currency": "Namibia Dollar",
+  "code": "NAD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfa9b"
+  },
+  "currency": "Comorian Franc",
+  "code": "KMF"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfa9c"
+  },
+  "currency": "Egyptian Pound",
+  "code": "EGP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfa9e"
+  },
+  "currency": "Balboa",
+  "code": "PAB"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfa9f"
+  },
+  "currency": "Turkmenistan New Manat",
+  "code": "TMT"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaa0"
+  },
+  "currency": "Boliviano",
+  "code": "BOB"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaa2"
+  },
+  "currency": "Danish Krone",
+  "code": "DKK"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaa5"
+  },
+  "currency": "Pula",
+  "code": "BWP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaa6"
+  },
+  "currency": "Lebanese Pound",
+  "code": "LBP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaa7"
+  },
+  "currency": "Tanzanian Shilling",
+  "code": "TZS"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaa8"
+  },
+  "currency": "Dong",
+  "code": "VND"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaa9"
+  },
+  "currency": "Kwanza",
+  "code": "AOA"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaaa"
+  },
+  "currency": "Riel",
+  "code": "KHR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaab"
+  },
+  "currency": "Ghana Cedi",
+  "code": "GHS"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaac"
+  },
+  "currency": "Cayman Islands Dollar",
+  "code": "KYD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaad"
+  },
+  "currency": "Libyan Dinar",
+  "code": "LYD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaae"
+  },
+  "currency": "Hryvnia",
+  "code": "UAH"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaaf"
+  },
+  "currency": "Jordanian Dinar",
+  "code": "JOD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfab0"
+  },
+  "currency": "Aruban Florin",
+  "code": "AWG"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfab1"
+  },
+  "currency": "Saudi Riyal",
+  "code": "SAR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfab2"
+  },
+  "currency": "Platinum",
+  "code": "XPT"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfab3"
+  },
+  "currency": "Hong Kong Dollar",
+  "code": "HKD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfab5"
+  },
+  "currency": "Swiss Franc",
+  "code": "CHF"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfab6"
+  },
+  "currency": "Gibraltar Pound",
+  "code": "GIP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfab7"
+  },
+  "currency": "Ouguiya",
+  "code": "MRU"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfab8"
+  },
+  "currency": "CFP Franc",
+  "code": "XPF"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfab9"
+  },
+  "currency": "Palladium",
+  "code": "XPD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaba"
+  },
+  "currency": "Belarusian Ruble",
+  "code": "BYN"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfabb"
+  },
+  "currency": "Bulgarian Lev",
+  "code": "BGN"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfabc"
+  },
+  "currency": "Kuna",
+  "code": "HRK"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfabd"
+  },
+  "currency": "Djibouti Franc",
+  "code": "DJF"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfabe"
+  },
+  "currency": "Lilangeni",
+  "code": "SZL"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfabf"
+  },
+  "currency": "Baht",
+  "code": "THB"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfac0"
+  },
+  "currency": "CFA Franc BEAC",
+  "code": "XAF"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfac1"
+  },
+  "currency": "Brunei Dollar",
+  "code": "BND"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfac2"
+  },
+  "currency": "Iceland Krona",
+  "code": "ISK"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfac3"
+  },
+  "currency": "Peso Uruguayo",
+  "code": "UYU"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfac4"
+  },
+  "currency": "Cordoba Oro",
+  "code": "NIO"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfac5"
+  },
+  "currency": "Unidad Previsional",
+  "code": "UYW"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfac6"
+  },
+  "currency": "Lao Kip",
+  "code": "LAK"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfac7"
+  },
+  "currency": "Nepalese Rupee",
+  "code": "NPR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfac8"
+  },
+  "currency": "Syrian Pound",
+  "code": "SYP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfac9"
+  },
+  "currency": "Moroccan Dirham",
+  "code": "MAD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfacb"
+  },
+  "currency": "Mozambique Metical",
+  "code": "MZN"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfacc"
+  },
+  "currency": "Philippine Peso",
+  "code": "PHP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfacd"
+  },
+  "currency": "Rand",
+  "code": "ZAR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bface"
+  },
+  "currency": "ADB Unit of Account",
+  "code": "XUA"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfacf"
+  },
+  "currency": "Lek",
+  "code": "ALL"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfad0"
+  },
+  "currency": "Zimbabwe Dollar",
+  "code": "ZWL"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfad1"
+  },
+  "currency": "Sucre",
+  "code": "XSU"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfad2"
+  },
+  "currency": "Bolívar Soberano",
+  "code": "VES"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfad3"
+  },
+  "currency": "Naira",
+  "code": "NGN"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfad4"
+  },
+  "currency": "Costa Rican Colon",
+  "code": "CRC"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfad5"
+  },
+  "currency": "UAE Dirham",
+  "code": "AED"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfad6"
+  },
+  "currency": "Pound Sterling",
+  "code": "GBP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfad8"
+  },
+  "currency": "Malawi Kwacha",
+  "code": "MWK"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfad9"
+  },
+  "currency": "Sri Lanka Rupee",
+  "code": "LKR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfada"
+  },
+  "currency": "Pakistan Rupee",
+  "code": "PKR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfadb"
+  },
+  "currency": "Forint",
+  "code": "HUF"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfadc"
+  },
+  "currency": "Bermudian Dollar",
+  "code": "BMD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfadd"
+  },
+  "currency": "Loti",
+  "code": "LSL"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfade"
+  },
+  "currency": "Tugrik",
+  "code": "MNT"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfadf"
+  },
+  "currency": "Armenian Dram",
+  "code": "AMD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfae0"
+  },
+  "currency": "Uganda Shilling",
+  "code": "UGX"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfae1"
+  },
+  "currency": "Qatari Rial",
+  "code": "QAR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfae3"
+  },
+  "currency": "Dobra",
+  "code": "STN"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfae4"
+  },
+  "currency": "Jamaican Dollar",
+  "code": "JMD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfae5"
+  },
+  "currency": "Lari",
+  "code": "GEL"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfae6"
+  },
+  "currency": "Saint Helena Pound",
+  "code": "SHP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfae7"
+  },
+  "currency": "Afghani",
+  "code": "AFN"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfae8"
+  },
+  "currency": "Solomon Islands Dollar",
+  "code": "SBD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfae9"
+  },
+  "currency": "North Korean Won",
+  "code": "KPW"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaea"
+  },
+  "currency": "Denar",
+  "code": "MKD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaeb"
+  },
+  "currency": "Turkish Lira",
+  "code": "TRY"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaec"
+  },
+  "currency": "Taka",
+  "code": "BDT"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaed"
+  },
+  "currency": "Yemeni Rial",
+  "code": "YER"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaee"
+  },
+  "currency": "Gourde",
+  "code": "HTG"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaef"
+  },
+  "currency": "Leone",
+  "code": "SLL"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaf0"
+  },
+  "currency": "Malagasy Ariary",
+  "code": "MGA"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaf1"
+  },
+  "currency": "Netherlands Antillean Guilder",
+  "code": "ANG"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaf2"
+  },
+  "currency": "Liberian Dollar",
+  "code": "LRD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaf3"
+  },
+  "currency": "East Caribbean Dollar",
+  "code": "XCD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaf4"
+  },
+  "currency": "Norwegian Krone",
+  "code": "NOK"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaf6"
+  },
+  "currency": "Pataca",
+  "code": "MOP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaf7"
+  },
+  "currency": "South Sudanese Pound",
+  "code": "SSP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaf8"
+  },
+  "currency": "Indian Rupee",
+  "code": "INR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfaf9"
+  },
+  "currency": "Mexican Peso",
+  "code": "MXN"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfafa"
+  },
+  "currency": "Czech Koruna",
+  "code": "CZK"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfafb"
+  },
+  "currency": "Somoni",
+  "code": "TJS"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfafc"
+  },
+  "currency": "Ngultrum",
+  "code": "BTN"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfafd"
+  },
+  "currency": "Colombian Peso",
+  "code": "COP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfafe"
+  },
+  "currency": "Malaysian Ringgit",
+  "code": "MYR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb00"
+  },
+  "currency": "Mauritius Rupee",
+  "code": "MUR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb01"
+  },
+  "currency": "Rupiah",
+  "code": "IDR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb02"
+  },
+  "currency": "Lempira",
+  "code": "HNL"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb03"
+  },
+  "currency": "Fiji Dollar",
+  "code": "FJD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb04"
+  },
+  "currency": "Ethiopian Birr",
+  "code": "ETB"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb05"
+  },
+  "currency": "Sol",
+  "code": "PEN"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb06"
+  },
+  "currency": "Belize Dollar",
+  "code": "BZD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb08"
+  },
+  "currency": "New Israeli Sheqel",
+  "code": "ILS"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb09"
+  },
+  "currency": "Dominican Peso",
+  "code": "DOP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb0a"
+  },
+  "currency": "New Taiwan Dollar",
+  "code": "TWD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb0b"
+  },
+  "currency": "Moldovan Leu",
+  "code": "MDL"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb0c"
+  },
+  "currency": "Bahamian Dollar",
+  "code": "BSD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb0d"
+  },
+  "currency": "Swedish Krona",
+  "code": "SEK"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb0e"
+  },
+  "currency": "Rufiyaa",
+  "code": "MVR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb10"
+  },
+  "currency": "Australian Dollar",
+  "code": "AUD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb11"
+  },
+  "currency": "Surinam Dollar",
+  "code": "SRD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb12"
+  },
+  "currency": "Cuban Peso",
+  "code": "CUP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb14"
+  },
+  "currency": "Barbados Dollar",
+  "code": "BBD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb15"
+  },
+  "currency": "Won",
+  "code": "KRW"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb16"
+  },
+  "currency": "Dalasi",
+  "code": "GMD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb17"
+  },
+  "currency": "Quetzal",
+  "code": "GTQ"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb18"
+  },
+  "currency": "Peso Convertible",
+  "code": "CUC"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb19"
+  },
+  "currency": "Chilean Peso",
+  "code": "CLP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb1a"
+  },
+  "currency": "Zambian Kwacha",
+  "code": "ZMW"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb1b"
+  },
+  "currency": "Euro",
+  "code": "EUR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb1c"
+  },
+  "currency": "Congolese Franc",
+  "code": "CDF"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb1d"
+  },
+  "currency": "Rwanda Franc",
+  "code": "RWF"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb1e"
+  },
+  "currency": "Tenge",
+  "code": "KZT"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb1f"
+  },
+  "currency": "Russian Ruble",
+  "code": "RUB"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb20"
+  },
+  "currency": "Silver",
+  "code": "XAG"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb21"
+  },
+  "currency": "Trinidad and Tobago Dollar",
+  "code": "TTD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb22"
+  },
+  "currency": "Rial Omani",
+  "code": "OMR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb23"
+  },
+  "currency": "Brazilian Real",
+  "code": "BRL"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb24"
+  },
+  "currency": "Kyat",
+  "code": "MMK"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb25"
+  },
+  "currency": "Zloty",
+  "code": "PLN"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb26"
+  },
+  "currency": "Guarani",
+  "code": "PYG"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb27"
+  },
+  "currency": "Kenyan Shilling",
+  "code": "KES"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb28"
+  },
+  "currency": "El Salvador Colon",
+  "code": "SVC"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb29"
+  },
+  "currency": "US Dollar",
+  "code": "USD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb2a"
+  },
+  "currency": "Azerbaijan Manat",
+  "code": "AZN"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb2c"
+  },
+  "currency": "Pa’anga",
+  "code": "TOP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb2d"
+  },
+  "currency": "Vatu",
+  "code": "VUV"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb2e"
+  },
+  "currency": "Guinean Franc",
+  "code": "GNF"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb2f"
+  },
+  "currency": "Tala",
+  "code": "WST"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb30"
+  },
+  "currency": "Iraqi Dinar",
+  "code": "IQD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb31"
+  },
+  "currency": "Nakfa",
+  "code": "ERN"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb32"
+  },
+  "currency": "Convertible Mark",
+  "code": "BAM"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb33"
+  },
+  "currency": "Seychelles Rupee",
+  "code": "SCR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb34"
+  },
+  "currency": "Canadian Dollar",
+  "code": "CAD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb35"
+  },
+  "currency": "Cabo Verde Escudo",
+  "code": "CVE"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb36"
+  },
+  "currency": "Kuwaiti Dinar",
+  "code": "KWD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb37"
+  },
+  "currency": "Burundi Franc",
+  "code": "BIF"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb39"
+  },
+  "currency": "Kina",
+  "code": "PGK"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb3a"
+  },
+  "currency": "Somali Shilling",
+  "code": "SOS"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb3b"
+  },
+  "currency": "Singapore Dollar",
+  "code": "SGD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb3c"
+  },
+  "currency": "Uzbekistan Sum",
+  "code": "UZS"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb3d"
+  },
+  "currency": "Iranian Rial",
+  "code": "IRR"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb3e"
+  },
+  "currency": "Yuan Renminbi",
+  "code": "CNY"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb3f"
+  },
+  "currency": "CFA Franc BCEAO",
+  "code": "XOF"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb40"
+  },
+  "currency": "Tunisian Dinar",
+  "code": "TND"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb41"
+  },
+  "currency": "Guyana Dollar",
+  "code": "GYD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb42"
+  },
+  "currency": "New Zealand Dollar",
+  "code": "NZD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb43"
+  },
+  "currency": "Falkland Islands Pound",
+  "code": "FKP"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb44"
+  },
+  "currency": "Som",
+  "code": "KGS"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb45"
+  },
+  "currency": "Argentine Peso",
+  "code": "ARS"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb46"
+  },
+  "currency": "Romanian Leu",
+  "code": "RON"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb47"
+  },
+  "currency": "Serbian Dinar",
+  "code": "RSD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb48"
+  },
+  "currency": "Bahraini Dinar",
+  "code": "BHD"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb49"
+  },
+  "currency": "Yen",
+  "code": "JPY"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb4a"
+  },
+  "currency": "Sudanese Pound",
+  "code": "SDG"
+}
+{
+  "_id": {
+    "$oid": "5ec357826067d026169bfb4b"
+  },
+  "currency": "Gold",
+  "code": "XAU"
+}
