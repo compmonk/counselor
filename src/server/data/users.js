@@ -8,7 +8,7 @@ const stellarConfig = require("../../settings").stellarConfig;
 const redisClient = require("../core/redisClient")
 const userModel = require("./models/user");
 const articleModel = require("./models/article");
-
+const courseModel = require("./models/course");
 async function addUser(newUser) {
   const error = new Error();
   error.http_code = 200;
