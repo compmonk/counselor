@@ -3,8 +3,6 @@ const router = express.Router();
 const articles = require("../data/articles");
 const articleService = require("../services/articleService");
 
-const redisClient = require("../core/redisClient");
-
 router.get("/", async (request, response) => {
   try {
     var skip = 0;
@@ -28,39 +26,14 @@ router.get("/", async (request, response) => {
 
 router.get("/:id", async (request, response) => {
   try {
-    let article_res;
-    const personIdx = await redisClient.hmgetAsync(
-      "ArticleIds",
-      request.params.id
+    const result = await articles.getArticleByIdForUser(
+      request.params.id,
+      request.session.userID
     );
-    if (personIdx[0] === null) {
-      // person = await data.getById(request.params.id);
-      article_res = await articles.get(request.params.id);
-      if (article_res == null) {
-        throw "Article Id not found";
-      }
-      await redisClient.rpushAsync("ArticleList", JSON.stringify(article_res));
-      const idx = await redisClient.llenAsync("ArticleList");
-      await redisClient.hmsetAsync(
-        "ArticleIds",
-        article_res._id.toString(),
-        idx
-      );
-    } else {
-      article_res = await redisClient.lrangeAsync(
-        "ArticleList",
-        personIdx[0] - 1,
-        personIdx[0] - 1
-      );
-      await redisClient.rpushAsync("ArticleList", article_res[0]);
-      article_res = JSON.parse(article_res[0]);
-    }
-
-    response.json(article_res);
+    response.json(result);
   } catch (e) {
-    // response.setHeader("content-type", "application/json");
-    // response.status(e.http_code).send(e.message);
-    response.status(400).json({ error: e });
+    response.setHeader("content-type", "application/json");
+    response.status(e.http_code).send(e.message);
   }
 });
 
