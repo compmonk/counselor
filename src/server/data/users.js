@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 const stellarService = require("../services/stellarService");
 const stellarConfig = require("../../settings").stellarConfig;
-
+const redisClient = require("../core/redisClient")
 const userModel = require("./models/user");
 const articleModel = require("./models/article");
 
