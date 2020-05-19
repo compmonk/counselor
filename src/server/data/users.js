@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 const stellarService = require("../services/stellarService");
 const stellarConfig = require("../../settings").stellarConfig;
-const redisClient = require("../core/redisClient")
+const redisClient = require("../core/redisClient");
 const userModel = require("./models/user");
 const articleModel = require("./models/article");
 const courseModel = require("./models/course");
@@ -187,6 +187,13 @@ async function updateUser(userId, updatedUser, partial = false) {
     errors["id"] = "id is not defined";
     error.http_code = 400;
   }
+  if (updatedUser.firstName === "") {
+    delete updatedUser.firstName;
+  }
+
+  if (updatedUser.lastName === "") {
+    delete updatedUser.lastName;
+  }
 
   try {
     const userUpdate = await userModel.updateOne(
@@ -350,7 +357,7 @@ async function getArticlesByUserId(userId) {
     let allArticles = [];
     let articlesByUser = await articleModel.find({ author: userId });
     if (articlesByUser.length === 0) {
-        articlesByUser=[];
+      articlesByUser = [];
     }
     allArticles = articlesByUser;
     const usr = await userModel.findOne({ _id: userId });
@@ -596,9 +603,9 @@ async function getUserByFirebaseId(
     throw e;
   }
 }
-async function getcoursesByuserId(userId){
+async function getcoursesByuserId(userId) {
   try {
-    let courses=[]
+    let courses = [];
     const coursesStartIdx = await redisClient.hmgetAsync(
       "coursesStartIdx",
       userId.toString()
@@ -607,32 +614,34 @@ async function getcoursesByuserId(userId){
       "coursesEndIdx",
       userId.toString()
     );
-    let startIdx,endIdx;
-    if (coursesStartIdx[0] === null &&  coursesEndIdx[0]===null) {
+    let startIdx, endIdx;
+    if (coursesStartIdx[0] === null && coursesEndIdx[0] === null) {
       // person = await data.getById(request.params.id);
-      courses = await courseModel.find({UserID: userId})
+      courses = await courseModel.find({ UserID: userId });
       startIdx = await redisClient.llenAsync("courseList");
       await redisClient.hmsetAsync(
         "coursesStartIdx",
         userId.toString(),
         startIdx
       );
-      const multi = redisClient.multi()
-      courses.map(JSON.stringify).map((course) => multi.rpush("courseList", course))
-      await multi.exec()
+      const multi = redisClient.multi();
+      courses
+        .map(JSON.stringify)
+        .map((course) => multi.rpush("courseList", course));
+      await multi.exec();
       endIdx = await redisClient.llenAsync("courseList");
-      await redisClient.hmsetAsync(
-        "coursesEndIdx",
-        userId.toString(),
-        endIdx
-      );
+      await redisClient.hmsetAsync("coursesEndIdx", userId.toString(), endIdx);
     } else {
-      courses= await redisClient.lrangeAsync(
-        "courseList", parseInt(coursesStartIdx[0]), parseInt(coursesEndIdx[0])).map(JSON.parse);
-     
+      courses = await redisClient
+        .lrangeAsync(
+          "courseList",
+          parseInt(coursesStartIdx[0]),
+          parseInt(coursesEndIdx[0])
+        )
+        .map(JSON.parse);
     }
     return courses;
-  }catch(e){
+  } catch (e) {
     console.log(e);
     throw e;
   }
@@ -652,5 +661,5 @@ module.exports = {
   getArticlesByUserId,
   getRecommendation,
   getUserByFirebaseId,
-  getcoursesByuserId
+  getcoursesByuserId,
 };
