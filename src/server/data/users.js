@@ -596,7 +596,47 @@ async function getUserByFirebaseId(
     throw e;
   }
 }
-
+async function getcoursesByuserId(userId){
+  try {
+    let courses=[]
+    const coursesStartIdx = await redisClient.hmgetAsync(
+      "coursesStartIdx",
+      userId.toString()
+    );
+    const coursesEndIdx = await redisClient.hmgetAsync(
+      "coursesEndIdx",
+      userId.toString()
+    );
+    let startIdx,endIdx;
+    if (coursesStartIdx[0] === null &&  coursesEndIdx[0]===null) {
+      // person = await data.getById(request.params.id);
+      courses = await courseModel.find({UserID: userId})
+      startIdx = await redisClient.llenAsync("courseList");
+      await redisClient.hmsetAsync(
+        "coursesStartIdx",
+        userId.toString(),
+        startIdx
+      );
+      const multi = redisClient.multi()
+      courses.map(JSON.stringify).map((course) => multi.rpush("courseList", course))
+      await multi.exec()
+      endIdx = await redisClient.llenAsync("courseList");
+      await redisClient.hmsetAsync(
+        "coursesEndIdx",
+        userId.toString(),
+        endIdx
+      );
+    } else {
+      courses= await redisClient.lrangeAsync(
+        "courseList", parseInt(coursesStartIdx[0]), parseInt(coursesEndIdx[0])).map(JSON.parse);
+     
+    }
+    return courses;
+  }catch(e){
+    console.log(e);
+    throw e;
+  }
+}
 //Updated
 module.exports = {
   addUser,
@@ -612,4 +652,5 @@ module.exports = {
   getArticlesByUserId,
   getRecommendation,
   getUserByFirebaseId,
+  getcoursesByuserId
 };

@@ -50,7 +50,7 @@ router.post("/integrate", async (request, response) => {
 
 router.get("/courses", async (request, response) => {
   try {
-    const courses = await canvas.getCoursesByUserId(request.session.userID);
+    const courses = await users.getcoursesByuserId(request.session.userID);
     response.send(courses);
   } catch (e) {
     response.setHeader("content-type", "application/json");
