@@ -4,7 +4,7 @@ const Home = () => {
     return (
         <div>
             <div className="container-fluid counselor-box">
-                <h1>Welcome to Coulselor!</h1>
+                <h1>Welcome to Counselor!</h1>
                 <p>Your 24*7 homework help portal</p>
                 <h1>Got Stuck?</h1>
                 <p>We have got your back. Get onboarded and start looking for the exact article. Don’t worry about the
