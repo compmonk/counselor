@@ -1,18 +1,23 @@
+body {
+    background-image: url("background.png");
+    background-color: #ffffff;
+}
+
 .counselor-form {
     margin-top: 70px;
-    border: 1px solid gray;
+    font-weight: bold;
     border-radius: 5px;
     padding: 25px;
 }
 
 .counselor-table {
     margin-top: 70px;
+    border: black;
 }
 
 .counselor-box {
     width: 1000px !important;
     margin-top: 70px;
-    border: 1px solid gray;
     border-radius: 5px;
     padding: 25px;
 }
