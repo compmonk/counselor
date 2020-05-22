@@ -3,7 +3,7 @@ import '../sass/App.css';
 import '../sass/styles.css';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 
 
 import {AuthProvider} from "./auth/AuthProvider";
@@ -69,6 +69,9 @@ function App() {
                     </Route>
                     <Route path="/articles/:articleId">
                         <LoginValidator ChildComponent={Article}/>
+                    </Route>
+                    <Route path="*">
+                        <Redirect to="/"/>
                     </Route>
                 </Switch>
             </Router>
