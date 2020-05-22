@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext} from 'react'
 import {Button, Col, Form} from "react-bootstrap";
 
 import axios from 'axios';
@@ -12,22 +12,6 @@ function SignIn() {
         cookies,
         setCookies
     } = useContext(AuthContext);
-    const [currencies, setCurrencies] = useState([])
-
-    useEffect(() => {
-        async function fetchData() {
-            const {data} = await axios.get("/api/root/currency")
-            setCurrencies(data.map(opt => ({
-                label: `${opt['currency']} (${opt['code']})`,
-                value: opt['code']
-            })));
-        }
-
-        fetchData();
-
-        console.log(currencies);
-    }, []);
-
 
     const onSubmit = async (e) => {
         e.preventDefault();
