@@ -1,7 +1,6 @@
 import React from "react";
-import {useState, useContext} from "react";
+import {useContext} from "react";
 import {Form, Button, Table, Col} from "react-bootstrap";
-import Page404 from "../others/FourZeroFour";
 import {AuthContext} from "../auth/AuthContext";
 import "../../sass/App.css";
 import axios from "axios";
@@ -29,7 +28,7 @@ function UserProfile() {
     }
 
     return (
-        <Form className="container col-sm-8 col-md-8 col-lg-8 counselor-form" onSubmit={onSubmit}>
+        <Form className="container col-sm-6 col-md-6 col-lg-6 counselor-form" onSubmit={onSubmit}>
             <Form.Group as={Col}>
                 <Form.Label>First Name</Form.Label>
                 <Form.Control type="text" defaultValue={currentUser.firstName} name="firstName"/>

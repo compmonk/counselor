@@ -1,13 +1,15 @@
 body {
-    background-image: url("background.png");
+    background-image: url("background.jpeg");
     background-color: #ffffff;
 }
 
 .counselor-form {
+    border: solid 1px gray;
     margin-top: 70px;
     font-weight: bold;
     border-radius: 5px;
     padding: 25px;
+    background: rgba(255,255,255,50%);
 }
 
 .counselor-table {
