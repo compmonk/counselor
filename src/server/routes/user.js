@@ -26,8 +26,7 @@ router.get("/transactions", async (request, response) => {
 
 router.get("/balance", async (request, response) => {
     try {
-        const user = await users.getUserById(request.session.userID);
-        const balance = await stellarService.getBalance(user.privateKey);
+        const balance = await stellarService.getBalance(request.session.user.privateKey);
         response.send(balance);
     } catch (e) {
         response.setHeader("content-type", "application/json");
