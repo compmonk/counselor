@@ -24,20 +24,20 @@ const Home = () => {
             <div align="center" className="col-mb-8">
                 <row>
                     <div>
-                        <img
+                        <a href="https://www.stellar.org/" target="_blank"><img
                             src="https://assets-global.website-files.com/5deac75ecad2173c2ccccbc7/5dec8960504967fd31147f62_Stellar_lockup_black_RGB.svg"
                             height="225"
                             width="225"
                             alt="Stellar Logo"
-                        />
+                        /></a>
                     </div>
                     <div>
-                        <img
+                        <a href="https://canvas.instructure.com/doc/api/index.html" target="_blank"><img
                             src="https://alpineschools.org/wp-content/uploads/2018/04/Canvas-Logo.png"
                             height="75"
                             width="300"
                             alt="Canvas Logo"
-                        />
+                        /></a>
                     </div>
                 </row>
             </div>
