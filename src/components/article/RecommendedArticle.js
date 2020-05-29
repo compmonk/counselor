@@ -19,21 +19,20 @@ function Recommend() {
         fetch();
     }, []);
 
-    const buy = function buy(e) {
-        let fetch = async () => {
-            let id = e.target.value;
-            const uri = `/api/articles/` + id + `/purchase`;
-            console.log(uri);
-            try {
-                list = await axios.post(uri);
-                if (list) alert("you have purchased the article", list);
-                else throw "Purchase fail";
-            } catch (e) {
-                alert("transaction failed! please try again later.", e);
+    const buy = async (e) => {
+        let articleId = e.target.value;
+        try {
+            const response = await axios.post(`/api/articles/${articleId}/purchase`);
+            console.log(response)
+            if (response.status === 201) {
+                window.location.href = `/articles/${articleId}`
             }
-        };
-        fetch();
-    };
+        } catch (e) {
+            console.log(e)
+            alert("Transaction failed");
+        }
+    }
+
     if (!articles) {
         return <FourZeroFour/>;
     }

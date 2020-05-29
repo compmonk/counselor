@@ -51,13 +51,12 @@ router.post("/:id/purchase", async (request, response) => {
   try {
     const article = await articleService.purchase(
       request.params.id,
-      // "5eb9bb4afda1a60b18bc8040"
       request.session.userID
     );
     response.status(201).json(article);
   } catch (e) {
     response.setHeader("content-type", "application/json");
-    response.status(e.http_code).send(e.message);
+    response.status(e.http_code).send(e);
   }
 });
 
